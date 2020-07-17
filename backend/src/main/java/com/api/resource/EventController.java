@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.model.Event;
 import com.api.repository.EventRepository;
-
+@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class EventController {
 

@@ -30,6 +30,8 @@ public class User {
     @Size(min=8,max = 120)
     private String password;
 
+    private String role;
+
 
     private int urole;;
 
@@ -42,6 +44,7 @@ public class User {
         this.lname = lname;
         this.email = email;
         this.password = password;
+        this.role="ROLE_USER";
         this.urole = 1;//"ROLE_USER";
     }
 

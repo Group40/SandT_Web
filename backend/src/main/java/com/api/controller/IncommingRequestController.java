@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/test")
-public class OtherController {
+@RequestMapping("/test")
+public class IncommingRequestController {
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired

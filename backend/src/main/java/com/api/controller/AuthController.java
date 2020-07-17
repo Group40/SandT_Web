@@ -1,7 +1,6 @@
-package com.api.controllers;
+package com.api.controller;
 
 import javax.validation.Valid;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -80,7 +79,7 @@ public class AuthController {
 
         userRepository.save(user);
 
-        //Login
+        //Login details
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signUpRequest.getEmail(), signUpRequest.getPassword()));
 

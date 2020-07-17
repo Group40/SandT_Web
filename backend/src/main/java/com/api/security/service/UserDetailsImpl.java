@@ -38,7 +38,7 @@ public class UserDetailsImpl implements UserDetails {
         this.email = email;
         this.password = password;
         this.urole = urole;
-        this.authorities = authorities;
+        //this.authorities = authorities;
     }
 
     public static UserDetailsImpl build(User user) {
