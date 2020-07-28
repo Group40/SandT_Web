@@ -10,17 +10,20 @@ import {
     LOGOUT_SUCCESS,
     } from "./types";
     
+// Check token & load Customer: Any
 export const loadUser = () => (dispatch, getState) => {
     dispatch({ type: USER_LOADING});
 }
 
 //Login User
 export const login = ({ email, password }) => dispatch => {
+    
     const obj = {
         email: email,
         password: password,
     };
-    axios.post('http://localhost:8080/auth/signin',obj)
+    
+    axios.post('http://localhost:8080/auth/signin', obj)
         .then(res => dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data
