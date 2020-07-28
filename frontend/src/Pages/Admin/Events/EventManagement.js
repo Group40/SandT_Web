@@ -5,7 +5,7 @@ import AdminNav from "../../../Components/AdminNav.component";
 import list from '../../../Images/eventlist.png';
 import calendar from '../../../Images/calendar.png';
 import addevent from '../../../Images/addevents.png';
-import Background from '../../../Images/background1.jpg';
+import Background from '../../../Images/background2.jpg';
 var sectionStyle = {
     width: "100%",
     height: "100vh",

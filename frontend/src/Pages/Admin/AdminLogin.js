@@ -4,13 +4,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../Actions/authActions';
 import { clearErrors } from '../../Actions/errorActions';
-import Background from '../../Images/background1.jpg';
-import AdminNav from "../../Components/AdminNav.component";
-var sectionStyle = {
-  width: "100%",
-  height: "100vh",
-  backgroundImage: `url(${Background})`
-};
 
 class AdminLogin extends Component {
    
@@ -103,7 +96,7 @@ class AdminLogin extends Component {
             this.props.login(user);
             setTimeout(() => {  
                 window.location.reload(false);
-            }, 200);
+            }, 2000);
             
             
         }
@@ -117,9 +110,9 @@ class AdminLogin extends Component {
     
     render(){
         return (
-            <section style={ sectionStyle }>
+            <section>
             <React.Fragment>
-            <AdminNav/>
+            
                 <Container>
                     <Row>
                         <Col xs="0" sm="4"></Col>
