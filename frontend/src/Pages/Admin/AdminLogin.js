@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import { Container, Spinner, Row, Col, Alert, Button, Form, FormGroup, Input } from 'reactstrap';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { login } from '../../Actions/authActions';
+import { clearErrors } from '../../Actions/errorActions';
 import Background from '../../Images/background1.jpg';
-import { Redirect } from 'react-router';
-
 var sectionStyle = {
   width: "100%",
   height: "100vh",
   backgroundImage: `url(${Background})`
 };
 
-export default class AdminLogin extends Component {
+class AdminLogin extends Component {
    
     
     constructor(props) {
@@ -20,9 +22,29 @@ export default class AdminLogin extends Component {
             loading: false,
             alert: 0,
             alertMsg: "",
-            username: "",
+            email: "",
             password: "",
         };
+    }
+
+    static propTypes = {
+        isAuthenticated: PropTypes.bool,
+        error: PropTypes.object.isRequired,
+        login: PropTypes.func.isRequired,
+        clearErrors: PropTypes.func.isRequired
+    };
+
+    componentDidUpdate(prevProps) {
+        const { error } = this.props;
+        if(error !== prevProps.error) {
+          //Check login errors
+          if(error.id === 'LOGIN_FAIL') {
+            this.setState({ alertMsg: error.msg.msg });
+          } 
+          else {
+            this.setState({ alertMsg: null });
+          }
+        }
     }
 
     closeAlert = () => {
@@ -38,7 +60,7 @@ export default class AdminLogin extends Component {
         this.setState({
             alert: 0,
             alertMsg: "",
-            username: "",
+            email: "",
             password: "",
         });
         document.getElementById("form").reset();
@@ -47,9 +69,9 @@ export default class AdminLogin extends Component {
     validate = () => {
         let error = false;
         let alertMsg = "";
-        if (this.state.username.length < 1) {
+        if (this.state.email.length < 1) {
             error = true;
-            alertMsg = "Enter Username";
+            alertMsg = "Enter Email";
         }
         if (this.state.password.length < 1) {
             error = true;
@@ -71,7 +93,13 @@ export default class AdminLogin extends Component {
             this.setState({ 
                 loading: false 
             });
-            return <Redirect push to="/menucards"/>;
+            console.log("login : Success");
+            const { email, password } = this.state;
+            const user = {
+                email,
+                password
+            };
+            this.props.login(user);
         }
         else{
             this.setState({ 
@@ -96,7 +124,7 @@ export default class AdminLogin extends Component {
                                 <Form id="form" onSubmit={this.onSubmit}>
                                    
                                     <FormGroup>
-                                        <Input type="text" name="username" placeholder="Username" id="username" onChange={this.onChange}/>
+                                        <Input type="text" name="email" placeholder="Email" id="email" onChange={this.onChange}/>
                                     </FormGroup>
 
                                     <FormGroup>
@@ -134,3 +162,13 @@ export default class AdminLogin extends Component {
         );
     }  
 }
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated,
+    error: state.error
+  });
+  
+  export default connect(
+    mapStateToProps,
+    { login, clearErrors }
+  )(AdminLogin);
