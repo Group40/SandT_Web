@@ -9,8 +9,8 @@ class Dashboard extends Component {
             <React.Fragment>
                 <AdminNav/>
                 {(this.props.isAuthenticated === 'true' && this.props.erole === '3') ? 
-                <h1>hi</h1>
-                : <AdminLogin/>}
+                <h1>logged</h1>
+                : <h1>not logged</h1>}
             </React.Fragment>
         );
     }

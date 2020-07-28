@@ -14,7 +14,8 @@ class App extends Component {
   render(){
     let route;
     if(this.props.isAuthenticated === 'false') {
-      route = <Switch>  
+      route = <Switch> 
+        <Route path="/login" component={AdminLogin}/> 
         <Redirect to="/"/>      
       </Switch>
     }

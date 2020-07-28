@@ -23,18 +23,27 @@ class AdminNav extends Component {
         <NavbarToggler color="dark" onClick={this.toggleNavbar} className="mr-2" />
         <Collapse isOpen={!this.state.collapsed} navbar>
           <Nav navbar>
-            <NavItem>
-              <NavLink href="/admin/addevents">Add a new event</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="/admin/eventlist">Events List</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="/admin/eventcalendar">Event Calendar</NavLink>
-            </NavItem>
-            <NavItem>
-              <Logout/>
-            </NavItem>
+            {(this.props.isAuthenticated === 'true' && this.props.erole === '3') ? 
+            <React.Fragment>
+              <NavItem>
+                <NavLink href="/admin/addevents">Add a new event</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/admin/eventlist">Events List</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/admin/eventcalendar">Event Calendar</NavLink>
+              </NavItem>
+              <NavItem>
+                <Logout/>
+              </NavItem>
+              </React.Fragment>
+                : 
+                <NavItem>
+                <NavLink href="/login">Login as an admin</NavLink>
+              </NavItem>
+            }
+           
           </Nav>
         </Collapse>
       </Navbar>
