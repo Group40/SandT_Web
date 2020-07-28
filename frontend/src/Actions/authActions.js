@@ -45,6 +45,7 @@ export const login = ({ email, password }) => dispatch => {
                 type: LOGIN_FAIL
             });
         });
+        
 };
 
 //Logout User

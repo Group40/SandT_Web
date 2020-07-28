@@ -100,6 +100,7 @@ class AdminLogin extends Component {
                 password
             };
             this.props.login(user);
+           
         }
         else{
             this.setState({ 
