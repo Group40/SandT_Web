@@ -22,7 +22,7 @@ class App extends Component {
     if(this.props.isAuthenticated === true && this.props.erole === '3') {
       route = <Switch> 
         <Route path="/admin" component={AdminRoutes}/>
-        <Route path="/login" exact component={AdminLogin}/>
+        
         <Redirect to="/"/>  
       </Switch>
     }

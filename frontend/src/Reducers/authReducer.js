@@ -29,7 +29,7 @@ import {
       case USER_LOADED:
         return {
           ...state,
-          isAuthenticated: state.accessToken == null,
+          isAuthenticated: (localStorage.getItem('accessToken') !== null),
           isLoading: false,
           id: localStorage.getItem('id'),
           username: localStorage.getItem('username'),
@@ -40,7 +40,7 @@ import {
           tokenType: localStorage.getItem('tokenType'),
         };
       case LOGIN_SUCCESS:
-        // localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('isAuthenticated', true);
         localStorage.setItem('id', action.payload.id);
         localStorage.setItem('username', action.payload.username);
         localStorage.setItem('lname', action.payload.lname);
@@ -64,7 +64,7 @@ import {
       case AUTH_ERROR:
       case LOGIN_FAIL:
       case LOGOUT_SUCCESS:
-          // localStorage.setItem('isAuthenticated', 'false');
+          localStorage.removeItem('isAuthenticated');
           localStorage.removeItem('id');
           localStorage.removeItem('username');
           localStorage.removeItem('lname');

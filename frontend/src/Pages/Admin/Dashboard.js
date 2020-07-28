@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import AdminNav from "../../Components/AdminNav.component";
-import AdminLogin from "./AdminLogin";
 import { connect } from 'react-redux';
 
 class Dashboard extends Component {
@@ -8,7 +7,7 @@ class Dashboard extends Component {
         return (
             <React.Fragment>
                 <AdminNav/>
-                {(this.props.isAuthenticated === 'true' && this.props.erole === '3') ? 
+                {(this.props.isAuthenticated === true && this.props.erole === '3') ? 
                 <h1>logged</h1>
                 : <h1>not logged</h1>}
             </React.Fragment>
