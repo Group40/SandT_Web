@@ -1,21 +1,16 @@
 import React, { Component } from "react";
-import { Container, Spinner, Row, Col, Alert, Form, FormGroup, Label, Input, Card, CardBody, CardTitle, CardSubtitle, CardText, Button, CardImg, CardDeck, CardFooter } from 'reactstrap';
+import { Container, Row, Col,  Card,  CardImg } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import AdminNav from "../../../Components/AdminNav.component";
 import list from '../../../Images/eventlist.png';
 import calendar from '../../../Images/calendar.png';
 import addevent from '../../../Images/addevents.png';
-import Background from '../../../Images/background2.jpg';
-var sectionStyle = {
-    width: "100%",
-    height: "100vh",
-    backgroundImage: `url(${Background})`
-};
+
 export default class EventManagement extends Component {
      
     render(){
         return (
-            <section style={ sectionStyle }>
+            <section>
             <React.Fragment>
                 <AdminNav/>
                 

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Collapse, Button, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
+import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 import Logout from './LogOut.component';
 import { connect } from 'react-redux';
 class AdminNav extends Component {
