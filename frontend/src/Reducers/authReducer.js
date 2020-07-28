@@ -29,7 +29,7 @@ import {
       case USER_LOADED:
         return {
           ...state,
-          isAuthenticated: state.accessToken !== null,
+          isAuthenticated: state.accessToken === null,
           isLoading: false,
           id: localStorage.getItem('id'),
           username: localStorage.getItem('username'),
