@@ -13,17 +13,21 @@ class App extends Component {
   }
   render(){
     let route;
-    if(this.props.isAuthenticated === 'false') {
+    if(this.props.isAuthenticated === false) {
       route = <Switch> 
-        <Route path="/login" component={AdminLogin}/> 
-        <Redirect to="/"/>      
+        <Route path="/login" exact component={AdminLogin}/> 
+        <Redirect to="/login"/>      
       </Switch>
     }
-    if(this.props.isAuthenticated === 'true' && this.props.erole === '3') {
+    if(this.props.isAuthenticated === true && this.props.erole === '3') {
       route = <Switch> 
         <Route path="/admin" component={AdminRoutes}/>
+        <Route path="/login" exact component={AdminLogin}/>
         <Redirect to="/"/>  
       </Switch>
+    }
+    else{
+      
     }
     return (
       <React.Fragment>
