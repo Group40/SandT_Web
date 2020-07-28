@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import store from './store';
 import { loadUser} from './Actions/authActions';
 import { connect } from 'react-redux';
@@ -12,11 +12,24 @@ class App extends Component {
     store.dispatch(loadUser());
   }
   render(){
+    let route;
+    if(this.props.isAuthenticated === false || this.props.isAuthenticated === true || this.props.isAuthenticated === null) {
+      route = <Switch>
+        <Route exact path="/adminlogin" component={AdminLogin}/>
+        <Route path="/admin" component={AdminRoutes}/>          
+      </Switch>
+    }
+    if(this.props.isAuthenticated === true && this.props.type === "3") {
+      route = <Switch>
+        <Route exact path="/adminlogin" component={AdminRoutes}/>
+        <Route path="/admin" component={AdminRoutes}/>
+      </Switch>
+    }
     return (
       <React.Fragment>
         <Router>
-          <Route exact path="/adminlogin" component={AdminLogin}/>
-          <Route path="/admin" component={AdminRoutes}/>
+        <Route exact path="/adminlogin" component={AdminLogin}/>
+        <Route path="/admin" component={AdminRoutes}/>
         </Router>
         </React.Fragment>
     );

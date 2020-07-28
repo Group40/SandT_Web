@@ -29,7 +29,7 @@ import {
       case USER_LOADED:
         return {
           ...state,
-          isAuthenticated: state.accessToken === null,
+          isAuthenticated: localStorage.getItem('isAuthenticated'),
           isLoading: false,
           id: localStorage.getItem('id'),
           username: localStorage.getItem('username'),
@@ -40,12 +40,13 @@ import {
           tokenType: localStorage.getItem('tokenType'),
         };
       case LOGIN_SUCCESS:
+        localStorage.setItem('isAuthenticated', true);
         localStorage.setItem('id', action.payload.id);
         localStorage.setItem('username', action.payload.username);
         localStorage.setItem('lname', action.payload.lname);
         localStorage.setItem('email', action.payload.email);
         localStorage.setItem('erole', action.payload.erole);
-        localStorage.setItem('acessToken', action.payload.acessToken);
+        localStorage.setItem('accessToken', action.payload.accessToken);
         localStorage.setItem('tokenType', action.payload.tokenType);
         console.log(action.payload);
         return {
@@ -57,18 +58,19 @@ import {
           lname: action.payload.lname,
           email: action.payload.email,
           erole: action.payload.erole,
-          acessToken: action.payload.acessToken,
+          accessToken: action.payload.accessToken,
           tokenType: action.payload.tokenType,
         };
       case AUTH_ERROR:
       case LOGIN_FAIL:
       case LOGOUT_SUCCESS:
+          localStorage.setItem('isAuthenticated', false);
           localStorage.removeItem('id');
           localStorage.removeItem('username');
           localStorage.removeItem('lname');
           localStorage.removeItem('email');
           localStorage.removeItem('erole');
-          localStorage.removeItem('acessToken');
+          localStorage.removeItem('accessToken');
           localStorage.removeItem('tokenType');
           return {
             id: null,
@@ -78,7 +80,7 @@ import {
             isAuthenticated: false,
             isLoading: false,
             erole: null,
-            acessToken: null,
+            accessToken: null,
             tokenType: null,
           }
       default:
