@@ -101,7 +101,11 @@ class AdminLogin extends Component {
                 password
             };
             this.props.login(user);
-           
+            setTimeout(() => {  
+                window.location.reload(false);
+            }, 200);
+            
+            
         }
         else{
             this.setState({ 
