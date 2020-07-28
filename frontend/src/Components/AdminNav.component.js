@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
+import React, { Component, Fragment } from 'react';
+import { Collapse, Button, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 import Logout from './LogOut.component';
 import { connect } from 'react-redux';
 class AdminNav extends Component {
@@ -20,6 +20,12 @@ class AdminNav extends Component {
     <React.Fragment>
       <Navbar color="info" light>
         <NavbarBrand href="/admin/dashboard" className="mr-auto">S & T Admin Dashboard</NavbarBrand>
+        {(this.props.isAuthenticated === true && this.props.erole === '3') ? 
+        <React.Fragment>
+          <Fragment>Hi {this.props.username}!</Fragment>
+          <Fragment><Logout/></Fragment>
+        </React.Fragment>
+        : null}
         <NavbarToggler color="dark" onClick={this.toggleNavbar} className="mr-2" />
         <Collapse isOpen={!this.state.collapsed} navbar>
           <Nav navbar>
@@ -45,12 +51,10 @@ class AdminNav extends Component {
                 <NavItem>
                 <NavLink href="/login">Login as an admin</NavLink>
               </NavItem>
-            }
-           
+            } 
           </Nav>
-        </Collapse>
+        </Collapse>  
       </Navbar>
-      
       </React.Fragment>
   );
   }
@@ -58,7 +62,8 @@ class AdminNav extends Component {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  erole: state.auth.erole
+  erole: state.auth.erole,
+  username: state.auth.username
 });
 
 export default connect(mapStateToProps,null)(AdminNav);
