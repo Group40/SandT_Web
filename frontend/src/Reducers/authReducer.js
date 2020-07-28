@@ -35,7 +35,9 @@ import {
           username: localStorage.getItem('username'),
           lname: localStorage.getItem('lname'),
           email: localStorage.getItem('email'),
-          erole: localStorage.getItem('erole')
+          erole: localStorage.getItem('erole'),
+          accessToken: localStorage.getItem('accessToken'),
+          tokenType: localStorage.getItem('tokenType'),
         };
       case LOGIN_SUCCESS:
         localStorage.setItem('id', action.payload.id);

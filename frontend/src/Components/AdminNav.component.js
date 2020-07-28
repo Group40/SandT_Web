@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
-
+import Logout from './LogOut.component';
 const AdminNav = (props) => {
   const [collapsed, setCollapsed] = useState(true);
 
@@ -21,6 +21,9 @@ const AdminNav = (props) => {
             </NavItem>
             <NavItem>
               <NavLink href="/admin/eventcalendar">Event Calendar</NavLink>
+            </NavItem>
+            <NavItem>
+              <Logout/>
             </NavItem>
           </Nav>
         </Collapse>
