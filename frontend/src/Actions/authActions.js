@@ -13,6 +13,17 @@ import {
 // Check token & load Customer: Any
 export const loadUser = () => (dispatch, getState) => {
     dispatch({ type: USER_LOADING});
+    axios.get('/', tokenConfig(getState))
+        .then(res => dispatch({
+            type: USER_LOADED,
+            payload: res.data
+        }))
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status));
+            dispatch({
+                type: AUTH_ERROR
+            });
+        });
 }
 
 //Login User
