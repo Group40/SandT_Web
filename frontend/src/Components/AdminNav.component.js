@@ -1,17 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, Component } from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 import Logout from './LogOut.component';
-const AdminNav = (props) => {
-  const [collapsed, setCollapsed] = useState(true);
+import { connect } from 'react-redux';
+class AdminNav extends Component {
+  constructor(props) {
+    super(props);
+    this.toggleNavbar = this.toggleNavbar.bind(this);
 
-  const toggleNavbar = () => setCollapsed(!collapsed);
+    this.state = {
+        collapsed: true,
+    };
+  }
 
+  toggleNavbar = e => {
+    this.setState({ collapsed: !this.state.collapsed });   
+  };
+  render(){
   return (
     <React.Fragment>
       <Navbar color="info" light>
         <NavbarBrand href="/admin/dashboard" className="mr-auto">S & T Admin Dashboard</NavbarBrand>
-        <NavbarToggler color="dark" onClick={toggleNavbar} className="mr-2" />
-        <Collapse isOpen={!collapsed} navbar>
+        <NavbarToggler color="dark" onClick={this.toggleNavbar} className="mr-2" />
+        <Collapse isOpen={!this.state.collapsed} navbar>
           <Nav navbar>
             <NavItem>
               <NavLink href="/admin/addevents">Add a new event</NavLink>
@@ -28,8 +38,15 @@ const AdminNav = (props) => {
           </Nav>
         </Collapse>
       </Navbar>
+      
       </React.Fragment>
   );
+  }
 }
 
-export default AdminNav;
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  erole: state.auth.erole
+});
+
+export default connect(mapStateToProps,null)(AdminNav);

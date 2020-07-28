@@ -9,7 +9,6 @@ import RequestList from "./Events/RequestList";
 import ConfirmedList from "./Events/ConfirmedList";
 import RejectRequest from "./Events/RejectRequest";
 import ConfirmRequest from "./Events/ConfirmRequest";
-import AdminNav from "../../Components/AdminNav.component";
 
 export default class AdminRoutes extends Component {
 
@@ -25,9 +24,6 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/rejectrequest/:id" component={RejectRequest}/>
                 <Route path="/admin/confirmrequest/:id" component={ConfirmRequest}/>
                 <Route path="/admin/eventcalendar" component={Calendar}/>
-                <React.Fragment>
-                <AdminNav/>
-            </React.Fragment>
             </Router>
             
         );

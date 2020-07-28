@@ -35,10 +35,12 @@ export const login = ({ email, password }) => dispatch => {
     };
     
     axios.post('http://localhost:8080/auth/signin', obj)
-        .then(res => dispatch({
+        .then(res => 
+            dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data
-        }))
+        }),
+        )
         .catch(err => {
             dispatch(returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL'));
             dispatch({

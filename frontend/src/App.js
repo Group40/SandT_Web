@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import store from './store';
 import { loadUser} from './Actions/authActions';
 import { connect } from 'react-redux';
 import './App.css';
 import AdminRoutes from "./Pages/Admin/AdminRoutes";
 import AdminLogin from "./Pages/Admin/AdminLogin";
-
+import Dashboard from "./Pages/Admin/Dashboard";
 class App extends Component {
   componentDidMount() {
     store.dispatch(loadUser());
@@ -14,20 +14,20 @@ class App extends Component {
   render(){
     let route;
     if(this.props.isAuthenticated === 'false') {
-      route = <Switch>
-        <Route exact path="/adminlogin" component={AdminLogin}/>
-        <Route path="/admin" component={AdminLogin}/>          
+      route = <Switch>  
+        <Redirect to="/"/>      
       </Switch>
     }
     if(this.props.isAuthenticated === 'true' && this.props.erole === '3') {
-      route = <Switch>
-        <Route path="/adminlogin" component={AdminRoutes}/>
+      route = <Switch> 
         <Route path="/admin" component={AdminRoutes}/>
+        <Redirect to="/"/>  
       </Switch>
     }
     return (
       <React.Fragment>
         <Router>
+          <Route default path="/" exact component={Dashboard}/>
           {route}         
         </Router>
       </React.Fragment>
