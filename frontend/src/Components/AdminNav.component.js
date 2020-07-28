@@ -32,19 +32,25 @@ class AdminNav extends Component {
             {(this.props.isAuthenticated === true && this.props.erole === '3') ? 
             <React.Fragment>
               <NavItem>
-                <NavLink href="/admin/addevents">Add a new event</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="/admin/eventlist">Events List</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="/admin/eventcalendar">Event Calendar</NavLink>
-              </NavItem>
-              <NavItem>
                 <NavLink href="/admin/eventmanagement">Event Management</NavLink>
               </NavItem>
               <NavItem>
-                <Logout/>
+                <NavLink href="/">User Management</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/">Astrography Management</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/">Institute of Astronomy</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/">S & T Publications</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/">S & T Optics</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/">IOAS Astrophilia</NavLink>
               </NavItem>
               </React.Fragment>
                 : 
