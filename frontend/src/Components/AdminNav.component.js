@@ -35,6 +35,9 @@ class AdminNav extends Component {
                 <NavLink href="/admin/eventcalendar">Event Calendar</NavLink>
               </NavItem>
               <NavItem>
+                <NavLink href="/admin/eventmanagement">Event Management</NavLink>
+              </NavItem>
+              <NavItem>
                 <Logout/>
               </NavItem>
               </React.Fragment>
