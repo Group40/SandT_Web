@@ -16,6 +16,7 @@ public class Course {
 	private String description;
 	private String url;
 	private String[] likedUsers;
+	private String[] commentedUsers;
 
 	public String getId() {
 		return id;
@@ -70,5 +71,11 @@ public class Course {
 	}
 	public void setLikedUsers(String[] likedUsers) {
 		this.likedUsers = likedUsers;
+	}
+	public String[] getCommentedUsers() {
+		return commentedUsers;
+	}
+	public void setCommentedUsers(String[] commentedUsers) {
+		this.commentedUsers = commentedUsers;
 	}
 }
