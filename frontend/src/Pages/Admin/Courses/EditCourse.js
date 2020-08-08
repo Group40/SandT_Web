@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import axios from 'axios';
-import { Container, Spinner, Row, Col, Alert, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Modal, ModalBody, ModalHeader, Container, Spinner, Row, Col, Alert, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import AdminNav from "../../../Components/AdminNav.component";
 import Logo from "../../../Images/logo.jpg";
 
-export default class addCourse extends Component {
-      
+export default class EditCourse extends Component {
+   
     constructor(props) {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
     
         this.state = {
+            fieldLoading: true,
             loading: false,
             alert: 0,
             alertMsg: "",
@@ -20,8 +21,25 @@ export default class addCourse extends Component {
             price: "",
             location: "",
             description: "",
-            url: ""
+            url: "",
+            modal: false
         };
+    }
+
+    componentDidMount = async () => {
+        await axios.get("http://localhost:8080/findAllCourses/"+this.props.match.params.id)
+        .then(res => {
+            this.setState({ 
+                name: res.data.name,
+                ageGroupMin: res.data.ageGroupMin,
+                ageGroupMax: res.data.ageGroupMax,
+                price: res.data.price,
+                location: res.data.location,
+                description: res.data.description,
+                url: res.data.url,
+                fieldLoading: false
+            })
+        }) 
     }
 
     closeAlert = () => {
@@ -33,19 +51,17 @@ export default class addCourse extends Component {
         
     };
 
-    reset = e => {
+    toggle = () => {
         this.setState({
-            alert: 0,
-            alertMsg: "",
-            name: "",
-            ageGroupMin: "",
-            ageGroupMax: "",
-            price: "",
-            location: "",
-            description: "",
-            url: ""
+          modal: !this.state.modal,
         });
-        document.getElementById("form").reset();
+    };
+    
+    delete = async () => {
+        await axios.delete("http://localhost:8080/deleteCourse/"+this.props.match.params.id)
+        .then(res => {
+            this.props.history.goBack();
+        })       
     };
 
     validate = () => {
@@ -105,6 +121,7 @@ export default class addCourse extends Component {
         });
         if(!error){
             const obj = {
+                id: this.props.match.params.id,
                 name: this.state.name,
                 ageGroupMin: this.state.ageGroupMin,
                 ageGroupMax: this.state.ageGroupMax,
@@ -113,14 +130,13 @@ export default class addCourse extends Component {
                 description: this.state.description,
                 url: this.state.url,
                 likedUsers: [],
-                commentedUsers: []   
+                commentedUsers: []
             };
             console.log(obj);
-            axios.post("http://localhost:8080/addCourse", obj)
+            axios.post("http://localhost:8080/updateCourse", obj)
                 .then((res) => {
                     console.log("done");
                     this.setState({ alert: 0 });
-                    this.reset();
                     window.location.reload(false);
                 })
                 .catch((error) => {
@@ -141,8 +157,28 @@ export default class addCourse extends Component {
     }
     
     render(){
+        if (this.state.fieldLoading){
+            return(
+                <React.Fragment>
+                    <AdminNav/>
+                    <div className="middle">
+                        <Spinner color="info" style={{ width: '100', height: '100' }}/>
+                    </div>
+                </React.Fragment>
+            )
+        }
         return (
             <React.Fragment>
+                { this.state.modal ?
+                    <Modal isOpen={this.state.modal} toggle={this.toggle}>
+                        <ModalHeader toggle={this.toggle}>Are you sure?</ModalHeader>
+                        <ModalBody>
+                        <div className="container">
+                            <Button outline color="info" onClick={this.delete} block>Yes</Button>
+                        </div>
+                        </ModalBody>
+                    </Modal>
+                : null }
                 <AdminNav/>
                 <Container>
                     <Row>
@@ -152,7 +188,7 @@ export default class addCourse extends Component {
                                     <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
                                     
                                         <h4>S & T Group</h4>
-                                        Add a new course
+                                        Add a new event
                                 
                                 </div>
                             </div>
@@ -161,11 +197,11 @@ export default class addCourse extends Component {
                         <Col  xs="12" sm="7">
                             <div className="center2">
                                 <Form id="form" onSubmit={this.onSubmit}>
-                                    <Row>
+                                <Row>
                                         <Col xs="12" sm="12">
                                             <FormGroup>
                                                 <Label for="name">Course Name</Label>
-                                                <Input type="text" name="name" id="name" placeholder="Course Name" onChange={this.onChange}/>
+                                                <Input type="text" name="name" id="name" value={this.state.name} onChange={this.onChange}/>
                                             </FormGroup>
                                         </Col>
                                     </Row>
@@ -174,19 +210,19 @@ export default class addCourse extends Component {
                                         <Col xs="12" sm="6">
                                             <FormGroup>
                                                 <Label for="price">Price</Label>
-                                                <Input height="2" type="number" name="price" id="price" placeholder="25" onChange={this.onChange}/>
+                                                <Input height="2" type="number" name="price" id="price" value={this.state.price} onChange={this.onChange}/>
                                             </FormGroup>
                                         </Col>
                                         <Col xs="12" sm="3">
                                             <FormGroup>
                                                 <Label for="geGroupMin">Minimum Age</Label>
-                                                <Input height="2" type="number" name="ageGroupMin" id="ageGroupMin" placeholder="25" onChange={this.onChange}/>
+                                                <Input height="2" type="number" name="ageGroupMin" id="ageGroupMin" value={this.state.ageGroupMin} onChange={this.onChange}/>
                                             </FormGroup>
                                         </Col>
                                         <Col xs="12" sm="3">
                                             <FormGroup>
                                                 <Label for="ageGroupMax">Maximum Age</Label>
-                                                <Input height="2" type="number" name="ageGroupMax" id="ageGroupMax" placeholder="25" onChange={this.onChange}/>
+                                                <Input height="2" type="number" name="ageGroupMax" id="ageGroupMax" value={this.state.ageGroupMax} onChange={this.onChange}/>
                                             </FormGroup>
                                         </Col>
                                     </Row>
@@ -195,7 +231,7 @@ export default class addCourse extends Component {
                                         <Col xs="12" sm="12">
                                             <FormGroup>
                                                 <Label for="location">Location</Label>
-                                                <Input type="text" name="location" id="location" placeholder="Location" onChange={this.onChange}/>
+                                                <Input type="text" name="location" id="location" value={this.state.location} onChange={this.onChange}/>
                                             </FormGroup>
                                         </Col>
                                     </Row>
@@ -204,20 +240,20 @@ export default class addCourse extends Component {
                                         <Col xs="12" sm="12">
                                             <FormGroup>
                                                 <Label for="url">Url</Label>
-                                                <Input type="text" name="url" id="url" placeholder="Url" onChange={this.onChange}/>
+                                                <Input type="text" name="url" id="url" value={this.state.url} onChange={this.onChange}/>
                                             </FormGroup>
                                         </Col>
                                     </Row>
 
                                     <FormGroup>
                                         <Label for="description">Description</Label>
-                                        <Input type="textarea" name="description" id="description" onChange={this.onChange}/>
+                                        <Input type="textarea" name="description" id="description" value={this.state.description} onChange={this.onChange}/>
                                     </FormGroup>
                                     
                                     <Row xs="12" sm="12">
                                         <center>
                                             { this.state.loading ?
-                                                <Spinner animation="border" className="spinner2" alignItems="center"/>
+                                                <Spinner animation="border" className="spinner2"/>
                                             : null}
                                         </center>
                                     </Row>
@@ -229,12 +265,12 @@ export default class addCourse extends Component {
                                     : null }
                                     <Row>
                                         <Col xs="6" sm="6">
-                                            <Button outline color="info" onClick={this.reset} block>Reset</Button>
+                                            <Button outline color="info" onClick={this.toggle} block>Delete</Button>
                                         </Col>
                                         <Col xs="6" sm="6">
-                                            <Button outline color="info" type="submit" length="100" block>Add</Button>
+                                            <Button outline color="info" type="submit" length="100" block>Edit</Button>
                                         </Col>
-                                    </Row>        
+                                    </Row>         
                                 </Form>
                             </div>
                         </Col>
@@ -244,4 +280,3 @@ export default class addCourse extends Component {
         );
     }  
 }
-

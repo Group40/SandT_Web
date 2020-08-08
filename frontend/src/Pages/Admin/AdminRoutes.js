@@ -13,6 +13,8 @@ import EventManagement from "./Events/EventManagement";
 import CourseManagement from "./Courses/CourseManagement";
 import AddCourses from "./Courses/AddCourses";
 import CourseList from "./Courses/CourseList";
+import EditCourse from "./Courses/EditCourse";
+
 export default class AdminRoutes extends Component {
 
     render() {
@@ -31,6 +33,7 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/coursemanagement" component={CourseManagement}/>
                 <Route path="/admin/addcourses" component={AddCourses}/>
                 <Route path="/admin/courselist" component={CourseList}/>
+                <Route path="/admin/editcourse/:id" component={EditCourse}/>
             </Router>
             
         );
