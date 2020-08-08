@@ -15,6 +15,8 @@ public class Course {
 	private String location;
 	private String description;
 	private String url;
+	private String[] likedUsers;
+
 	public String getId() {
 		return id;
 	}
@@ -62,5 +64,11 @@ public class Course {
 	}
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	public String[] getLikedUsers() {
+		return likedUsers;
+	}
+	public void setLikedUsers(String[] likedUsers) {
+		this.likedUsers = likedUsers;
 	}
 }
