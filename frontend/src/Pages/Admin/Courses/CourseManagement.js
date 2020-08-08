@@ -18,7 +18,7 @@ export default class CourseManagement extends Component {
                         <Col xs="12" sm="6">
                             <div>
                                 <div className="center">
-                                    <Link to='/admin/eventlist'>
+                                    <Link to='/admin/courselist'>
                                         <Card outline color="info">
                                             <CardImg top width="100%" src={list} alt="Card image cap" />
                                         </Card>

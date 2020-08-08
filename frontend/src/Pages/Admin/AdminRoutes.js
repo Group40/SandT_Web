@@ -12,7 +12,7 @@ import ConfirmRequest from "./Events/ConfirmRequest";
 import EventManagement from "./Events/EventManagement";
 import CourseManagement from "./Courses/CourseManagement";
 import AddCourses from "./Courses/AddCourses";
-
+import CourseList from "./Courses/CourseList";
 export default class AdminRoutes extends Component {
 
     render() {
@@ -30,6 +30,7 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/eventmanagement" component={EventManagement}/>
                 <Route path="/admin/coursemanagement" component={CourseManagement}/>
                 <Route path="/admin/addcourses" component={AddCourses}/>
+                <Route path="/admin/courselist" component={CourseList}/>
             </Router>
             
         );
