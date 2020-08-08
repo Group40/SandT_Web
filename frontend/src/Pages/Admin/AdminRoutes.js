@@ -10,6 +10,8 @@ import ConfirmedList from "./Events/ConfirmedList";
 import RejectRequest from "./Events/RejectRequest";
 import ConfirmRequest from "./Events/ConfirmRequest";
 import EventManagement from "./Events/EventManagement";
+import CourseManagement from "./Courses/CourseManagement";
+import AddCourses from "./Courses/AddCourses";
 
 export default class AdminRoutes extends Component {
 
@@ -26,6 +28,8 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/confirmrequest/:id" component={ConfirmRequest}/>
                 <Route path="/admin/eventcalendar" component={Calendar}/>
                 <Route path="/admin/eventmanagement" component={EventManagement}/>
+                <Route path="/admin/coursemanagement" component={CourseManagement}/>
+                <Route path="/admin/addcourses" component={AddCourses}/>
             </Router>
             
         );

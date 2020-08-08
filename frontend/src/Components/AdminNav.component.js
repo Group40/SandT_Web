@@ -41,7 +41,7 @@ class AdminNav extends Component {
                 <NavLink href="/">Astrography Management</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/">Institute of Astronomy</NavLink>
+                <NavLink href="/admin/coursemanagement">Institute of Astronomy</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="/">S & T Publications</NavLink>
