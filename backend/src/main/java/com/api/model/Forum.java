@@ -1,34 +1,47 @@
 package com.api.model;
 
-import lombok.ToString;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@ToString
-
+@Document(collection = "Forum")
 public class Forum {
+
     private String id;
+    private String eventId;
     private String title;
     private String date;
-    private String startDateTime;
-    private String endDateTime;
+    private String startDate;
+    private String startTime;
 
     public String getId() {
         return id;
     }
 
-    public String getEndDateTime() {
-        return endDateTime;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setEndDateTime(String endDateTime) {
-        this.endDateTime = endDateTime;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
-    public String getStartDateTime() {
-        return startDateTime;
+    public String getEventId() {
+        return eventId;
     }
 
-    public void setStartDateTime(String startDateTime) {
-        this.startDateTime = startDateTime;
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDateTime(String startDate) {
+        this.startDate = startDate;
     }
 
     public String getDate() {
@@ -47,7 +60,4 @@ public class Forum {
         this.title = title;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 }

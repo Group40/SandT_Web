@@ -22,6 +22,12 @@ const AdminNav = (props) => {
             <NavItem>
               <NavLink href="/admin/eventcalendar">Event Calendar</NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink href="/admin/addforum">Add Forum</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/admin/viewforums">Forums List</NavLink>
+            </NavItem>
           </Nav>
         </Collapse>
       </Navbar>
