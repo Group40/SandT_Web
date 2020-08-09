@@ -25,9 +25,9 @@ import com.api.repository.UserRepository;
 import com.api.security.jwt.JwtUtils;
 import com.api.security.service.UserDetailsImpl;
 
-@CrossOrigin(origins = "http://localhost:3000")
 //@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/auth")
 public class AuthController {
     @Autowired
@@ -42,6 +42,7 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 

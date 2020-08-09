@@ -9,8 +9,11 @@ import RequestList from "./Events/RequestList";
 import ConfirmedList from "./Events/ConfirmedList";
 import RejectRequest from "./Events/RejectRequest";
 import ConfirmRequest from "./Events/ConfirmRequest";
-import AddForum from "./Forums/AddForum"
-import ViewForums from "./Forums/ViewForums"
+import EventManagement from "./Events/EventManagement";
+import CourseManagement from "./Courses/CourseManagement";
+import AddCourses from "./Courses/AddCourses";
+import CourseList from "./Courses/CourseList";
+import EditCourse from "./Courses/EditCourse";
 
 export default class AdminRoutes extends Component {
 
@@ -26,9 +29,13 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/rejectrequest/:id" component={RejectRequest}/>
                 <Route path="/admin/confirmrequest/:id" component={ConfirmRequest}/>
                 <Route path="/admin/eventcalendar" component={Calendar}/>
-                <Route path="/admin/addforum" component={AddForum}/>
-                <Route path="/admin/viewforums" component={ViewForums}/>
+                <Route path="/admin/eventmanagement" component={EventManagement}/>
+                <Route path="/admin/coursemanagement" component={CourseManagement}/>
+                <Route path="/admin/addcourses" component={AddCourses}/>
+                <Route path="/admin/courselist" component={CourseList}/>
+                <Route path="/admin/editcourse/:id" component={EditCourse}/>
             </Router>
+            
         );
     }
 }

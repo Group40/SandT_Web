@@ -26,10 +26,14 @@
     "react-dom": "^16.13.1",
     "react-moment": "^0.9.7",
     "react-popper": "^2.2.3",
+    "react-redux": "^7.2.1",
+    "react-redux-form": "^1.16.14",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "reactstrap": "^8.5.1",
-    "reactstrap-date-picker": "0.0.9"
+    "reactstrap-date-picker": "0.0.9",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
