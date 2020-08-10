@@ -3,6 +3,7 @@ import axios from "axios";
 import { Table, Spinner, Container, Row, Form, FormGroup, Button, Col } from "reactstrap";
 import AdminNav from "../../Components/AdminNav.component";
 import DatePicker from 'reactstrap-date-picker';
+import { Link } from 'react-router-dom';
 
 export default class Notification extends Component {
 
@@ -12,7 +13,7 @@ export default class Notification extends Component {
         this.state = {
             CourseList: [],
             loading: true,
-            filterDate: ""
+            filterDate: "",
         }
     }
 
@@ -48,6 +49,7 @@ export default class Notification extends Component {
 
     render() { 
         const filterDate = this.state.filterDate;
+
         if (this.state.loading){
             return(
                 <React.Fragment>
@@ -84,6 +86,7 @@ export default class Notification extends Component {
                     <Row>
                         <div style={{ marginTop: "20px" }}>
                             <Table>
+                                <tbody>
                                 {this.state.NotificationList.map(function(notification, index) {
                                     if(filterDate === ""){
                                         return (
@@ -157,6 +160,11 @@ export default class Notification extends Component {
                                                                 notification.date.substring(11, 20)
                                                         } 
                                                     </td> 
+                                                    <td>
+                                                        <Link to={"/admin/notifications/"+notification.id}>
+                                                            <Button outline color="danger" block>Delete</Button>
+                                                        </Link>
+                                                    </td>
                                                 </tr>     
                                             </React.Fragment>
                                         );
@@ -234,6 +242,11 @@ export default class Notification extends Component {
                                                                     notification.date.substring(11, 20)
                                                             }
                                                         </td>
+                                                        <td>
+                                                            <Link to={"/admin/notifications/"+notification.id}>
+                                                                <Button outline color="danger" block>Delete</Button>
+                                                            </Link>
+                                                        </td>   
                                                     </tr>       
                                                 </React.Fragment>
                                             );
@@ -242,7 +255,8 @@ export default class Notification extends Component {
                                             return null;
                                         }
                                     }  
-                                })}  
+                                })} 
+                                </tbody> 
                             </Table>         
                         </div>  
                     </Row>
