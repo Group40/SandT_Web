@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from "axios";
-import { Table, Spinner, Container, Row, Form, FormGroup, Button, Label, Col } from "reactstrap";
+import { Table, Spinner, Container, Row, Form, FormGroup, Button, Col } from "reactstrap";
 import AdminNav from "../../Components/AdminNav.component";
 import DatePicker from 'reactstrap-date-picker';
 
@@ -30,10 +30,6 @@ export default class Notification extends Component {
         this.setState({
             dateValue: value,
         });   
-    };
-
-    onChange = e => {
-        this.setState({ [e.target.name]: e.target.value });    
     };
 
     reset = e => {
@@ -66,24 +62,21 @@ export default class Notification extends Component {
         return (
             <React.Fragment> 
                 <AdminNav/> 
+                <br/>
                 <Container>
                     <Row>
                         <Form id="form" onSubmit={this.onSubmit}>
                             <Row>
-                                <Col>
+                                <Col xs="12" sm="6">
                                 <FormGroup>
-                                    <Label for="date">Date</Label>
                                     <DatePicker id="datepicker" value={this.state.dateValue}  onChange={(v) => this.onChangeDate(v)}/>
                                 </FormGroup>
                                 </Col>
-                                <Col>
-                                    <Button outline color="info" type="submit" length="100" block>Set Filters</Button>
+                                <Col xs="12" sm="3">
+                                    <Button outline color="info" type="submit" length="100" block>Set Filter</Button>
                                 </Col>
-                                <Col>
-                                    <Button outline color="info" onClick={this.reset} length="100" block>Reset</Button>
-                                </Col>
-                                <Col>
-                                    {this.state.filterDate}
+                                <Col xs="12" sm="3">
+                                    <Button outline color="info" onClick={this.reset} length="100" block>Get All</Button>
                                 </Col>
                             </Row> 
                         </Form>
