@@ -28,9 +28,6 @@ class addEvent extends Component {
         };
     }
 
-    getCurrentDate(){
-
-    }
     closeAlert = () => {
         this.setState({ alert: 0 });
     };
