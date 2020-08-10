@@ -3,8 +3,9 @@ import axios from 'axios';
 import { Container, Spinner, Row, Col, Alert, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import AdminNav from "../../../Components/AdminNav.component";
 import Logo from "../../../Images/logo.jpg";
+import { connect } from 'react-redux';
 
-export default class addCourse extends Component {
+class addCourse extends Component {
       
     constructor(props) {
         super(props);
@@ -104,6 +105,8 @@ export default class addCourse extends Component {
             alert: 0
         });
         if(!error){
+            var tzoffset = (new Date()).getTimezoneOffset() * 60000; 
+            var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
             const obj = {
                 name: this.state.name,
                 ageGroupMin: this.state.ageGroupMin,
@@ -115,8 +118,18 @@ export default class addCourse extends Component {
                 likedUsers: [],
                 commentedUsers: []   
             };
+            const obj2 = {
+                authorName: this.props.username+" "+this.props.lname,
+                authorType: this.props.erole,
+                authorMail: this.props.email,
+                name: this.state.name,
+                nameType: "added a new course",
+                date: localISOTime
+            };
             console.log(obj);
             axios.post("http://localhost:8080/addCourse", obj)
+            .then((res) => {
+                axios.post("http://localhost:8080/addNotification", obj2)
                 .then((res) => {
                     console.log("done");
                     this.setState({ alert: 0 });
@@ -130,7 +143,16 @@ export default class addCourse extends Component {
                         alert: 1,
                         loading: false
                     });
-                });        
+                }); 
+            })
+            .catch((error) => {
+                console.log(error);
+                this.setState({
+                    alertMsg: "Server is under maintanace, please try again later!",
+                    alert: 1,
+                    loading: false
+                });
+            });        
         }
         else{
             this.setState({ 
@@ -244,4 +266,13 @@ export default class addCourse extends Component {
         );
     }  
 }
+
+const mapStateToProps = state => ({
+    erole: state.auth.erole,
+    username: state.auth.username,
+    lname : state.auth.lname,
+    email : state.auth.email,
+});
+  
+export default connect(mapStateToProps,null)(addCourse);
 

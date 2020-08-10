@@ -134,15 +134,15 @@ class addEvent extends Component {
                         this.setState({ alert: 0 });
                         this.reset();
                         window.location.reload(false);
-                })
-                .catch((error) => {
-                    console.log(error);
-                    this.setState({
-                        alertMsg: "Server is under maintanace, please try again later!",
-                        alert: 1,
-                        loading: false
-                    });
-                }); 
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        this.setState({
+                            alertMsg: "Server is under maintanace, please try again later!",
+                            alert: 1,
+                            loading: false
+                        });
+                    }); 
                 })
                 .catch((error) => {
                     console.log(error);

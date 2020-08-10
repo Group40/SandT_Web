@@ -85,7 +85,7 @@ class EditEvent extends Component {
                     axios.post("http://localhost:8080/addNotification", obj3)
                     .then(res => {
                         this.props.history.goBack();
-                })
+                    })
                 }) 
             }) 
         })       
