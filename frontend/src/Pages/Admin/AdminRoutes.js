@@ -14,6 +14,7 @@ import CourseManagement from "./Courses/CourseManagement";
 import AddCourses from "./Courses/AddCourses";
 import CourseList from "./Courses/CourseList";
 import EditCourse from "./Courses/EditCourse";
+import Notification from "./Notification";
 
 export default class AdminRoutes extends Component {
 
@@ -34,6 +35,7 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/addcourses" component={AddCourses}/>
                 <Route path="/admin/courselist" component={CourseList}/>
                 <Route path="/admin/editcourse/:id" component={EditCourse}/>
+                <Route path="/admin/notifications" component={Notification}/>
             </Router>
             
         );
