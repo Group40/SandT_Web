@@ -9,8 +9,7 @@ import { connect } from 'react-redux';
 var tzoffset = (new Date()).getTimezoneOffset() * 60000; 
 var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
 
-class addEvent extends Component {
-   
+class addEvent extends Component {  
     
     constructor(props) {
         super(props);

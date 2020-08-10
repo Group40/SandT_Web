@@ -4,9 +4,12 @@ import { Modal, ModalBody, ModalHeader, Container, Spinner, Row, Col, Alert, But
 import DatePicker from 'reactstrap-date-picker';
 import AdminNav from "../../../Components/AdminNav.component";
 import Logo from "../../../Images/logo.jpg";
+import { connect } from 'react-redux';
 
-export default class EditEvent extends Component {
-   
+var tzoffset = (new Date()).getTimezoneOffset() * 60000; 
+var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+
+class EditEvent extends Component {  
     
     constructor(props) {
         super(props);
@@ -22,7 +25,7 @@ export default class EditEvent extends Component {
             venue: "",
             description: "",
             headCount: "",
-            dateValue: new Date().toISOString(),
+            dateValue: localISOTime,
             modal: false
         };
     }
@@ -64,13 +67,25 @@ export default class EditEvent extends Component {
     };
     
     delete = async () => {
+        const obj3 = {
+            authorName: this.props.username+" "+this.props.lname,
+            authorType: this.props.erole,
+            authorMail: this.props.email,
+            name: this.state.name,
+            nameType: "deleted the event",
+            date: localISOTime,
+            eventDate: document.getElementById("datepicker").value.substring(0, 10)
+        };
         await axios.delete("http://localhost:8080/deleteEventRequestByEventId/"+this.props.match.params.id)
         .then(res => {
             axios.delete("http://localhost:8080/deleteConfirmedEventRequestByEventId/"+this.props.match.params.id)
             .then(res => {
                 axios.delete("http://localhost:8080/deleteEvent/"+this.props.match.params.id)
                 .then(res => {
-                    this.props.history.goBack();
+                    axios.post("http://localhost:8080/addNotification", obj3)
+                    .then(res => {
+                        this.props.history.goBack();
+                })
                 }) 
             }) 
         })       
@@ -121,6 +136,8 @@ export default class EditEvent extends Component {
             alert: 0
         });
         if(!error){
+            tzoffset = (new Date()).getTimezoneOffset() * 60000; 
+            localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
             const obj = {
                 id: this.props.match.params.id,
                 name: this.state.name,
@@ -130,9 +147,19 @@ export default class EditEvent extends Component {
                 headCount: this.state.headCount,
                 available: this.state.headCount
             };
+            const obj2 = {
+                authorName: this.props.username+" "+this.props.lname,
+                authorType: this.props.erole,
+                authorMail: this.props.email,
+                name: this.state.name,
+                nameType: "edited the event",
+                date: localISOTime,
+                eventDate: document.getElementById("datepicker").value.substring(0, 10)
+            };
             console.log(obj);
             axios.post("http://localhost:8080/updateEvent", obj)
                 .then((res) => {
+                    axios.post("http://localhost:8080/addNotification", obj2)
                     console.log("done");
                     this.setState({ alert: 0 });
                     window.location.reload(false);
@@ -268,3 +295,12 @@ export default class EditEvent extends Component {
         );
     }  
 }
+
+const mapStateToProps = state => ({
+    erole: state.auth.erole,
+    username: state.auth.username,
+    lname : state.auth.lname,
+    email : state.auth.email,
+  });
+  
+  export default connect(mapStateToProps,null)(EditEvent);
