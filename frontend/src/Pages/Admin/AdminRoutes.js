@@ -12,6 +12,12 @@ import ConfirmRequest from "./Events/ConfirmRequest";
 import EventManagement from "./Events/EventManagement";
 import ReviewPics from "./Photography/Review/ReviewPics"
 import UploadPics from "./Photography/UploadPic"
+import CourseManagement from "./Courses/CourseManagement";
+import AddCourses from "./Courses/AddCourses";
+import CourseList from "./Courses/CourseList";
+import EditCourse from "./Courses/EditCourse";
+import Notification from "./Notification";
+import DeleteNotification from "./DeleteNotification";
 
 export default class AdminRoutes extends Component {
 
@@ -30,6 +36,12 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/eventmanagement" component={EventManagement}/>
                 <Route path="/admin/reviewpics" component={ReviewPics}/>
                 <Route path="/admin/uploadpic" component={UploadPics}/>
+                <Route path="/admin/coursemanagement" component={CourseManagement}/>
+                <Route path="/admin/addcourses" component={AddCourses}/>
+                <Route path="/admin/courselist" component={CourseList}/>
+                <Route path="/admin/editcourse/:id" component={EditCourse}/>
+                <Route path="/admin/notifications" component={Notification}/>
+                <Route path="/admin/notifications/:id" component={DeleteNotification}/>
             </Router>
             
         );

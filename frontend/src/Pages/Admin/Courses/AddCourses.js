@@ -1,16 +1,12 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import { Container, Spinner, Row, Col, Alert, Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import DatePicker from 'reactstrap-date-picker';
 import AdminNav from "../../../Components/AdminNav.component";
 import Logo from "../../../Images/logo.jpg";
 import { connect } from 'react-redux';
 
-var tzoffset = (new Date()).getTimezoneOffset() * 60000; 
-var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
-
-class addEvent extends Component {  
-    
+class addCourse extends Component {
+      
     constructor(props) {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
@@ -20,11 +16,12 @@ class addEvent extends Component {
             alert: 0,
             alertMsg: "",
             name: "",
-            date: "",
-            venue: "",
+            ageGroupMin: "",
+            ageGroupMax: "",
+            price: "",
+            location: "",
             description: "",
-            headCount: "",
-            dateValue: localISOTime
+            url: ""
         };
     }
 
@@ -37,23 +34,17 @@ class addEvent extends Component {
         
     };
 
-    onChangeDate(value){
-        this.setState({
-            dateValue: value,
-        });   
-    };
-
     reset = e => {
         this.setState({
             alert: 0,
             alertMsg: "",
             name: "",
-            date: "",
-            venue: "",
+            ageGroupMin: "",
+            ageGroupMax: "",
+            price: "",
+            location: "",
             description: "",
-            headCount: "",
-            dateValue: localISOTime
-
+            url: ""
         });
         document.getElementById("form").reset();
     };
@@ -65,30 +56,41 @@ class addEvent extends Component {
             error = true;
             alertMsg = "Name can't be empty";
         }
-        if (document.getElementById("datepicker").value.substring(0, 10).length < 1) {
+        else if (this.state.ageGroupMin.length < 1) {
             error = true;
-            alertMsg = "You have to pick a real date";
+            alertMsg = "Minimum age can't be empty";
         }
-        if (this.state.venue.length < 1) {
+        else if (this.state.ageGroupMax.length < 1) {
             error = true;
-            alertMsg = "Vanue can't be empty";
+            alertMsg = "Maximum age can't be empty";
         }
-        if (this.state.description.length < 1) {
+        else if (this.state.price.length < 1) {
+            error = true;
+            alertMsg = "Price can't be empty";
+        }
+        else if (this.state.location.length < 1) {
+            error = true;
+            alertMsg = "Location can't be empty";
+        }
+        else if (this.state.description.length < 1) {
             error = true;
             alertMsg = "Description can't be empty";
         }
-        parseInt(this.state.headCount)
-        if (parseInt(this.state.headCount) === 0) {
+        else if (this.state.url.length < 1) {
             error = true;
-            alertMsg = "Count can't be zero";
+            alertMsg = "Url can't be empty";
         }
-        if (this.state.headCount.length < 1) {
+        else if (parseInt(this.state.ageGroupMin) < 0) {
             error = true;
-            alertMsg = "Count can't be empty";
+            alertMsg = "Age cannot be minus";
         }
-        if (parseInt(this.state.headCount) < 0) {
+        else if (parseInt(this.state.ageGroupMax) < parseInt(this.state.ageGroupMin)) {
             error = true;
-            alertMsg = "Count can't be a negative value";
+            alertMsg = "Maximum age should be greater than minimum age";
+        }
+        else if (parseInt(this.state.price) < 0) {
+            error = true;
+            alertMsg = "Price cannot be minus";
         }
     
         this.setState({alertMsg: alertMsg});
@@ -103,43 +105,36 @@ class addEvent extends Component {
             alert: 0
         });
         if(!error){
-            tzoffset = (new Date()).getTimezoneOffset() * 60000; 
-            localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+            var tzoffset = (new Date()).getTimezoneOffset() * 60000; 
+            var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
             const obj = {
                 name: this.state.name,
-                date: document.getElementById("datepicker").value.substring(0, 10),
-                venue: this.state.venue,
+                ageGroupMin: this.state.ageGroupMin,
+                ageGroupMax: this.state.ageGroupMax,
+                price: this.state.price,
+                location: this.state.location,
                 description: this.state.description,
-                headCount: this.state.headCount,
-                available: this.state.headCount
+                url: this.state.url,
+                likedUsers: [],
+                commentedUsers: []   
             };
             const obj2 = {
                 authorName: this.props.username+" "+this.props.lname,
                 authorType: this.props.erole,
                 authorMail: this.props.email,
                 name: this.state.name,
-                nameType: "added a new event",
-                date: localISOTime,
-                eventDate: document.getElementById("datepicker").value.substring(0, 10)
+                nameType: "added a new course",
+                date: localISOTime
             };
             console.log(obj);
-            axios.post("http://localhost:8080/addEvent", obj)
+            axios.post("http://localhost:8080/addCourse", obj)
+            .then((res) => {
+                axios.post("http://localhost:8080/addNotification", obj2)
                 .then((res) => {
-                    axios.post("http://localhost:8080/addNotification", obj2)
-                    .then((res) => {
-                        console.log("done");
-                        this.setState({ alert: 0 });
-                        this.reset();
-                        window.location.reload(false);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        this.setState({
-                            alertMsg: "Server is under maintanace, please try again later!",
-                            alert: 1,
-                            loading: false
-                        });
-                    }); 
+                    console.log("done");
+                    this.setState({ alert: 0 });
+                    this.reset();
+                    window.location.reload(false);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -148,7 +143,16 @@ class addEvent extends Component {
                         alert: 1,
                         loading: false
                     });
-                });        
+                }); 
+            })
+            .catch((error) => {
+                console.log(error);
+                this.setState({
+                    alertMsg: "Server is under maintanace, please try again later!",
+                    alert: 1,
+                    loading: false
+                });
+            });        
         }
         else{
             this.setState({ 
@@ -170,45 +174,63 @@ class addEvent extends Component {
                                     <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
                                     
                                         <h4>S & T Group</h4>
-                                        Add a new event
+                                        Add a new course
                                 
                                 </div>
                             </div>
                         </Col>
 
                         <Col  xs="12" sm="7">
-                            <div className="center">
+                            <div className="center2">
                                 <Form id="form" onSubmit={this.onSubmit}>
                                     <Row>
-                                        <Col xs="12" sm="8">
+                                        <Col xs="12" sm="12">
                                             <FormGroup>
-                                                <Label for="name">Event Name</Label>
-                                                <Input type="text" name="name" id="name" placeholder="Astro" onChange={this.onChange}/>
-                                            </FormGroup>
-                                        </Col>
-                                        <Col xs="12" sm="4">
-                                            <FormGroup>
-                                                <Label for="date">Date</Label>
-                                                <DatePicker id="datepicker" value={this.state.dateValue}  onChange={(v) => this.onChangeDate(v)}/>
+                                                <Label for="name">Course Name</Label>
+                                                <Input type="text" name="name" id="name" placeholder="Course Name" onChange={this.onChange}/>
                                             </FormGroup>
                                         </Col>
                                     </Row>
 
                                     <Row>
-                                        <Col xs="12" sm="9">
+                                        <Col xs="12" sm="6">
                                             <FormGroup>
-                                                <Label for="venue">Venue</Label>
-                                                <Input type="text" name="venue" id="venue" placeholder="Colombo" onChange={this.onChange}/>
+                                                <Label for="price">Price</Label>
+                                                <Input height="2" type="number" name="price" id="price" placeholder="25" onChange={this.onChange}/>
                                             </FormGroup>
                                         </Col>
                                         <Col xs="12" sm="3">
                                             <FormGroup>
-                                                <Label for="headCount">Head Count</Label>
-                                                <Input height="2" type="number" name="headCount" id="headCount" placeholder="25" onChange={this.onChange}/>
+                                                <Label for="geGroupMin">Minimum Age</Label>
+                                                <Input height="2" type="number" name="ageGroupMin" id="ageGroupMin" placeholder="25" onChange={this.onChange}/>
+                                            </FormGroup>
+                                        </Col>
+                                        <Col xs="12" sm="3">
+                                            <FormGroup>
+                                                <Label for="ageGroupMax">Maximum Age</Label>
+                                                <Input height="2" type="number" name="ageGroupMax" id="ageGroupMax" placeholder="25" onChange={this.onChange}/>
                                             </FormGroup>
                                         </Col>
                                     </Row>
            
+                                    <Row>
+                                        <Col xs="12" sm="12">
+                                            <FormGroup>
+                                                <Label for="location">Location</Label>
+                                                <Input type="text" name="location" id="location" placeholder="Location" onChange={this.onChange}/>
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+
+                                    <Row>
+                                        <Col xs="12" sm="12">
+                                            <FormGroup>
+                                                <Label for="url">Url</Label>
+                                                <Input type="text" name="url" id="url" placeholder="Url" onChange={this.onChange}/>
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+
                                     <FormGroup>
                                         <Label for="description">Description</Label>
                                         <Input type="textarea" name="description" id="description" onChange={this.onChange}/>
@@ -250,8 +272,7 @@ const mapStateToProps = state => ({
     username: state.auth.username,
     lname : state.auth.lname,
     email : state.auth.email,
-  });
+});
   
-  export default connect(mapStateToProps,null)(addEvent);
-  
+export default connect(mapStateToProps,null)(addCourse);
 

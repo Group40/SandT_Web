@@ -2,6 +2,9 @@ import React, { Component, Fragment } from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 import Logout from './LogOut.component';
 import { connect } from 'react-redux';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
+
 class AdminNav extends Component {
   constructor(props) {
     super(props);
@@ -23,6 +26,11 @@ class AdminNav extends Component {
         {(this.props.isAuthenticated === true && this.props.erole === '3') ? 
         <React.Fragment>
           <Fragment>Hi {this.props.username}!</Fragment>
+          <Fragment>
+              <NavLink href="/admin/notifications">
+              <FontAwesomeIcon icon={faBell}/>
+              </NavLink>
+          </Fragment>
           <Fragment><Logout/></Fragment>
         </React.Fragment>
         : null}
@@ -41,7 +49,11 @@ class AdminNav extends Component {
                 <NavLink href="/admin/reviewpics">Astrography Management</NavLink>
               </NavItem>
               <NavItem>
+<<<<<<< HEAD
                 <NavLink href="/admin/uploadpic">Institute of Astronomy(Upload pic)</NavLink>
+=======
+                <NavLink href="/admin/coursemanagement">Institute of Astronomy</NavLink>
+>>>>>>> 698161ce40788009e413928ad6737a88ed018462
               </NavItem>
               <NavItem>
                 <NavLink href="/">S & T Publications</NavLink>
@@ -51,6 +63,9 @@ class AdminNav extends Component {
               </NavItem>
               <NavItem>
                 <NavLink href="/">IOAS Astrophilia</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/admin/notifications">Notifications</NavLink>
               </NavItem>
               </React.Fragment>
                 : 

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import { Modal, ModalBody, ModalHeader, Container, Spinner, Row, Col, Alert, Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import DatePicker from 'reactstrap-date-picker';
 import AdminNav from "../../../Components/AdminNav.component";
 import Logo from "../../../Images/logo.jpg";
 import { connect } from 'react-redux';
@@ -9,8 +8,8 @@ import { connect } from 'react-redux';
 var tzoffset = (new Date()).getTimezoneOffset() * 60000; 
 var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
 
-class EditEvent extends Component {  
-    
+class EditCourse extends Component {
+   
     constructor(props) {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
@@ -21,25 +20,27 @@ class EditEvent extends Component {
             alert: 0,
             alertMsg: "",
             name: "",
-            date: "",
-            venue: "",
+            ageGroupMin: "",
+            ageGroupMax: "",
+            price: "",
+            location: "",
             description: "",
-            headCount: "",
-            dateValue: localISOTime,
+            url: "",
             modal: false
         };
     }
 
     componentDidMount = async () => {
-        await axios.get("http://localhost:8080/findAllEvents/"+this.props.match.params.id)
+        await axios.get("http://localhost:8080/findAllCourses/"+this.props.match.params.id)
         .then(res => {
             this.setState({ 
-                dateValue: res.data.date,
                 name: res.data.name,
-                date: res.data.date,
-                venue: res.data.venue,
+                ageGroupMin: res.data.ageGroupMin,
+                ageGroupMax: res.data.ageGroupMax,
+                price: res.data.price,
+                location: res.data.location,
                 description: res.data.description,
-                headCount: res.data.headCount,
+                url: res.data.url,
                 fieldLoading: false
             })
         }) 
@@ -54,12 +55,6 @@ class EditEvent extends Component {
         
     };
 
-    onChangeDate(value){
-        this.setState({
-            dateValue: value,
-        });   
-    };
-
     toggle = () => {
         this.setState({
           modal: !this.state.modal,
@@ -67,27 +62,22 @@ class EditEvent extends Component {
     };
     
     delete = async () => {
+        tzoffset = (new Date()).getTimezoneOffset() * 60000; 
+        localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
         const obj3 = {
             authorName: this.props.username+" "+this.props.lname,
             authorType: this.props.erole,
             authorMail: this.props.email,
             name: this.state.name,
-            nameType: "deleted the event",
-            date: localISOTime,
-            eventDate: document.getElementById("datepicker").value.substring(0, 10)
+            nameType: "deleted the course",
+            date: localISOTime
         };
-        await axios.delete("http://localhost:8080/deleteEventRequestByEventId/"+this.props.match.params.id)
+        await axios.delete("http://localhost:8080/deleteCourse/"+this.props.match.params.id)
         .then(res => {
-            axios.delete("http://localhost:8080/deleteConfirmedEventRequestByEventId/"+this.props.match.params.id)
+            axios.post("http://localhost:8080/addNotification", obj3)
             .then(res => {
-                axios.delete("http://localhost:8080/deleteEvent/"+this.props.match.params.id)
-                .then(res => {
-                    axios.post("http://localhost:8080/addNotification", obj3)
-                    .then(res => {
-                        this.props.history.goBack();
-                    })
-                }) 
-            }) 
+                this.props.history.goBack();
+            })
         })       
     };
 
@@ -98,30 +88,41 @@ class EditEvent extends Component {
             error = true;
             alertMsg = "Name can't be empty";
         }
-        if (document.getElementById("datepicker").value.substring(0, 10).length < 1) {
+        else if (this.state.ageGroupMin.length < 1) {
             error = true;
-            alertMsg = "You have to pick a real date";
+            alertMsg = "Minimum age can't be empty";
         }
-        if (this.state.venue.length < 1) {
+        else if (this.state.ageGroupMax.length < 1) {
             error = true;
-            alertMsg = "Vanue can't be empty";
+            alertMsg = "Maximum age can't be empty";
         }
-        if (this.state.description.length < 1) {
+        else if (this.state.price.length < 1) {
+            error = true;
+            alertMsg = "Price can't be empty";
+        }
+        else if (this.state.location.length < 1) {
+            error = true;
+            alertMsg = "Location can't be empty";
+        }
+        else if (this.state.description.length < 1) {
             error = true;
             alertMsg = "Description can't be empty";
         }
-        parseInt(this.state.headCount)
-        if (parseInt(this.state.headCount) === 0) {
+        else if (this.state.url.length < 1) {
             error = true;
-            alertMsg = "Count can't be zero";
+            alertMsg = "Url can't be empty";
         }
-        if (this.state.headCount.length < 1) {
+        else if (parseInt(this.state.ageGroupMin) < 0) {
             error = true;
-            alertMsg = "Count can't be empty";
+            alertMsg = "Age cannot be minus";
         }
-        if (parseInt(this.state.headCount) < 0) {
+        else if (parseInt(this.state.ageGroupMax) < parseInt(this.state.ageGroupMin)) {
             error = true;
-            alertMsg = "Count can't be a negative value";
+            alertMsg = "Maximum age should be greater than minimum age";
+        }
+        else if (parseInt(this.state.price) < 0) {
+            error = true;
+            alertMsg = "Price cannot be minus";
         }
     
         this.setState({alertMsg: alertMsg});
@@ -141,23 +142,25 @@ class EditEvent extends Component {
             const obj = {
                 id: this.props.match.params.id,
                 name: this.state.name,
-                date: document.getElementById("datepicker").value.substring(0, 10),
-                venue: this.state.venue,
+                ageGroupMin: this.state.ageGroupMin,
+                ageGroupMax: this.state.ageGroupMax,
+                price: this.state.price,
+                location: this.state.location,
                 description: this.state.description,
-                headCount: this.state.headCount,
-                available: this.state.headCount
+                url: this.state.url,
+                likedUsers: [],
+                commentedUsers: []
             };
             const obj2 = {
                 authorName: this.props.username+" "+this.props.lname,
                 authorType: this.props.erole,
                 authorMail: this.props.email,
                 name: this.state.name,
-                nameType: "edited the event",
-                date: localISOTime,
-                eventDate: document.getElementById("datepicker").value.substring(0, 10)
+                nameType: "edited the course",
+                date: localISOTime
             };
             console.log(obj);
-            axios.post("http://localhost:8080/updateEvent", obj)
+            axios.post("http://localhost:8080/updateCourse", obj)
                 .then((res) => {
                     axios.post("http://localhost:8080/addNotification", obj2)
                     console.log("done");
@@ -213,53 +216,63 @@ class EditEvent extends Component {
                                     <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
                                     
                                         <h4>S & T Group</h4>
-                                        Add a new event
+                                        Edit Course
                                 
                                 </div>
                             </div>
                         </Col>
 
                         <Col  xs="12" sm="7">
-                            <div className="center">
-                                <Row>
-                                    <Col xs="6" sm="6">
-                                        <Button outline color="info" href={"/admin/requestlist/"+this.props.match.params.id} block>Request List</Button>
-                                    </Col>
-                                    <Col xs="6" sm="6">
-                                        <Button outline color="info" href={"/admin/confirmedlist/"+this.props.match.params.id} block>Confirmed List</Button>
-                                    </Col>
-                                </Row>
+                            <div className="center2">
                                 <Form id="form" onSubmit={this.onSubmit}>
-                                    <Row>
-                                        <Col xs="12" sm="8">
+                                <Row>
+                                        <Col xs="12" sm="12">
                                             <FormGroup>
-                                                <Label for="name">Event Name</Label>
+                                                <Label for="name">Course Name</Label>
                                                 <Input type="text" name="name" id="name" value={this.state.name} onChange={this.onChange}/>
-                                            </FormGroup>
-                                        </Col>
-                                        <Col xs="12" sm="4">
-                                            <FormGroup>
-                                                <Label for="date">Date</Label>
-                                                <DatePicker id="datepicker" value={this.state.dateValue}  onChange={(v) => this.onChangeDate(v)}/>
                                             </FormGroup>
                                         </Col>
                                     </Row>
 
                                     <Row>
-                                        <Col xs="12" sm="9">
+                                        <Col xs="12" sm="6">
                                             <FormGroup>
-                                                <Label for="venue">Venue</Label>
-                                                <Input type="text" name="venue" id="venue" value={this.state.venue} onChange={this.onChange}/>
+                                                <Label for="price">Price</Label>
+                                                <Input height="2" type="number" name="price" id="price" value={this.state.price} onChange={this.onChange}/>
                                             </FormGroup>
                                         </Col>
                                         <Col xs="12" sm="3">
                                             <FormGroup>
-                                                <Label for="headCount">Head Count</Label>
-                                                <Input height="2" type="number" name="headCount" id="headCount" value={this.state.headCount} onChange={this.onChange}/>
+                                                <Label for="geGroupMin">Minimum Age</Label>
+                                                <Input height="2" type="number" name="ageGroupMin" id="ageGroupMin" value={this.state.ageGroupMin} onChange={this.onChange}/>
+                                            </FormGroup>
+                                        </Col>
+                                        <Col xs="12" sm="3">
+                                            <FormGroup>
+                                                <Label for="ageGroupMax">Maximum Age</Label>
+                                                <Input height="2" type="number" name="ageGroupMax" id="ageGroupMax" value={this.state.ageGroupMax} onChange={this.onChange}/>
                                             </FormGroup>
                                         </Col>
                                     </Row>
            
+                                    <Row>
+                                        <Col xs="12" sm="12">
+                                            <FormGroup>
+                                                <Label for="location">Location</Label>
+                                                <Input type="text" name="location" id="location" value={this.state.location} onChange={this.onChange}/>
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+
+                                    <Row>
+                                        <Col xs="12" sm="12">
+                                            <FormGroup>
+                                                <Label for="url">Url</Label>
+                                                <Input type="text" name="url" id="url" value={this.state.url} onChange={this.onChange}/>
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+
                                     <FormGroup>
                                         <Label for="description">Description</Label>
                                         <Input type="textarea" name="description" id="description" value={this.state.description} onChange={this.onChange}/>
@@ -303,4 +316,4 @@ const mapStateToProps = state => ({
     email : state.auth.email,
   });
   
-  export default connect(mapStateToProps,null)(EditEvent);
+  export default connect(mapStateToProps,null)(EditCourse);
