@@ -72,7 +72,6 @@ export default class ReviewPics extends Component {
     }
 
     pagingfun(){
-        this.setState({loading: true})
         this.componentDidMount()
     }
 
@@ -81,6 +80,7 @@ export default class ReviewPics extends Component {
             )
         this.setState({
             pageno: activePage-1,
+            loading: true
         }, () =>{
             this.pagingfun()
         }
