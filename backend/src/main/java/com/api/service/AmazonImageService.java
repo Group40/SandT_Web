@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.api.model.UploadPhoto;
 import com.api.payload.response.MessageResponse;
+import com.api.repository.PhotoAlbumRepository;
 import com.api.repository.UploadPhotoRepository;
 import com.api.service.exception.FileConversionException;
 import com.api.util.ImageFileUtils;
@@ -26,10 +27,10 @@ public class AmazonImageService extends AmazonClientService{
     @Autowired
     private UploadPhotoRepository uploadPhotoRepository;
 /*
-    public List<UploadPhoto> insertphoto(List<MultipartFile> photos,String email,String title,String details){
+    public MessageResponse insertphoto(List<MultipartFile> photos,String email,String name,String title,String details){
         List<UploadPhoto> uploadPhotos = new ArrayList<UploadPhoto>();
-        photos.forEach(photo -> uploadPhotos.add(UploadPhotoToAmazon(photo,email,title,details)));
-        return uploadPhotos;
+        photos.forEach(photo -> uploadPhotos.add(MultiUploadPhotoToAmazon(photo,email,name,title,details)));
+        return new MessageResponse("Your image has been successfully uploaded");
     }*/
 
     public MessageResponse UploadPhotoToAmazon(MultipartFile multipartFile, String email, String name, String title, String details) {
@@ -83,6 +84,33 @@ public class AmazonImageService extends AmazonClientService{
         .withCannedAcl(CannedAccessControlList.PublicRead));
 
     }
+/*
+    public UploadPhoto MultiUploadPhotoToAmazon(MultipartFile multipartFile, String email, String name, String title, String details) {
+
+        List<String> validExtensions = Arrays.asList("jpeg", "jpg", "png");
+
+        String extensions = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
+        if(!validExtensions.contains(extensions)){
+            //add warning msg
+            //throw new InvalidPhotoExtensionException(validExtensions);
+            return null;
+        }
+        else{
+            String url =uploadMultipartFile(multipartFile);
+
+            UploadPhoto uploadPhoto =new UploadPhoto();
+
+            uploadPhoto.setPhotourl(url);
+            uploadPhoto.setOwnerEmail(email);
+            uploadPhoto.setOwnername(name);
+            uploadPhoto.setPicTitle(title);
+            uploadPhoto.setPicDetails(details);
+            uploadPhoto.setReview(0);
+            uploadPhotoRepository.insert(uploadPhoto);
+
+            return uploadPhotoRepository.insert(uploadPhoto);
+        }
+    }*/
 /*
     //ToDo
     public void imageDelete(UploadPhoto uploadPhoto){

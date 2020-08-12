@@ -1,38 +1,48 @@
 package com.api.resource;
 
-import com.api.model.EventRequest;
-import com.api.model.PhotoAlbum;
-//import com.api.service.GalleryService;
+import com.amazonaws.services.applicationdiscovery.model.ResourceNotFoundException;
 import com.api.model.UploadPhoto;
 import com.api.repository.PhotoAlbumRepository;
+import com.api.repository.PhotoDataFindRepository;
+import com.api.repository.PhotoReviewRepository;
 import com.api.repository.UploadPhotoRepository;
 import com.api.security.service.PicDetailsImpl;
+import com.api.security.service.PicdataFindUsers;
 import com.api.service.GalleryService;
-import com.github.gustavovitor.maker.resource.MongoResourceMaker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 
 @RestController
 public class GalleryController  {
-    @Autowired private UploadPhotoRepository repository;
+    @Autowired private UploadPhotoRepository uploadPhotoRepository;
+
+    @Autowired private PhotoAlbumRepository photoAlbumRepository;
+
+    @Autowired private PhotoDataFindRepository photoDataFindRepository;
 
     @Autowired private GalleryService galleryService;
 
+    @Autowired private PhotoReviewRepository photoReviewRepository;
 
 
+/*
     @CrossOrigin(origins = "http://localhost:3000")
 
     @GetMapping("/getAllpics")
     public List<UploadPhoto> getAllPics(){
-        return repository.findTop3ByOrderByCreatedDesc();
-    }
-    @GetMapping("/getMypics/{email}")
-    public List<UploadPhoto> getMyPics(@PathVariable String email){
-        return repository.findByownerEmail(email);
+        return uploadPhotoRepository.findTop3ByOrderByCreatedDesc();
     }
 
+    @GetMapping("/getMypics/{email}")
+    public List<UploadPhoto> getMyPics(@PathVariable String email){
+        return uploadPhotoRepository.findByownerEmail(email);
+    }
+*/
 
     @GetMapping("/getMypicslist/{email}")
     public List<UploadPhoto> getMyPicslist(
@@ -43,5 +53,51 @@ public class GalleryController  {
         return galleryService.getMyPicspage2(email,pageNo,pageSize,sortBy);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/viewGallery")
+    public List<PicDetailsImpl> viewGallery(
+           // @PathVariable String search,
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "3") Integer pageSize,
+            @RequestParam(defaultValue = "uploadPhotoId") String sortBy) {
+        return (galleryService.viewPicslistpage(pageNo,pageSize,sortBy));
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/reviewPics")
+    public List<UploadPhoto> reviewPics(
+            // @PathVariable String search,
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "5") Integer pageSize,
+            @RequestParam(defaultValue = "uploadPhotoId") String sortBy) {
+        return (galleryService.reviewPics(pageNo,pageSize,sortBy));
+    }
+
+
+
+    @GetMapping("/serchPic/{search}")
+    public List<PicDetailsImpl> serchPic(
+            @PathVariable String search,
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "3") Integer pageSize,
+            @RequestParam(defaultValue = "uploadPhotoId") String sortBy) {
+        return galleryService.searchPicslistpage(search,pageNo,pageSize,sortBy);
+    }
+
+    @PostMapping("/viewPicsdata")
+    public List<PicdataFindUsers> viewPicsdata(
+            @RequestPart(value = "url") String url){
+
+        return photoDataFindRepository.findByphotourl(url);
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PutMapping("/picreviewed/{id}")
+    public String reviewdPic(@PathVariable String id) throws ResourceNotFoundException {
+        UploadPhoto uploadPhoto = uploadPhotoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Can't Find image"));
+        uploadPhoto.setReview(1);
+        uploadPhotoRepository.save(uploadPhoto);
+        return "Done";
+    }
+
 }
-//extends MongoResourceMaker<GalleryService, PhotoAlbum,String,PhotoAlbum>

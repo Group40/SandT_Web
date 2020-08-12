@@ -12,6 +12,10 @@ import java.util.Map;
 public interface PhotoAlbumRepository extends PagingAndSortingRepository<UploadPhoto, String> {
    //List<PicDetailsImpl> findByownerEmail(String ownerEmail, Pageable paging);
     List<UploadPhoto> findByownerEmail(String ownerEmail, Pageable paging);
+    List<PicDetailsImpl> findByreview(int review, Pageable paging);
+    List<UploadPhoto> findByPicTitleIsLikeAllIgnoreCase(String picTitle, Pageable paging);
+    List<PicDetailsImpl> findByreviewAndPicTitleIsLikeAllIgnoreCase(int review,String picTitle, Pageable paging);
+
    // List<Map<String,Object>> findByownerEmail(String ownerEmail, Pageable paging);
 
 
