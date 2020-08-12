@@ -38,10 +38,10 @@ class AdminNav extends Component {
                 <NavLink href="/">User Management</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/">Astrography Management</NavLink>
+                <NavLink href="/admin/reviewpics">Astrography Management</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/">Institute of Astronomy</NavLink>
+                <NavLink href="/admin/uploadpic">Institute of Astronomy(Upload pic)</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="/">S & T Publications</NavLink>
