@@ -6,7 +6,6 @@ import AdminNav from "../../../Components/AdminNav.component";
 import Logo from "../../../Images/logo.jpg";
 
 export default class addEvent extends Component {
-   
     
     constructor(props) {
         super(props);
@@ -183,12 +182,12 @@ export default class addEvent extends Component {
                                             </FormGroup>
                                         </Col>
                                     </Row>
-           
+
                                     <FormGroup>
                                         <Label for="description">Description</Label>
                                         <Input type="textarea" name="description" id="description" onChange={this.onChange}/>
                                     </FormGroup>
-                                    
+
                                     <Row xs="12" sm="12">
                                         <center>
                                             { this.state.loading ?
