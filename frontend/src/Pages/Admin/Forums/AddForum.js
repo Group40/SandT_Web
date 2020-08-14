@@ -16,7 +16,7 @@ export default class AddForum extends Component {
             titleError: "",
             dateError: "",
             startDateError: "",
-            startTimeErrot: ""
+            startTimeError: ""
         }
     }
 

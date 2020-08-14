@@ -6,7 +6,6 @@ import AdminNav from "../../../Components/AdminNav.component";
 import Logo from "../../../Images/logo.jpg";
 
 export default class addEvent extends Component {
-   
     
     constructor(props) {
         super(props);

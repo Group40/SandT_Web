@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import com.api.model.Forum;
 import com.api.repository.ForumRepository;
+import com.api.security.jwt.JwtUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.var;
+
 @CrossOrigin(origins = "http://localhost:3000")
 
 @RestController
@@ -28,31 +31,31 @@ public class ForumController {
     @Autowired
     private ForumRepository repository;
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/addForum")
-    public String addForum(@Valid @RequestBody Forum forum) {
+     @CrossOrigin(origins = "http://localhost:3000")
+     @PostMapping("/addForum")
+     public String addForum(@Valid @RequestBody Forum forum) {
         logger.debug(forum);
         repository.save(forum);
         return "added a forum";
-    }
+     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/getForums")
-    public List<Forum> getAllForums() {
+     @CrossOrigin(origins = "http://localhost:3000")
+     @GetMapping("/getForums")
+     public List<Forum> getAllForums() {
         return repository.findAll();
-   }
+     }
 
-   @CrossOrigin(origins = "http://localhost:3000")
-   @DeleteMapping("/deleteForum/{id}")
-   public String deleteForum(@PathVariable String id) {
+     @CrossOrigin(origins = "http://localhost:3000")
+     @DeleteMapping("/deleteForum/{id}")
+     public String deleteForum(@PathVariable String id) {
         repository.deleteById(id);
         return "Deleted forum: " + id;
-   }
+     }
 
-   @GetMapping("/findByStartDate")
-   public String findByStartDate() {
+     @GetMapping("/findByStartDate")
+     public String findByStartDate() {
         repository.findByStartDate();
         return "Today\' forums";
-   }
+     }
 
 }
