@@ -1,14 +1,13 @@
 import React from 'react'
-import {  Item, Label,Segment,Header } from 'semantic-ui-react'
+import {Item, Label, Segment, Header} from 'semantic-ui-react'
 import { Table,Row,Col } from 'reactstrap';
 
-
 const ItemExampleDivided = props => (
-  
+
   <Item.Group divided>
   
     <Item>
-      <Item.Image src={props.url} />
+      <Item.Image src={props.url}/>
       
       <Item.Content>
         <Item.Header as='a'><Header as='h2'>{props.title}</Header></Item.Header>

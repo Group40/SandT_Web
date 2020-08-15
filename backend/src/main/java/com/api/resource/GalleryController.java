@@ -43,7 +43,7 @@ public class GalleryController  {
         return uploadPhotoRepository.findByownerEmail(email);
     }
 */
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/getMypicslist/{email}")
     public List<UploadPhoto> getMyPicslist(
             @PathVariable String email,
@@ -73,8 +73,6 @@ public class GalleryController  {
         return (galleryService.reviewPics(pageNo,pageSize,sortBy));
     }
 
-
-
     @GetMapping("/serchPic/{search}")
     public List<PicDetailsImpl> serchPic(
             @PathVariable String search,
@@ -82,6 +80,16 @@ public class GalleryController  {
             @RequestParam(defaultValue = "3") Integer pageSize,
             @RequestParam(defaultValue = "uploadPhotoId") String sortBy) {
         return galleryService.searchPicslistpage(search,pageNo,pageSize,sortBy);
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/adminSerchPic/{search}")
+    public List<UploadPhoto> adminSerchPic(
+            @PathVariable String search,
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "5") Integer pageSize,
+            @RequestParam(defaultValue = "uploadPhotoId") String sortBy) {
+        return galleryService.adminSearchPicslistpage(search,pageNo,pageSize,sortBy);
     }
 
     @PostMapping("/viewPicsdata")
@@ -92,12 +100,38 @@ public class GalleryController  {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/editMyPic/{id}")
+    public Optional<UploadPhoto> editMyPic(
+            @PathVariable String id){
+        return photoDataFindRepository.findById(id);
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/picreviewed/{id}")
     public String reviewdPic(@PathVariable String id) throws ResourceNotFoundException {
         UploadPhoto uploadPhoto = uploadPhotoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Can't Find image"));
         uploadPhoto.setReview(1);
         uploadPhotoRepository.save(uploadPhoto);
         return "Done";
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PutMapping("/picunreviewed/{id}")
+    public String unreviewdPic(@PathVariable String id) throws ResourceNotFoundException {
+        UploadPhoto uploadPhoto = uploadPhotoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Can't Find image"));
+        uploadPhoto.setReview(0);
+        uploadPhotoRepository.save(uploadPhoto);
+        return "Done";
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/adminview")
+    public List<UploadPhoto> adminGallery(
+            // @PathVariable String search,
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "5") Integer pageSize,
+            @RequestParam(defaultValue = "uploadPhotoId") String sortBy) {
+        return (galleryService.adminViewGallery(pageNo,pageSize,sortBy));
     }
 
 }

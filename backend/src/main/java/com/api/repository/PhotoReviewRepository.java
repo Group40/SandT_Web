@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface PhotoReviewRepository extends PagingAndSortingRepository<UploadPhoto,String> {
     List<UploadPhoto> findByreview(int review, Pageable paging);
-    List<UploadPhoto> findByuploadPhotoId(String id);
+    //List<UploadPhoto> findByruploadPhotoId(String id);
+    List<UploadPhoto> findByreviewAndPicTitleIsLikeAllIgnoreCase(int review,String picTitle, Pageable paging);
 }

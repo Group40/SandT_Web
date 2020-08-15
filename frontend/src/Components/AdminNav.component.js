@@ -16,14 +16,14 @@ class AdminNav extends Component {
   }
 
   toggleNavbar = e => {
-    this.setState({ collapsed: !this.state.collapsed });   
+    this.setState({ collapsed: !this.state.collapsed });
   };
   render(){
   return (
     <React.Fragment>
       <Navbar color="info" light>
         <NavbarBrand href="/admin/dashboard" className="mr-auto">S & T Admin Dashboard</NavbarBrand>
-        {(this.props.isAuthenticated === true && this.props.erole === '3') ? 
+        {(this.props.isAuthenticated === true && this.props.erole === '3') ?
         <React.Fragment>
           <Fragment>Hi {this.props.username}!</Fragment>
           <Fragment>
@@ -37,7 +37,7 @@ class AdminNav extends Component {
         <NavbarToggler color="dark" onClick={this.toggleNavbar} className="mr-2" />
         <Collapse isOpen={!this.state.collapsed} navbar>
           <Nav navbar>
-            {(this.props.isAuthenticated === true && this.props.erole === '3') ? 
+            {(this.props.isAuthenticated === true && this.props.erole === '3') ?
             <React.Fragment>
               <NavItem>
                 <NavLink href="/admin/eventmanagement">Event Management</NavLink>
@@ -47,6 +47,9 @@ class AdminNav extends Component {
               </NavItem>
               <NavItem>
                 <NavLink href="/admin/reviewpics">Astrography Management</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/admin/adminpics">My Gallery</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="/admin/uploadpic">Institute of Astronomy(Upload pic)</NavLink>
@@ -65,13 +68,13 @@ class AdminNav extends Component {
                 <NavLink href="/admin/notifications">Notifications</NavLink>
               </NavItem>
               </React.Fragment>
-                : 
+                :
                 <NavItem>
                 <NavLink href="/login">Login as an admin</NavLink>
               </NavItem>
-            } 
+            }
           </Nav>
-        </Collapse>  
+        </Collapse>
       </Navbar>
       </React.Fragment>
   );

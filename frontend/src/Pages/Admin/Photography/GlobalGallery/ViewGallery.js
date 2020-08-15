@@ -1,10 +1,11 @@
 import React, { Component  } from 'react'
 import _ from 'lodash'
 import axios from "axios";
-import AdminNav from "../../../Components/AdminNav.component";
-import LoadingScreen from "./Review/LoadingPic"
+import AdminNav from "../../../../Components/AdminNav.component";
+import LoadingScreen from "../Review/LoadingPic"
 import { Container,Button,Divider,Message,Pagination, Item, Label,Segment,Header,Search, Grid } from 'semantic-ui-react'
 import { Table,Row,Col, ModalFooter,Modal, ModalHeader, ModalBody } from 'reactstrap';
+import ZoomPic from "./ZoomPic";
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
@@ -27,7 +28,9 @@ export default class ViewGallery extends Component {
             picid:"",
             value:"",
             isSearchLoading:false,
-            title2:"sun",
+            title:"sun",
+            picurl:"",
+            zoompic:false,
         }
     }
 
@@ -75,7 +78,7 @@ export default class ViewGallery extends Component {
         } 
     }
     
-    Submit = async(param, e) => {
+    Submit = async() => {
         this.setState({ isUnreviewing: true });
         this.toggle()
         await axios.put("http://localhost:8080/picunreviewed/"+this.state.picid)
@@ -116,19 +119,25 @@ export default class ViewGallery extends Component {
           picid: e,
         });
     };
-    source = _.times(1, () => ({
-        title: "Moon",
-      }))
+
+    zoomtoggle = (parm,e) => {
+        this.setState({
+            zoompic: !this.state.zoompic,
+            picurl: e,
+        });
+    };
 
     handleSearchChange = (e, { value }) => {
         this.setState({ isSearchLoading: true, value })
         setTimeout(() => {
-            const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-            const isMatch = (result) => re.test(result.title)
+            //const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
+            //const isMatch = (result) => re.test(result.title)
 
           this.setState({
             isSearchLoading: false,
-            results: _.filter(this.source, isMatch),
+                  activePage:1,
+                  totalPage:1,
+            //results: _.filter(this.source, isMatch),
           },
             () =>{
                 this.pagingfun()
@@ -222,6 +231,19 @@ export default class ViewGallery extends Component {
                     </div>
                 </Modal>
             : null }
+
+            { this.state.zoompic ?
+                    <Modal isOpen={this.state.zoompic} toggle={this.zoomtoggle}>
+                        <ModalBody>
+                            <ZoomPic url={this.state.picurl} />
+                        </ModalBody>
+                        <div >
+                            <ModalFooter>
+                                <Button color="blue" onClick={this.zoomtoggle} >Close</Button>
+                            </ModalFooter>
+                        </div>
+                    </Modal>
+                    : null }
             <AdminNav/>
             <Container style={{ margin: 20 }}>
                 <div className="right">
@@ -232,9 +254,9 @@ export default class ViewGallery extends Component {
                                 onSearchChange={_.debounce(this.handleSearchChange, 500, {
                                     leading: true,
                                 })}
-                                results={results}
                                 onResultSelect={this.handleResultSelect}
                                 value={value}
+                                showNoResults={false}
                             />
                         </Grid.Column>
                     </Grid>
@@ -252,7 +274,7 @@ export default class ViewGallery extends Component {
                             {this.renderIcon(index,pic.picTitle)}
                             <Item.Group divided>
                                 <Item>
-                                    <Item.Image src={pic.photourl} />
+                                    <Item.Image src={pic.photourl} onClick={() => this.zoomtoggle(index, pic.photourl)} />
                                     <Item.Content>
                                         <Item.Header as='a'><Header as='h2'>{pic.picTitle}</Header></Item.Header>
                                         <Item.Meta>
@@ -285,21 +307,29 @@ export default class ViewGallery extends Component {
                                         <Item.Description> 
                                             <Header as='h5' attached='top'>Description</Header>
                                             <Segment attached>
-                                                {pic.picDetail}    
+                                                {pic.picDetails}
                                             </Segment>
                                         </Item.Description>
                                     </Item.Content>
                                 </Item>
                             </Item.Group>
 
-                                    <Button 
-                                        color="grey" 
-                                        style={{float: 'right'}} 
-                                        onClick={() => this.renderIcon(index, pic.uploadPhotoId)}
+                                    <Button
+                                        color="red"
+                                        style={{float: 'right'}}
+                                        onClick={() => this.toggle(index, pic.uploadPhotoId)}
                                         disabled={this.state.isUnreviewing}
                                         loading={this.state.isUnreviewing}
                                         >
                                         {this.state.isUnreviewing ?   "Unreview" : "Unreview"}
+                                    </Button>
+
+                                    <Button
+                                        color="blue"
+                                        style={{float: 'right'}}
+                                        onClick={() => this.zoomtoggle(index, pic.photourl)}
+                                    >
+                                        View Pic
                                     </Button>
                                     
                                     <Divider hidden />

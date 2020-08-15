@@ -52,9 +52,21 @@ public class GalleryService  {
         return list;
     }
 
+    public List<UploadPhoto> adminSearchPicslistpage(String search,Integer pageno, Integer pagesize, String sortBy){
+
+        var list = photoReviewRepository.findByreviewAndPicTitleIsLikeAllIgnoreCase(1,search,(PageRequest.of(pageno,pagesize, Sort.by(sortBy).descending())));
+        return list;
+    }
+
     public List<UploadPhoto> reviewPics(Integer pageno, Integer pagesize, String sortBy){
 
         var list = photoReviewRepository.findByreview(0,(PageRequest.of(pageno,pagesize, Sort.by(sortBy).descending())));
+        return list;
+    }
+
+    public List<UploadPhoto> adminViewGallery(Integer pageno, Integer pagesize, String sortBy){
+
+        var list = photoReviewRepository.findByreview(1,(PageRequest.of(pageno,pagesize, Sort.by(sortBy).descending())));
         return list;
     }
 

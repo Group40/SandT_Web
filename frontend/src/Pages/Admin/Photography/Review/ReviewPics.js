@@ -2,9 +2,10 @@ import React, { Component  } from 'react'
 import axios from "axios";
 import AdminNav from "../../../../Components/AdminNav.component";
 import LoadingScreen from "./LoadingPic"
-import PicCard from "./Card";
 import PopUpButton from './Button'
-import { Container,Button,Divider,Message,Pagination } from 'semantic-ui-react'
+import { Container,Button,Divider,Message,Pagination,Item, Label, Segment, Header } from 'semantic-ui-react'
+import {Col, Modal, ModalBody, ModalFooter, Row, Table} from "reactstrap";
+import ZoomPic from "../GlobalGallery/ZoomPic";
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
@@ -23,6 +24,8 @@ export default class ReviewPics extends Component {
             isConfirming: false,
             issubmitting:false,
             reachMaxPage:false,
+            picurl:"",
+            zoompic:false,
         }
        
     }
@@ -87,6 +90,13 @@ export default class ReviewPics extends Component {
         )
     }
 
+    zoomtoggle = (parm,e) => {
+        this.setState({
+            zoompic: !this.state.zoompic,
+            picurl: e,
+        });
+    };
+
     render(){
         const {
             activePage,
@@ -123,29 +133,76 @@ export default class ReviewPics extends Component {
                 </React.Fragment>
             )
         }
-
         return(
             
-            <React.Fragment> 
+            <React.Fragment>
+                { this.state.zoompic ?
+                    <Modal isOpen={this.state.zoompic} toggle={this.zoomtoggle}>
+                        <ModalBody>
+                            <ZoomPic url={this.state.picurl} />
+                        </ModalBody>
+                        <div >
+                            <ModalFooter>
+                                <Button color="blue" onClick={this.zoomtoggle} >Close</Button>
+                            </ModalFooter>
+                        </div>
+                    </Modal>
+                    : null }
             <AdminNav/> 
             
             <Container style={{ margin: 20 }}>
                         {this.state.Picurls.map((pic, index) => {
                             return (
                             <React.Fragment key={index}>
-                                    <PicCard 
-                                        title={pic.picTitle}
-                                        url={pic.photourl}
-                                        detail={pic.picDetails}
-                                        name={pic.ownername}
-                                        email={pic.ownerEmail}
-                                        id={"Kandy, Sri lnka"}
-                                        />
+                                <Item.Group divided>
+
+                                    <Item>
+                                        <Item.Image src={pic.photourl}  onClick={() => {this.zoomtoggle(pic.photoid, pic.photourl)}}/>
+
+                                        <Item.Content>
+                                            <Item.Header as='a'><Header as='h2'>{pic.picTitle}</Header></Item.Header>
+                                            <Item.Meta>
+                                                <span className='cinema'>{pic.ownername}</span>
+                                                <Label>{pic.ownerEmail}</Label>
+                                            </Item.Meta>
+                                            <Item.Description>
+                                                <Row>
+                                                    <Col  sm="4">
+                                                        <Table borderless >
+                                                            <tbody>
+                                                            <tr>
+                                                                <td ><Header as='h5'>Date :</Header></td>
+                                                                <td>2015-03-11</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><Header as='h5'>Time :</Header></td>
+                                                                <td>22:22</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><Header as='h5'>Location :</Header></td>
+                                                                <td>{pic.ownerEmail}</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </Table>
+                                                    </Col>
+                                                </Row>
+
+                                            </Item.Description>
+
+                                            <Item.Description>
+                                                <Header as='h5' attached='top'>Description</Header>
+                                                <Segment attached>
+                                                    {pic.picDetails}
+                                                </Segment></Item.Description>
+                                        </Item.Content>
+                                    </Item>
+                                </Item.Group>
+
                                     <PopUpButton name={"Delete"} color="red"/>
                                     
                                     <Button 
                                         color="blue" 
-                                        style={{float: 'right'}} 
+                                        style={{float: 'right'}}
                                         onClick={() => this.Submit(index, pic.uploadPhotoId)}
                                         disabled={this.state.isConfirming}
                                         loading={this.state.isConfirming}
