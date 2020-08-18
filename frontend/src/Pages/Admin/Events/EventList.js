@@ -5,7 +5,9 @@ import AdminNav from "../../../Components/AdminNav.component";
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt, faStar, faMapMarkerAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
-export default class EventList extends Component {
+import { connect } from 'react-redux';
+
+class EventList extends Component {
 
     constructor(props) {
         super(props)
@@ -44,14 +46,18 @@ export default class EventList extends Component {
                     <div style={{ marginTop: "20px" }}>
                         <Table>
                             <tbody>
-                        {this.state.EventList.map(function(event, index) {
+                        {this.state.EventList.map((event, index) => {
                             return (
                                 <React.Fragment key={index}>
                                     <tr>
                                         <td><FontAwesomeIcon icon={faStar}/> {event.name}</td>
                                         <td><FontAwesomeIcon icon={faCalendarAlt}/> {event.date}</td>
                                         <td><FontAwesomeIcon icon={faMapMarkerAlt}/> {event.venue}</td>
-                                        <td><FontAwesomeIcon icon={faEdit}/> <Link to={"/admin/editevent/"+event.id}>Edit/Delete</Link></td>    
+                                        {(this.props.erole === '3')?
+                                        <td><FontAwesomeIcon icon={faEdit}/> <Link to={"/admin/editevent/"+event.id}>Edit/Delete</Link></td>
+                                        :
+                                        <td><FontAwesomeIcon icon={faEdit}/> <Link to={"/crew/editevent/"+event.id}>Edit/Delete</Link></td>
+                                        }       
                                     </tr>
                                 </React.Fragment>
                             );
@@ -65,3 +71,11 @@ export default class EventList extends Component {
         )  
     }
 }
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated,
+    erole: state.auth.erole,
+    username: state.auth.username
+});
+  
+export default connect(mapStateToProps,null)(EventList);

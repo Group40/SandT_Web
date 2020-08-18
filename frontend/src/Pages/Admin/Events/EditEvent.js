@@ -213,7 +213,7 @@ class EditEvent extends Component {
                                     <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
                                     
                                         <h4>S & T Group</h4>
-                                        Add a new event
+                                        Edit a event
                                 
                                 </div>
                             </div>
@@ -221,6 +221,7 @@ class EditEvent extends Component {
 
                         <Col  xs="12" sm="7">
                             <div className="center">
+                                {(this.props.erole === '3')?
                                 <Row>
                                     <Col xs="6" sm="6">
                                         <Button outline color="info" href={"/admin/requestlist/"+this.props.match.params.id} block>Request List</Button>
@@ -229,6 +230,16 @@ class EditEvent extends Component {
                                         <Button outline color="info" href={"/admin/confirmedlist/"+this.props.match.params.id} block>Confirmed List</Button>
                                     </Col>
                                 </Row>
+                                :
+                                <Row>
+                                    <Col xs="6" sm="6">
+                                        <Button outline color="info" href={"/crew/requestlist/"+this.props.match.params.id} block>Request List</Button>
+                                    </Col>
+                                    <Col xs="6" sm="6">
+                                        <Button outline color="info" href={"/crew/confirmedlist/"+this.props.match.params.id} block>Confirmed List</Button>
+                                    </Col>
+                                </Row>
+                                }
                                 <Form id="form" onSubmit={this.onSubmit}>
                                     <Row>
                                         <Col xs="12" sm="8">

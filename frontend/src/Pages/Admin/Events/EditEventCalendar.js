@@ -186,7 +186,7 @@ export default class EditEventCalendar extends Component {
                                     <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
                                     
                                         <h4>S & T Group</h4>
-                                        Add a new event
+                                        Edit event
                                 
                                 </div>
                             </div>
@@ -194,6 +194,8 @@ export default class EditEventCalendar extends Component {
 
                         <Col  xs="12" sm="7">
                             <div className="center">
+                                {(this.props.erole === '3') 
+                                ?
                                 <Row>
                                     <Col xs="6" sm="6">
                                         <Button outline color="info" href={"/admin/requestlist/"+this.props.id} block>Request List</Button>
@@ -202,6 +204,16 @@ export default class EditEventCalendar extends Component {
                                         <Button outline color="info" href={"/admin/confirmedlist/"+this.props.id} block>Confirmed List</Button>
                                     </Col>
                                 </Row>
+                                :
+                                <Row>
+                                    <Col xs="6" sm="6">
+                                        <Button outline color="info" href={"/crew/requestlist/"+this.props.id} block>Request List</Button>
+                                    </Col>
+                                    <Col xs="6" sm="6">
+                                        <Button outline color="info" href={"/crew/confirmedlist/"+this.props.id} block>Confirmed List</Button>
+                                    </Col>
+                                </Row>
+                                }
                                 <Form id="form" onSubmit={this.onSubmit}>
                                     <Row>
                                         <Col xs="12" sm="8">

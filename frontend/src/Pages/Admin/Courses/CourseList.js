@@ -77,7 +77,7 @@ export default class CourseList extends Component {
                     <div style={{ marginTop: "20px" }}>
                         <Table>
                             <tbody>
-                        {this.state.CourseList.map(function(course, index) {
+                        {this.state.CourseList.map((course, index) => {
                             if(filterName === ""){
                                 return (
                                     <React.Fragment key={index}>
@@ -86,7 +86,12 @@ export default class CourseList extends Component {
                                             <td><FontAwesomeIcon icon={faCalendarAlt}/> From age {course.ageGroupMin} to {course.ageGroupMin}</td>
                                             <td><FontAwesomeIcon icon={faMapMarkerAlt}/> {course.location}</td>
                                             <td><FontAwesomeIcon icon={faDollarSign}/> {course.price}</td>
+                                            {(this.props.erole === '3') 
+                                            ?
                                             <td><FontAwesomeIcon icon={faEdit}/> <Link to={"/admin/editcourse/"+course.id}>Edit/Delete</Link></td>    
+                                            :
+                                            <td><FontAwesomeIcon icon={faEdit}/> <Link to={"/crew/editcourse/"+course.id}>Edit/Delete</Link></td>    
+                                            }
                                         </tr>
                                     </React.Fragment>
                                 );
