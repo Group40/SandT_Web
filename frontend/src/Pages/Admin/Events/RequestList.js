@@ -5,6 +5,8 @@ import AdminNav from "../../../Components/AdminNav.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faUsers, faAddressBook, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
+const backendURI = require("../../../BackEndURI");
+
 export default class RequestList extends Component {
    
     
@@ -19,7 +21,7 @@ export default class RequestList extends Component {
     }
 
     componentDidMount = async () => {
-        await axios.get("http://localhost:8080/getEventRequestsByEventId/"+this.props.match.params.id)
+        await axios.get(backendURI.url+"/getEventRequestsByEventId/"+this.props.match.params.id)
         .then(res => {
             this.setState({ 
                 RequestList: res.data,
@@ -35,7 +37,7 @@ export default class RequestList extends Component {
     };
     
     delete = async () => {
-        await axios.delete("http://localhost:8080/deleteEvent/"+this.props.match.params.id)
+        await axios.delete(backendURI.url+"/deleteEvent/"+this.props.match.params.id)
         .then(res => {
             this.props.history.goBack();
         }) 

@@ -3,6 +3,8 @@ import axios from "axios";
 import { Spinner, Modal, ModalBody, ModalHeader, Button } from "reactstrap";
 import AdminNav from "../../../Components/AdminNav.component";
 
+const backendURI = require("../../../BackEndURI");
+
 export default class RejectRequest extends Component {
 
     constructor(props) {
@@ -28,7 +30,7 @@ export default class RejectRequest extends Component {
     }
 
     delete = async () => {
-        await axios.delete("http://localhost:8080/deleteEventRequest/"+this.props.match.params.id)
+        await axios.delete(backendURI.url+"/deleteEventRequest/"+this.props.match.params.id)
         .then(res => {
             this.setState({
                 loading: false
@@ -48,7 +50,7 @@ export default class RejectRequest extends Component {
             available : parseInt(this.state.available)-parseInt(this.state.heads)
         };
         console.log(obj);
-        axios.post("http://localhost:8080/updateEvent", obj)
+        axios.post(backendURI.url+"/updateEvent", obj)
             .then((res) => {
                 this.delete();
             })       
@@ -71,7 +73,7 @@ export default class RejectRequest extends Component {
                 email : this.state.email,
                 heads : this.state.heads
             };
-            axios.post("http://localhost:8080/addConfirmedEventRequest", obj)
+            axios.post(backendURI.url+"/addConfirmedEventRequest", obj)
                 .then((res) => {
                     this.updateEvent();
                 })   
@@ -79,7 +81,7 @@ export default class RejectRequest extends Component {
     }
 
     getEventAvailable = async (eventid) => {
-        await axios.get("http://localhost:8080/findAllEvents/"+eventid)
+        await axios.get(backendURI.url+"/findAllEvents/"+eventid)
         .then(res => {
             this.setState({
                 Eid: res.data.id,
@@ -95,7 +97,7 @@ export default class RejectRequest extends Component {
     }
 
     componentDidMount = async () => {
-        await axios.get("http://localhost:8080/getEventRequests/"+this.props.match.params.id)
+        await axios.get(backendURI.url+"/getEventRequests/"+this.props.match.params.id)
         .then(res => {
             this.setState({
                 eventId : res.data.eventId,

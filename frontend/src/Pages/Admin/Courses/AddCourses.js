@@ -5,6 +5,8 @@ import AdminNav from "../../../Components/AdminNav.component";
 import Logo from "../../../Images/logo.jpg";
 import { connect } from 'react-redux';
 
+const backendURI = require("../../../BackEndURI");
+
 class addCourse extends Component {
       
     constructor(props) {
@@ -127,9 +129,9 @@ class addCourse extends Component {
                 date: localISOTime
             };
             console.log(obj);
-            axios.post("http://localhost:8080/addCourse", obj)
+            axios.post(backendURI.url+"/addCourse", obj)
             .then((res) => {
-                axios.post("http://localhost:8080/addNotification", obj2)
+                axios.post(backendURI.url+"/addNotification", obj2)
                 .then((res) => {
                     console.log("done");
                     this.setState({ alert: 0 });

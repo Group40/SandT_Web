@@ -5,6 +5,8 @@ import AdminNav from "../../Components/AdminNav.component";
 import DatePicker from 'reactstrap-date-picker';
 import { connect } from 'react-redux';
 
+const backendURI = require("../../BackEndURI");
+
 class Notification extends Component {
 
     constructor(props) {
@@ -18,7 +20,7 @@ class Notification extends Component {
     }
 
     componentDidMount = async () => {
-        await axios.get("http://localhost:8080/findAllNotifications")
+        await axios.get(backendURI.url+"/findAllNotifications")
         .then(res => {
             this.setState({ 
                 NotificationList: res.data.reverse(),
@@ -42,9 +44,9 @@ class Notification extends Component {
 
     onDelete(id){
         this.setState({ loading: true });  
-        axios.delete("http://localhost:8080/deleteNotification/"+id)
+        axios.delete(backendURI.url+"/deleteNotification/"+id)
         .then((res) => {
-            axios.get("http://localhost:8080/findAllNotifications")
+            axios.get(backendURI.url+"/findAllNotifications")
             .then(res => {
                 this.setState({ 
                     NotificationList: res.data.reverse(),

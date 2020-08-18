@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt, faStar, faMapMarkerAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { connect } from 'react-redux';
 
+const backendURI = require("../../../BackEndURI");
+
 class EventList extends Component {
 
     constructor(props) {
@@ -18,7 +20,7 @@ class EventList extends Component {
     }
 
     componentDidMount = async () => {
-        await axios.get("http://localhost:8080/findAllEvents")
+        await axios.get(backendURI.url+"/findAllEvents")
         .then(res => {
             this.setState({ 
                 EventList: res.data,

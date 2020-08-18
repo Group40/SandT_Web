@@ -6,7 +6,10 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import AdminNav from "../../../Components/AdminNav.component";
 import EditEventCalendar from "./EditEventCalendar";
+
 var events; 
+
+const backendURI = require("../../../BackEndURI");
 
 export default class Calendar extends Component {
 
@@ -23,7 +26,7 @@ export default class Calendar extends Component {
     }
 
     componentDidMount = async () => {
-        await axios.get("http://localhost:8080/findAllEvents")
+        await axios.get(backendURI.url+"/findAllEvents")
         .then(res => {
             events = res.data.map(event => ({ 
                 id: event.id,

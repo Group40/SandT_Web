@@ -3,6 +3,8 @@ import axios from "axios";
 import { Spinner } from "reactstrap";
 import AdminNav from "../../../Components/AdminNav.component";
 
+const backendURI = require("../../../BackEndURI");
+
 export default class RejectRequest extends Component {
 
     constructor(props) {
@@ -13,7 +15,7 @@ export default class RejectRequest extends Component {
     }
 
     delete = async (eventid) => {
-        await axios.delete("http://localhost:8080/deleteEventRequest/"+this.props.match.params.id)
+        await axios.delete(backendURI.url+"/deleteEventRequest/"+this.props.match.params.id)
         .then(res => {
             this.setState({
                 loading: false
@@ -23,7 +25,7 @@ export default class RejectRequest extends Component {
     }
 
     componentDidMount = async () => {
-        await axios.get("http://localhost:8080/getEventRequests/"+this.props.match.params.id)
+        await axios.get(backendURI.url+"/getEventRequests/"+this.props.match.params.id)
         .then(res => {
             this.delete(res.data.eventId);
         })

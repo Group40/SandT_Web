@@ -5,6 +5,9 @@ import AdminNav from "../../../Components/AdminNav.component";
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt, faStar, faMapMarkerAlt, faEdit, faDollarSign } from "@fortawesome/free-solid-svg-icons";
+
+const backendURI = require("../../../BackEndURI");
+
 export default class CourseList extends Component {
 
     constructor(props) {
@@ -17,7 +20,7 @@ export default class CourseList extends Component {
     }
 
     componentDidMount = async () => {
-        await axios.get("http://localhost:8080/findAllCourses")
+        await axios.get(backendURI.url+"/findAllCourses")
         .then(res => {
             this.setState({ 
                 CourseList: res.data,
