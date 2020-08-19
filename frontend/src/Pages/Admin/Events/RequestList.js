@@ -4,10 +4,11 @@ import { Table, Modal, ModalBody, ModalHeader, Container, Spinner, Button } from
 import AdminNav from "../../../Components/AdminNav.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faUsers, faAddressBook, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { connect } from 'react-redux';
 
 const backendURI = require("../../../BackEndURI");
 
-export default class RequestList extends Component {
+class RequestList extends Component {
    
     
     constructor(props) {
@@ -77,16 +78,24 @@ export default class RequestList extends Component {
                         <div style={{ marginTop: "20px" }}>
                             <Table>
                                 <tbody>
-                                    {this.state.RequestList.map(function(request, index) {
+                                    {this.state.RequestList.map((request, index) => {
                                         return (
                                             <React.Fragment key={index}>
                                                 <tr>
                                                     <td><FontAwesomeIcon icon={faUser}/> {request.name}</td>
                                                     <td><FontAwesomeIcon icon={faAddressBook}/> {request.number}</td>
                                                     <td><FontAwesomeIcon icon={faEnvelope}/> {request.email}</td>
-                                                    <td><FontAwesomeIcon icon={faUsers}/> {request.heads}</td>  
+                                                    <td><FontAwesomeIcon icon={faUsers}/> {request.heads}</td> 
+                                                    {(this.props.erole === '3')? 
                                                     <td><Button outline color="success" href={"/admin/confirmrequest/"+request.id} block>Confirm</Button></td>  
+                                                    :
+                                                    <td><Button outline color="success" href={"/crew/confirmrequest/"+request.id} block>Confirm</Button></td>
+                                                    }
+                                                    {(this.props.erole === '3')? 
                                                     <td><Button outline color="danger" href={"/admin/rejectrequest/"+request.id} block>Reject</Button></td>
+                                                    :
+                                                    <td><Button outline color="danger" href={"/crew/rejectrequest/"+request.id} block>Reject</Button></td>
+                                                    }
                                                 </tr>
                                             </React.Fragment>
                                         );
@@ -99,3 +108,11 @@ export default class RequestList extends Component {
         );
     }  
 }
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated,
+    erole: state.auth.erole,
+    username: state.auth.username
+});
+  
+export default connect(mapStateToProps,null)(RequestList);
