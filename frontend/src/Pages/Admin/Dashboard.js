@@ -53,7 +53,11 @@ class Dashboard extends Component {
                                 <div className="center">
                                     <Button  outline color="info" type="submit" block href="https://www.facebook.com/sandtgrouplk/">S & T Group Facebook Page</Button>
                                     <Button  outline color="info" type="submit" block href="https://www.facebook.com/ioasl/">Institute of Astronomy Facebook Page</Button> 
-                                    <Button  outline color="info" type="submit" block href="https://www.facebook.com/Tharulowa/">Tharulowa Facebook Page</Button> 
+                                    <Button  outline color="info" type="submit" block href="https://www.facebook.com/Tharulowa/">Tharulowa Facebook Page</Button>
+                                    <Button  outline color="info" type="submit" block href="https://www.facebook.com/groups/305576446447568">S & T Facebook Group</Button> 
+                                    <Button  outline color="info" type="submit" block href="https://www.facebook.com/AstrophiliaByIOAS">Astrophilia Facebook Page</Button> 
+                                    <Button  outline color="primary" type="submit" block href="https://www.linkedin.com/company/institute-of-astronomy-sri-lanka/">Institute of Astronomy LinkedIn Profile</Button>
+                                    <Button  outline color="danger" type="submit" block href="https://www.youtube.com/channel/UCItfy-Tr7weE8d0Zq9eNdEg">Tharulowa Digital Youtube Channel</Button>  
                                 </div>
                             </Col>
                         </Row> 

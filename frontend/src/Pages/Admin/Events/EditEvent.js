@@ -212,11 +212,11 @@ class EditEvent extends Component {
                         <Col xs="12" sm="5">
                             <div>
                                 <div className="center">
-                                    <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
-                                    
-                                        <h4>S & T Group</h4>
-                                        Edit a event
-                                
+                                    <center>
+                                        <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
+                                        <h2 style={{color: "#39a7d2"}}>S & T Group</h2>
+                                        Edit Event
+                                    </center>
                                 </div>
                             </div>
                         </Col>
