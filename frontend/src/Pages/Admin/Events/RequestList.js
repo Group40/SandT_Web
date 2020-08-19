@@ -45,21 +45,34 @@ class RequestList extends Component {
         });
     };
     
+    reject = async (request) => {
+        this.setState({
+            loading: true,
+        });
+        await axios.delete(backendURI.url+"/deleteEventRequest/"+request.id)
+        .then(res => {
+            axios.get(backendURI.url+"/getEventRequestsByEventId/"+this.props.match.params.id)
+            .then(res => {
+                this.setState({ 
+                    RequestList: res.data,
+                    loading: false
+                })
+            }) 
+        })    
+    }
+
     delete = async (request) => {
         await axios.delete(backendURI.url+"/deleteEventRequest/"+request.id)
         .then(res => {
-            this.setState({
-                loading: false,
-                modal: false
-            });
-        }) 
-        await axios.get(backendURI.url+"/getEventRequestsByEventId/"+this.props.match.params.id)
-        .then(res => {
-            this.setState({ 
-                RequestList: res.data,
-                loading: false
-            })
-        }) 
+            axios.get(backendURI.url+"/getEventRequestsByEventId/"+this.props.match.params.id)
+            .then(res => {
+                this.setState({ 
+                    modal: false,
+                    RequestList: res.data,
+                    loading: false
+                })
+            }) 
+        })   
     }
 
     updateEvent = async (request) => {
@@ -166,11 +179,14 @@ class RequestList extends Component {
                                                     :
                                                     <td><Button outline color="success" href={"/crew/confirmrequest/"+request.id} block>Confirm</Button></td>
                                                     } */}
-                                                    {(this.props.erole === '3')? 
+                                                    <td><Button outline color="danger" block onClick={() => this.reject(request)}>
+                                                            Reject
+                                                        </Button></td>
+                                                    {/* {(this.props.erole === '3')? 
                                                     <td><Button outline color="danger" href={"/admin/rejectrequest/"+request.id} block>Reject</Button></td>
                                                     :
                                                     <td><Button outline color="danger" href={"/crew/rejectrequest/"+request.id} block>Reject</Button></td>
-                                                    }
+                                                    } */}
                                                 </tr>
                                             </React.Fragment>
                                         );
