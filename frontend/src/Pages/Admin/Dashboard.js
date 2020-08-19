@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import AdminNav from "../../Components/AdminNav.component";
 import { connect } from 'react-redux';
-import { Container, Navbar, NavbarBrand, Spinner, Row, Col, Alert, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Container, Navbar, NavbarBrand, Row, Col, Button } from 'reactstrap';
 import Logo from "../../Images/logo.jpg";
 import CarouselSlide from "./Carousel";
 
