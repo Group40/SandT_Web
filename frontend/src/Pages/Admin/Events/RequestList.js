@@ -17,7 +17,15 @@ class RequestList extends Component {
         this.state = {
             RequestList: [],
             loading: true,
-            modal: false
+            modal: false,
+            available : "",
+            Eid: "",
+            Ename: "",
+            Edate: "",
+            Evenue: "",
+            Edescription: "",
+            EheadCount: "",
+            currentRequest: null
         };
     }
 
@@ -37,18 +45,81 @@ class RequestList extends Component {
         });
     };
     
-    delete = async () => {
-        await axios.delete(backendURI.url+"/deleteEvent/"+this.props.match.params.id)
+    delete = async (request) => {
+        await axios.delete(backendURI.url+"/deleteEventRequest/"+request.id)
         .then(res => {
-            this.props.history.goBack();
+            this.setState({
+                loading: false,
+                modal: false
+            });
+        }) 
+        await axios.get(backendURI.url+"/getEventRequestsByEventId/"+this.props.match.params.id)
+        .then(res => {
+            this.setState({ 
+                RequestList: res.data,
+                loading: false
+            })
+        }) 
+    }
+
+    updateEvent = async (request) => {
+        const obj = {
+            id: this.state.Eid,
+            name: this.state.Ename,
+            date: this.state.Edate,
+            venue: this.state.Evenue,
+            description: this.state.Edescription,
+            headCount: this.state.EheadCount,
+            available : parseInt(this.state.available)-parseInt(request.heads)
+        };
+        console.log(obj);
+        axios.post(backendURI.url+"/updateEvent", obj)
+            .then((res) => {
+                this.delete(request);
+            })       
+    }
+
+    addToConfirmed = async (request) => {
+        if(parseInt(request.heads) > parseInt(this.state.available)){
+            this.setState({
+                loading : false,
+                modal : true,
+                currentRequest : request
+            });
+        }
+        else{
+            const obj = {
+                eventId : request.eventId,
+                eventName : request.eventName,
+                eventDate : request.eventDate,
+                name : request.name,
+                number : request.number,
+                email : request.email,
+                heads : request.heads
+            };
+            axios.post(backendURI.url+"/addConfirmedEventRequest", obj)
+                .then((res) => {
+                    this.updateEvent(request);
+                })   
+        }
+    }
+
+    confirm(request){
+        axios.get(backendURI.url+"/findAllEvents/"+request.eventId)
+        .then(res => {
+            this.setState({
+                Eid: res.data.id,
+                Ename: res.data.name,
+                Edate: res.data.date,
+                Evenue: res.data.venue,
+                Edescription: res.data.description,
+                EheadCount: res.data.headCount,
+                available : res.data.available,
+                loading : true,
+            });
+            this.addToConfirmed(request);
         }) 
     };
-
-    confirm = e => {
-        console.log("confirm");
-    };
-    
-  
 
     render(){
         if (this.state.loading){
@@ -65,14 +136,15 @@ class RequestList extends Component {
             <React.Fragment>
                 { this.state.modal ?
                     <Modal isOpen={this.state.modal} toggle={this.toggle}>
-                        <ModalHeader toggle={this.toggle}>Are you sure?</ModalHeader>
+                        <ModalHeader toggle={this.toggle}>Request was automatically rejected through the system</ModalHeader>
                         <ModalBody>
                         <div className="container">
-                            <Button outline color="info" onClick={this.delete} block>Yes</Button>
+                            Because you don't have enough available seats for the request
+                            <Button outline color="info" onClick={() => this.delete(this.state.currentRequest)} block>I uderstand</Button>
                         </div>
                         </ModalBody>
                     </Modal>
-                : null }
+                : null } 
                 <AdminNav/>
                 <Container>
                         <div style={{ marginTop: "20px" }}>
@@ -86,11 +158,14 @@ class RequestList extends Component {
                                                     <td><FontAwesomeIcon icon={faAddressBook}/> {request.number}</td>
                                                     <td><FontAwesomeIcon icon={faEnvelope}/> {request.email}</td>
                                                     <td><FontAwesomeIcon icon={faUsers}/> {request.heads}</td> 
-                                                    {(this.props.erole === '3')? 
+                                                    <td><Button outline color="success" block onClick={() => this.confirm(request)}>
+                                                            Confirm
+                                                        </Button></td>
+                                                    {/* {(this.props.erole === '3')? 
                                                     <td><Button outline color="success" href={"/admin/confirmrequest/"+request.id} block>Confirm</Button></td>  
                                                     :
                                                     <td><Button outline color="success" href={"/crew/confirmrequest/"+request.id} block>Confirm</Button></td>
-                                                    }
+                                                    } */}
                                                     {(this.props.erole === '3')? 
                                                     <td><Button outline color="danger" href={"/admin/rejectrequest/"+request.id} block>Reject</Button></td>
                                                     :
