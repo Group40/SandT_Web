@@ -2,9 +2,8 @@ import React, { Component  } from 'react'
 import axios from "axios";
 import AdminNav from "../../../../Components/AdminNav.component";
 import LoadingScreen from "./LoadingPic"
-import PopUpButton from './Button'
-import { Container,Button,Divider,Message,Pagination,Item, Label, Segment, Header } from 'semantic-ui-react'
-import {Col, Modal, ModalBody, ModalFooter, Row, Table} from "reactstrap";
+import {Container, Button, Divider, Message, Pagination, Item, Label, Segment, Header, Image} from 'semantic-ui-react'
+import {Col, Modal, ModalBody, ModalFooter, ModalHeader, Row, Table} from "reactstrap";
 import ZoomPic from "../GlobalGallery/ZoomPic";
 
 const styleLink = document.createElement("link");
@@ -22,10 +21,13 @@ export default class ReviewPics extends Component {
             pageno:0,
             loading: true,
             isConfirming: false,
+            isdeletinging: false,
+            deletetoggl:false,
             issubmitting:false,
             reachMaxPage:false,
             picurl:"",
             zoompic:false,
+            deletepicid:"",
         }
        
     }
@@ -63,6 +65,19 @@ export default class ReviewPics extends Component {
         } 
     }
 
+    deletepicdata(url,id){
+        this.setState({
+            deletepicid:id,
+            picurl: url,
+        }, () => this.deletetoggle())
+    }
+
+    deletetoggle = () => {
+        this.setState({
+            deletetoggl:!this.state.deletetoggl,
+        });
+    };
+
     Submit = async(param, e) => {
         this.setState({ isConfirming: true });
         await axios.put("http://localhost:8080/picreviewed/"+e)
@@ -72,6 +87,19 @@ export default class ReviewPics extends Component {
               });
             this.pagingfun()
         })
+    }
+
+    delete = async() => {
+        this.setState({
+            isdeletinging: true,
+            deletetoggl:!this.state.deletetoggl,});
+        await axios.delete("http://localhost:8080/deletepic/"+this.state.deletepicid)
+            .then(res => {
+                this.setState({
+                    isdeletinging: false,
+                });
+                this.pagingfun()
+            })
     }
 
     pagingfun(){
@@ -148,6 +176,28 @@ export default class ReviewPics extends Component {
                         </div>
                     </Modal>
                     : null }
+
+                { this.state.deletetoggl ?
+                    <Modal isOpen={this.state.deletetoggl} toggle={this.deletetoggle}>
+                        <ModalHeader>
+                            <Header>Are you really want delete this image</Header>
+                        </ModalHeader>
+                        <ModalBody>
+                            <div className="center2">
+                                <Col xs="6" sm="6">
+                                    <Image src={this.state.picurl} size='medium'  />
+                                </Col>
+                            </div>
+                        </ModalBody>
+                        <div >
+                            <ModalFooter>
+                                <Button color="blue" onClick={this.deletetoggle} >No</Button>
+                                <Button color="red" onClick={this.delete} >Yes</Button>
+                            </ModalFooter>
+                        </div>
+                    </Modal>
+                    : null }
+
             <AdminNav/> 
             
             <Container style={{ margin: 20 }}>
@@ -198,8 +248,17 @@ export default class ReviewPics extends Component {
                                     </Item>
                                 </Item.Group>
 
-                                    <PopUpButton name={"Delete"} color="red"/>
-                                    
+                                    <Button
+                                        color="red"
+                                        style={{float: 'right'}}
+                                        onClick={() => this.deletepicdata(pic.photourl, pic.uploadPhotoId)}
+                                        disabled={this.state.isdeletinging}
+                                        loading={this.state.isdeletinging}
+                                    >
+                                        {this.state.isdeletinging ?   "Deleting" : "Delete"}
+                                    </Button>
+
+
                                     <Button 
                                         color="blue" 
                                         style={{float: 'right'}}
