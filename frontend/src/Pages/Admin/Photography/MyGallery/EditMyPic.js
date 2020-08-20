@@ -24,6 +24,10 @@ styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
 document.head.appendChild(styleLink);
 
+
+var tzoffset = (new Date()).getTimezoneOffset() * 60000;
+var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+
 class EditMyPic extends Component {
     constructor(props) {
         super(props);
@@ -140,14 +144,27 @@ class EditMyPic extends Component {
 
     }
     delete = async() => {
+        const obj3 = {
+            authorName: this.props.username+" "+this.props.lname,
+            authorType: this.props.erole,
+            authorMail: this.props.email,
+            name: this.state.pictitle,
+            nameType: "deleted the photo",
+            date: localISOTime,
+        };
         this.setState({
             isdeletinging: true,
             deletepic:!this.state.deletepic,});
         await axios.delete("http://localhost:8080/deletepic/"+this.state.picid)
             .then(res => {
-                this.setState({
-                    isdeletinging: false,
-                });
+                axios.post("http://localhost:8080/addNotification", obj3)
+                    .then(
+                        res => {
+                            this.setState({
+                                isdeletinging: false,
+                            });
+                        }
+                    )
                 window.location=`/admin/adminpics`;
             })
     }
@@ -300,7 +317,10 @@ class EditMyPic extends Component {
 }
 
 const mapStateToProps = state => ({
-    email: state.auth.email
+    erole: state.auth.erole,
+    username: state.auth.username,
+    lname : state.auth.lname,
+    email : state.auth.email,
 });
 
 export default connect(mapStateToProps,null)(EditMyPic);

@@ -5,13 +5,17 @@ import LoadingScreen from "./LoadingPic"
 import {Container, Button, Divider, Message, Pagination, Item, Label, Segment, Header, Image} from 'semantic-ui-react'
 import {Col, Modal, ModalBody, ModalFooter, ModalHeader, Row, Table} from "reactstrap";
 import ZoomPic from "../GlobalGallery/ZoomPic";
+import {connect} from "react-redux";
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
 document.head.appendChild(styleLink);
 
-export default class ReviewPics extends Component {
+var tzoffset = (new Date()).getTimezoneOffset() * 60000;
+var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+
+class ReviewPics extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -28,6 +32,7 @@ export default class ReviewPics extends Component {
             picurl:"",
             zoompic:false,
             deletepicid:"",
+            pictitle:"",
         }
        
     }
@@ -65,10 +70,11 @@ export default class ReviewPics extends Component {
         } 
     }
 
-    deletepicdata(url,id){
+    deletepicdata(url,id,title){
         this.setState({
             deletepicid:id,
             picurl: url,
+            pictitle:title,
         }, () => this.deletetoggle())
     }
 
@@ -78,27 +84,58 @@ export default class ReviewPics extends Component {
         });
     };
 
-    Submit = async(param, e) => {
-        this.setState({ isConfirming: true });
+    Submit = async(param, e,title) => {
+        this.setState({
+            isConfirming: true,
+            pictitle:title,
+        });
+        const obj3 = {
+            authorName: this.props.username+" "+this.props.lname,
+            authorType: this.props.erole,
+            authorMail: this.props.email,
+            name: this.state.pictitle,
+            nameType: "confirm a photo",
+            date: localISOTime,
+        };
+
         await axios.put("http://localhost:8080/picreviewed/"+e)
         .then(res => {
-            this.setState({
-                isConfirming: false,
-              });
-            this.pagingfun()
+            axios.post("http://localhost:8080/addNotification", obj3)
+                .then(res =>{
+                    this.setState({
+                        isConfirming: false,
+                    });
+                    this.pagingfun()
+                })
+
         })
     }
 
     delete = async() => {
         this.setState({
             isdeletinging: true,
-            deletetoggl:!this.state.deletetoggl,});
+            deletetoggl:!this.state.deletetoggl,
+
+        });
+        const obj3 = {
+            authorName: this.props.username+" "+this.props.lname,
+            authorType: this.props.erole,
+            authorMail: this.props.email,
+            name: this.state.pictitle,
+            nameType: "deleted a photo",
+            date: localISOTime,
+        };
+
         await axios.delete("http://localhost:8080/deletepic/"+this.state.deletepicid)
             .then(res => {
-                this.setState({
-                    isdeletinging: false,
-                });
-                this.pagingfun()
+                axios.post("http://localhost:8080/addNotification", obj3)
+                    .then(res =>{
+                        this.setState({
+                            isdeletinging: false,
+                        });
+                        this.pagingfun()
+                    })
+
             })
     }
 
@@ -251,7 +288,7 @@ export default class ReviewPics extends Component {
                                     <Button
                                         color="red"
                                         style={{float: 'right'}}
-                                        onClick={() => this.deletepicdata(pic.photourl, pic.uploadPhotoId)}
+                                        onClick={() => this.deletepicdata(pic.photourl, pic.uploadPhotoId,pic.picTitle)}
                                         disabled={this.state.isdeletinging}
                                         loading={this.state.isdeletinging}
                                     >
@@ -262,7 +299,7 @@ export default class ReviewPics extends Component {
                                     <Button 
                                         color="blue" 
                                         style={{float: 'right'}}
-                                        onClick={() => this.Submit(index, pic.uploadPhotoId)}
+                                        onClick={() => this.Submit(index, pic.uploadPhotoId,pic.picTitle)}
                                         disabled={this.state.isConfirming}
                                         loading={this.state.isConfirming}
                                         >
@@ -293,3 +330,11 @@ export default class ReviewPics extends Component {
         )      
     }
 }
+const mapStateToProps = state => ({
+    erole: state.auth.erole,
+    username: state.auth.username,
+    lname : state.auth.lname,
+    email : state.auth.email,
+});
+
+export default connect(mapStateToProps,null)(ReviewPics);
