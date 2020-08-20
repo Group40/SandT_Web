@@ -13,7 +13,7 @@ import EventManagement from "./Events/EventManagement";
 import ReviewPics from "./Photography/Review/ReviewPics"
 import MyPics from "./Photography/MyGallery/MyPics";
 import EditMyPic from "./Photography/MyGallery/EditMyPic";
-//import UploadPics from "./Photography/UploadPic"
+import UploadPics from "./Photography/Upload/UploadPic"
 import ViewGallery from "./Photography/GlobalGallery/ViewGallery"
 import CourseManagement from "./Courses/CourseManagement";
 import AddCourses from "./Courses/AddCourses";
@@ -39,6 +39,7 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/reviewpics" component={ReviewPics}/>
                 <Route path="/admin/uploadpic" component={ViewGallery}/>
                 <Route path="/admin/adminpics" component={MyPics}/>
+                <Route path="/admin/uploadnewpic" component={UploadPics}/>
                 <Route path="/admin/editmypic/:id" component={EditMyPic}/>
                 <Route path="/admin/coursemanagement" component={CourseManagement}/>
                 <Route path="/admin/addcourses" component={AddCourses}/>

@@ -156,7 +156,7 @@ class MyPics extends Component {
                                             <td ><Header as='h5'>Date : 2012.30.3</Header></td>
                                         </tr>
                                         <tr>
-                                            <td><Header as='h5'>Time : 12:10</Header>{this.props.username}</td>
+                                            <td><Header as='h5'>Time : 12:10</Header></td>
                                         </tr>
                                         <tr>
                                             <td><Header as='h5'>Location : Kandy,Sri Lanka</Header></td>

@@ -6,13 +6,18 @@ import LoadingScreen from "../Review/LoadingPic"
 import { Container,Button,Divider,Message,Pagination, Item, Label,Segment,Header,Search, Grid } from 'semantic-ui-react'
 import { Table,Row,Col, ModalFooter,Modal, ModalHeader, ModalBody } from 'reactstrap';
 import ZoomPic from "./ZoomPic";
+import {connect} from "react-redux";
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
 document.head.appendChild(styleLink);
 
-export default class ViewGallery extends Component {
+
+var tzoffset = (new Date()).getTimezoneOffset() * 60000;
+var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+
+class ViewGallery extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -31,6 +36,7 @@ export default class ViewGallery extends Component {
             title:"sun",
             picurl:"",
             zoompic:false,
+            pictitle:"",
         }
     }
 
@@ -79,14 +85,26 @@ export default class ViewGallery extends Component {
     }
     
     Submit = async() => {
+        const obj3 = {
+            authorName: this.props.username+" "+this.props.lname,
+            authorType: this.props.erole,
+            authorMail: this.props.email,
+            name: this.state.pictitle,
+            nameType: "unreviewd the photo",
+            date: localISOTime,
+        };
         this.setState({ isUnreviewing: true });
         this.toggle()
         await axios.put("http://localhost:8080/picunreviewed/"+this.state.picid)
         .then(res => {
-            this.setState({
-                isUnreviewing: false,
-              });
-            this.pagingfun()
+            axios.post("http://localhost:8080/addNotification", obj3)
+                .then(res => {
+                    this.setState({
+                        isUnreviewing: false,
+                    });
+                    this.pagingfun()
+                })
+
         })
     }
 
@@ -113,10 +131,11 @@ export default class ViewGallery extends Component {
         )
     }
 
-    toggle = (parm,e) => {
+    toggle = (parm,e,title) => {
         this.setState({
           modal: !this.state.modal,
           picid: e,
+            pictitle:title,
         });
     };
 
@@ -317,7 +336,7 @@ export default class ViewGallery extends Component {
                                     <Button
                                         color="red"
                                         style={{float: 'right'}}
-                                        onClick={() => this.toggle(index, pic.uploadPhotoId)}
+                                        onClick={() => this.toggle(index, pic.uploadPhotoId,pic.picTitle)}
                                         disabled={this.state.isUnreviewing}
                                         loading={this.state.isUnreviewing}
                                         >
@@ -356,3 +375,12 @@ export default class ViewGallery extends Component {
         )      
     }
 }
+
+const mapStateToProps = state => ({
+    erole: state.auth.erole,
+    username: state.auth.username,
+    lname : state.auth.lname,
+    email : state.auth.email,
+});
+
+export default connect(mapStateToProps,null)(ViewGallery);
