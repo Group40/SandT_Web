@@ -3,9 +3,11 @@ import axios from "axios";
 import { Table, Spinner, Container, Row, Form, FormGroup, Button, Col } from "reactstrap";
 import AdminNav from "../../Components/AdminNav.component";
 import DatePicker from 'reactstrap-date-picker';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-export default class Notification extends Component {
+const backendURI = require("../../BackEndURI");
+
+class Notification extends Component {
 
     constructor(props) {
         super(props)
@@ -18,7 +20,7 @@ export default class Notification extends Component {
     }
 
     componentDidMount = async () => {
-        await axios.get("http://localhost:8080/findAllNotifications")
+        await axios.get(backendURI.url+"/findAllNotifications")
         .then(res => {
             this.setState({ 
                 NotificationList: res.data.reverse(),
@@ -38,6 +40,20 @@ export default class Notification extends Component {
             filterDate: ""
         });
         document.getElementById("form").reset();
+    };
+
+    onDelete(id){
+        this.setState({ loading: true });  
+        axios.delete(backendURI.url+"/deleteNotification/"+id)
+        .then((res) => {
+            axios.get(backendURI.url+"/findAllNotifications")
+            .then(res => {
+                this.setState({ 
+                    NotificationList: res.data.reverse(),
+                    loading: false
+                })
+            })   
+        }) 
     };
 
     onSubmit(e) {
@@ -87,7 +103,7 @@ export default class Notification extends Component {
                         <div style={{ marginTop: "20px" }}>
                             <Table>
                                 <tbody>
-                                {this.state.NotificationList.map(function(notification, index) {
+                                {this.state.NotificationList.map((notification, index) => {
                                     if(filterDate === ""){
                                         return (
                                             <React.Fragment key={index}> 
@@ -161,9 +177,13 @@ export default class Notification extends Component {
                                                         } 
                                                     </td> 
                                                     <td>
-                                                        <Link to={"/admin/notifications/"+notification.id}>
-                                                            <Button outline color="danger" block>Delete</Button>
-                                                        </Link>
+                                                        {(this.props.erole === '3') 
+                                                        ?
+                                                        <Button outline color="danger" block onClick={() => this.onDelete(notification.id)}>
+                                                            Delete
+                                                        </Button>
+                                                        :
+                                                        null}
                                                     </td>
                                                 </tr>     
                                             </React.Fragment>
@@ -243,9 +263,13 @@ export default class Notification extends Component {
                                                             }
                                                         </td>
                                                         <td>
-                                                            <Link to={"/admin/notifications/"+notification.id}>
-                                                                <Button outline color="danger" block>Delete</Button>
-                                                            </Link>
+                                                        {(this.props.erole === '3') 
+                                                        ?
+                                                        <Button outline color="danger" block onClick={() => this.onDelete(notification.id)}>
+                                                            Delete
+                                                        </Button>
+                                                        :
+                                                        null}
                                                         </td>   
                                                     </tr>       
                                                 </React.Fragment>
@@ -265,3 +289,11 @@ export default class Notification extends Component {
         )  
     }
 }
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated,
+    erole: state.auth.erole,
+    username: state.auth.username
+  });
+  
+  export default connect(mapStateToProps,null)(Notification);

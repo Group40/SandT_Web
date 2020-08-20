@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 var tzoffset = (new Date()).getTimezoneOffset() * 60000; 
 var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
 
+const backendURI = require("../../../BackEndURI");
+
 class addEvent extends Component {  
     
     constructor(props) {
@@ -123,9 +125,9 @@ class addEvent extends Component {
                 eventDate: document.getElementById("datepicker").value.substring(0, 10)
             };
             console.log(obj);
-            axios.post("http://localhost:8080/addEvent", obj)
+            axios.post(backendURI.url+"/addEvent", obj)
                 .then((res) => {
-                    axios.post("http://localhost:8080/addNotification", obj2)
+                    axios.post(backendURI.url+"/addNotification", obj2)
                     .then((res) => {
                         console.log("done");
                         this.setState({ alert: 0 });
@@ -167,11 +169,11 @@ class addEvent extends Component {
                         <Col xs="12" sm="5">
                             <div>
                                 <div className="center">
-                                    <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
-                                    
-                                        <h4>S & T Group</h4>
-                                        Add a new event
-                                
+                                    <center>
+                                        <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
+                                        <h2 style={{color: "#39a7d2"}}>S & T Group</h2>
+                                        Add a new Event
+                                    </center>
                                 </div>
                             </div>
                         </Col>

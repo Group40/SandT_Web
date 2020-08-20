@@ -5,7 +5,11 @@ import AdminNav from "../../../Components/AdminNav.component";
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt, faStar, faMapMarkerAlt, faEdit, faDollarSign } from "@fortawesome/free-solid-svg-icons";
-export default class CourseList extends Component {
+import { connect } from 'react-redux';
+
+const backendURI = require("../../../BackEndURI");
+
+class CourseList extends Component {
 
     constructor(props) {
         super(props)
@@ -17,7 +21,7 @@ export default class CourseList extends Component {
     }
 
     componentDidMount = async () => {
-        await axios.get("http://localhost:8080/findAllCourses")
+        await axios.get(backendURI.url+"/findAllCourses")
         .then(res => {
             this.setState({ 
                 CourseList: res.data,
@@ -77,7 +81,7 @@ export default class CourseList extends Component {
                     <div style={{ marginTop: "20px" }}>
                         <Table>
                             <tbody>
-                        {this.state.CourseList.map(function(course, index) {
+                        {this.state.CourseList.map((course, index) => {
                             if(filterName === ""){
                                 return (
                                     <React.Fragment key={index}>
@@ -86,7 +90,11 @@ export default class CourseList extends Component {
                                             <td><FontAwesomeIcon icon={faCalendarAlt}/> From age {course.ageGroupMin} to {course.ageGroupMin}</td>
                                             <td><FontAwesomeIcon icon={faMapMarkerAlt}/> {course.location}</td>
                                             <td><FontAwesomeIcon icon={faDollarSign}/> {course.price}</td>
+                                            {(this.props.erole === '3')?
                                             <td><FontAwesomeIcon icon={faEdit}/> <Link to={"/admin/editcourse/"+course.id}>Edit/Delete</Link></td>    
+                                            :
+                                            <td><FontAwesomeIcon icon={faEdit}/> <Link to={"/crew/editcourse/"+course.id}>Edit/Delete</Link></td>    
+                                            }
                                         </tr>
                                     </React.Fragment>
                                 );
@@ -100,7 +108,12 @@ export default class CourseList extends Component {
                                                 <td><FontAwesomeIcon icon={faCalendarAlt}/> From age {course.ageGroupMin} to {course.ageGroupMin}</td>
                                                 <td><FontAwesomeIcon icon={faMapMarkerAlt}/> {course.location}</td>
                                                 <td><FontAwesomeIcon icon={faDollarSign}/> {course.price}</td>
+                                                {(this.props.erole === '3') 
+                                                ?
                                                 <td><FontAwesomeIcon icon={faEdit}/> <Link to={"/admin/editcourse/"+course.id}>Edit/Delete</Link></td>    
+                                                :
+                                                <td><FontAwesomeIcon icon={faEdit}/> <Link to={"/crew/editcourse/"+course.id}>Edit/Delete</Link></td>    
+                                                }   
                                             </tr>
                                         </React.Fragment>
                                     );
@@ -119,3 +132,11 @@ export default class CourseList extends Component {
         )  
     }
 }
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated,
+    erole: state.auth.erole,
+    username: state.auth.username
+});
+  
+export default connect(mapStateToProps,null)(CourseList);

@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 var tzoffset = (new Date()).getTimezoneOffset() * 60000; 
 var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
 
+const backendURI = require("../../../BackEndURI");
+
 class EditEvent extends Component {  
     
     constructor(props) {
@@ -31,7 +33,7 @@ class EditEvent extends Component {
     }
 
     componentDidMount = async () => {
-        await axios.get("http://localhost:8080/findAllEvents/"+this.props.match.params.id)
+        await axios.get(backendURI.url+"/findAllEvents/"+this.props.match.params.id)
         .then(res => {
             this.setState({ 
                 dateValue: res.data.date,
@@ -76,13 +78,13 @@ class EditEvent extends Component {
             date: localISOTime,
             eventDate: document.getElementById("datepicker").value.substring(0, 10)
         };
-        await axios.delete("http://localhost:8080/deleteEventRequestByEventId/"+this.props.match.params.id)
+        await axios.delete(backendURI.url+"/deleteEventRequestByEventId/"+this.props.match.params.id)
         .then(res => {
-            axios.delete("http://localhost:8080/deleteConfirmedEventRequestByEventId/"+this.props.match.params.id)
+            axios.delete(backendURI.url+"/deleteConfirmedEventRequestByEventId/"+this.props.match.params.id)
             .then(res => {
-                axios.delete("http://localhost:8080/deleteEvent/"+this.props.match.params.id)
+                axios.delete(backendURI.url+"/deleteEvent/"+this.props.match.params.id)
                 .then(res => {
-                    axios.post("http://localhost:8080/addNotification", obj3)
+                    axios.post(backendURI.url+"/addNotification", obj3)
                     .then(res => {
                         this.props.history.goBack();
                     })
@@ -157,9 +159,9 @@ class EditEvent extends Component {
                 eventDate: document.getElementById("datepicker").value.substring(0, 10)
             };
             console.log(obj);
-            axios.post("http://localhost:8080/updateEvent", obj)
+            axios.post(backendURI.url+"/updateEvent", obj)
                 .then((res) => {
-                    axios.post("http://localhost:8080/addNotification", obj2)
+                    axios.post(backendURI.url+"/addNotification", obj2)
                     console.log("done");
                     this.setState({ alert: 0 });
                     window.location.reload(false);
@@ -210,17 +212,18 @@ class EditEvent extends Component {
                         <Col xs="12" sm="5">
                             <div>
                                 <div className="center">
-                                    <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
-                                    
-                                        <h4>S & T Group</h4>
-                                        Add a new event
-                                
+                                    <center>
+                                        <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
+                                        <h2 style={{color: "#39a7d2"}}>S & T Group</h2>
+                                        Edit Event
+                                    </center>
                                 </div>
                             </div>
                         </Col>
 
                         <Col  xs="12" sm="7">
                             <div className="center">
+                                {(this.props.erole === '3')?
                                 <Row>
                                     <Col xs="6" sm="6">
                                         <Button outline color="info" href={"/admin/requestlist/"+this.props.match.params.id} block>Request List</Button>
@@ -229,6 +232,16 @@ class EditEvent extends Component {
                                         <Button outline color="info" href={"/admin/confirmedlist/"+this.props.match.params.id} block>Confirmed List</Button>
                                     </Col>
                                 </Row>
+                                :
+                                <Row>
+                                    <Col xs="6" sm="6">
+                                        <Button outline color="info" href={"/crew/requestlist/"+this.props.match.params.id} block>Request List</Button>
+                                    </Col>
+                                    <Col xs="6" sm="6">
+                                        <Button outline color="info" href={"/crew/confirmedlist/"+this.props.match.params.id} block>Confirmed List</Button>
+                                    </Col>
+                                </Row>
+                                }
                                 <Form id="form" onSubmit={this.onSubmit}>
                                     <Row>
                                         <Col xs="12" sm="8">

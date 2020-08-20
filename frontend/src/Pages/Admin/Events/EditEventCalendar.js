@@ -5,9 +5,10 @@ import DatePicker from 'reactstrap-date-picker';
 import AdminNav from "../../../Components/AdminNav.component";
 import Logo from "../../../Images/logo.jpg";
 
+const backendURI = require("../../../BackEndURI");
+
 export default class EditEventCalendar extends Component {
    
-    
     constructor(props) {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
@@ -28,7 +29,7 @@ export default class EditEventCalendar extends Component {
     }
 
     componentDidMount = async () => {
-        await axios.get("http://localhost:8080/findAllEvents/"+this.props.id)
+        await axios.get(backendURI.url+"/findAllEvents/"+this.props.id)
         .then(res => {
             this.setState({ 
                 dateValue: res.data.date,
@@ -64,11 +65,11 @@ export default class EditEventCalendar extends Component {
     };
     
     delete = async () => {
-        await axios.delete("http://localhost:8080/deleteEventRequestByEventId/"+this.props.id)
+        await axios.delete(backendURI.url+"/deleteEventRequestByEventId/"+this.props.id)
         .then(res => {
-            axios.delete("http://localhost:8080/deleteConfirmedEventRequestByEventId/"+this.props.id)
+            axios.delete(backendURI.url+"/deleteConfirmedEventRequestByEventId/"+this.props.id)
             .then(res => {
-                axios.delete("http://localhost:8080/deleteEvent/"+this.props.id)
+                axios.delete(backendURI.url+"/deleteEvent/"+this.props.id)
                 .then(res => {
                     window.location.reload(false);
                 }) 
@@ -131,7 +132,7 @@ export default class EditEventCalendar extends Component {
                 available: this.state.headCount
             };
             console.log(obj);
-            axios.post("http://localhost:8080/updateEvent", obj)
+            axios.post(backendURI.url+"/updateEvent", obj)
                 .then((res) => {
                     console.log("done");
                     this.setState({ alert: 0 });
@@ -183,17 +184,19 @@ export default class EditEventCalendar extends Component {
                         <Col xs="12" sm="5">
                             <div>
                                 <div className="center">
-                                    <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
-                                    
-                                        <h4>S & T Group</h4>
-                                        Add a new event
-                                
+                                    <center>
+                                        <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
+                                        <h2 style={{color: "#39a7d2"}}>S & T Group</h2>
+                                        Edit Event
+                                    </center>
                                 </div>
                             </div>
                         </Col>
 
                         <Col  xs="12" sm="7">
                             <div className="center">
+                                {(this.props.erole === '3') 
+                                ?
                                 <Row>
                                     <Col xs="6" sm="6">
                                         <Button outline color="info" href={"/admin/requestlist/"+this.props.id} block>Request List</Button>
@@ -202,6 +205,16 @@ export default class EditEventCalendar extends Component {
                                         <Button outline color="info" href={"/admin/confirmedlist/"+this.props.id} block>Confirmed List</Button>
                                     </Col>
                                 </Row>
+                                :
+                                <Row>
+                                    <Col xs="6" sm="6">
+                                        <Button outline color="info" href={"/crew/requestlist/"+this.props.id} block>Request List</Button>
+                                    </Col>
+                                    <Col xs="6" sm="6">
+                                        <Button outline color="info" href={"/crew/confirmedlist/"+this.props.id} block>Confirmed List</Button>
+                                    </Col>
+                                </Row>
+                                }
                                 <Form id="form" onSubmit={this.onSubmit}>
                                     <Row>
                                         <Col xs="12" sm="8">

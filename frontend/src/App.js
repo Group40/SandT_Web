@@ -5,6 +5,7 @@ import { loadUser} from './Actions/authActions';
 import { connect } from 'react-redux';
 import './App.css';
 import AdminRoutes from "./Pages/Admin/AdminRoutes";
+import CrewRoutes from "./Pages/Admin/CrewRoutes";
 import AdminLogin from "./Pages/Admin/AdminLogin";
 import Dashboard from "./Pages/Admin/Dashboard";
 class App extends Component {
@@ -22,7 +23,12 @@ class App extends Component {
     if(this.props.isAuthenticated === true && this.props.erole === '3') {
       route = <Switch> 
         <Route path="/admin" component={AdminRoutes}/>
-        
+        <Redirect to="/"/>  
+      </Switch>
+    }
+    if(this.props.isAuthenticated === true && this.props.erole === '2') {
+      route = <Switch> 
+        <Route path="/crew" component={CrewRoutes}/>
         <Redirect to="/"/>  
       </Switch>
     }

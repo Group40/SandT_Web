@@ -22,7 +22,12 @@ class AdminNav extends Component {
   return (
     <React.Fragment>
       <Navbar color="info" light>
+        {(this.props.erole === '3') 
+        ?
         <NavbarBrand href="/admin/dashboard" className="mr-auto">S & T Admin Dashboard</NavbarBrand>
+        :
+        <NavbarBrand href="/crew/dashboard" className="mr-auto">S & T Crew Member Dashboard</NavbarBrand>
+        }
         {(this.props.isAuthenticated === true && this.props.erole === '3') ?
         <React.Fragment>
           <Fragment>Hi {this.props.username}!</Fragment>
@@ -33,7 +38,17 @@ class AdminNav extends Component {
           </Fragment>
           <Fragment><Logout/></Fragment>
         </React.Fragment>
-        : null}
+        : 
+        <React.Fragment>
+          <Fragment>Hi {this.props.username}!</Fragment>
+          <Fragment>
+              <NavLink href="/crew/notifications">
+              <FontAwesomeIcon icon={faBell}/>
+              </NavLink>
+          </Fragment>
+          <Fragment><Logout/></Fragment>
+        </React.Fragment>
+        }
         <NavbarToggler color="dark" onClick={this.toggleNavbar} className="mr-2" />
         <Collapse isOpen={!this.state.collapsed} navbar>
           <Nav navbar>
@@ -72,9 +87,36 @@ class AdminNav extends Component {
               </NavItem>
               </React.Fragment>
                 :
+              <React.Fragment>
                 <NavItem>
-                <NavLink href="/login">Login as an admin</NavLink>
-              </NavItem>
+                  <NavLink href="/crew/eventmanagement">Event Management</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink href="/">User Management</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink href="/crew/reviewpics">Astrography Management</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink href="/crew/adminpics">My Gallery</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink href="/crew/uploadpic">Institute of Astronomy(Upload pic)</NavLink>
+                  <NavLink href="/crew/coursemanagement">Institute of Astronomy</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink href="/">S & T Publications</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink href="/">S & T Optics</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink href="/">IOAS Astrophilia</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink href="/crew/notifications">Notifications</NavLink>
+                </NavItem>
+              </React.Fragment>
             }
           </Nav>
         </Collapse>
