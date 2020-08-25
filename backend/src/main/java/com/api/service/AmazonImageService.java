@@ -1,6 +1,7 @@
 package com.api.service;
 
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.api.model.UploadPhoto;
 import com.api.payload.response.MessageResponse;
@@ -33,30 +34,30 @@ public class AmazonImageService extends AmazonClientService{
         return new MessageResponse("Your image has been successfully uploaded");
     }*/
 
-    public MessageResponse UploadPhotoToAmazon(MultipartFile multipartFile, String email, String name, String title, String details) {
+    public MessageResponse UploadPhotoToAmazon(MultipartFile multipartFile, String email, String name, String title, String details,int review) {
 
-        List<String> validExtensions = Arrays.asList("jpeg", "jpg", "png");
+        List<String> validExtensions = Arrays.asList("jpeg","JPEG", "jpg","JPG", "png","PNG");
 
         String extensions = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
         if(!validExtensions.contains(extensions)){
             //add warning msg
             //throw new InvalidPhotoExtensionException(validExtensions);
-            return null;
+            return  new MessageResponse("Error");
         }
         else{
             String url =uploadMultipartFile(multipartFile);
 
             UploadPhoto uploadPhoto =new UploadPhoto();
-
             uploadPhoto.setPhotourl(url);
             uploadPhoto.setOwnerEmail(email);
             uploadPhoto.setOwnername(name);
             uploadPhoto.setPicTitle(title);
             uploadPhoto.setPicDetails(details);
-            uploadPhoto.setReview(0);
+            uploadPhoto.setReview(review);
             uploadPhotoRepository.insert(uploadPhoto);
 
             return new MessageResponse("Your image has been successfully uploaded");
+
         }
     }
 
@@ -111,12 +112,12 @@ public class AmazonImageService extends AmazonClientService{
             return uploadPhotoRepository.insert(uploadPhoto);
         }
     }*/
-/*
-    //ToDo
+
     public void imageDelete(UploadPhoto uploadPhoto){
         String picname =uploadPhoto.getPhotourl().substring(uploadPhoto.getPhotourl().lastIndexOf("/")+1);
+        getClient().deleteObject(new DeleteObjectRequest(getBucketname(),picname));
         uploadPhotoRepository.delete(uploadPhoto);
     }
-*/
+
 
 }

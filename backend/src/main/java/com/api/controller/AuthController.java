@@ -8,12 +8,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import com.api.model.User;
@@ -98,5 +95,70 @@ public class AuthController {
                 userDetails.urole));
 
         //return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/checkadminrole")
+    public ResponseEntity<?> adminRole(@RequestPart(value = "email") String email){
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + email));
+        if(user.getUrole()==3)
+        {
+            return ResponseEntity.ok(new MessageResponse("Admin Member"));
+
+        }
+        else
+        {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Your Not an admin"));
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/checkcrewrole")
+    public ResponseEntity<?> crewRole(@RequestPart(value = "email") String email){
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + email));
+        if(user.getUrole()==2)
+        {
+            return ResponseEntity.ok(new MessageResponse("Crew Member"));
+
+        }
+        else
+        {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Your Not a Crew Member"));
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/checkrole")
+    public ResponseEntity<?> checkRole(
+            @RequestParam String email
+    ){
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + email));
+        if(user.getUrole()==3)
+        {
+            return ResponseEntity.ok(new MessageResponse("Admin Member"));
+
+        }
+        else if(user.getUrole()==2)
+        {
+            return ResponseEntity.ok(new MessageResponse("Crew Member"));
+
+        }
+        else if(user.getUrole()==1)
+        {
+            return ResponseEntity.ok(new MessageResponse("Member"));
+        }
+        else
+        {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Your Not a Member"));
+        }
     }
 }

@@ -8,7 +8,9 @@ import com.api.repository.PhotoReviewRepository;
 import com.api.repository.UploadPhotoRepository;
 import com.api.security.service.PicDetailsImpl;
 import com.api.security.service.PicdataFindUsers;
+import com.api.service.AmazonImageService;
 import com.api.service.GalleryService;
+import com.api.service.ReportCreate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,10 @@ public class GalleryController  {
     @Autowired private GalleryService galleryService;
 
     @Autowired private PhotoReviewRepository photoReviewRepository;
+
+    @Autowired private AmazonImageService amazonImageService;
+
+    @Autowired private ReportCreate reportCreate;
 
 
 /*
@@ -63,6 +69,8 @@ public class GalleryController  {
         return (galleryService.viewPicslistpage(pageNo,pageSize,sortBy));
     }
 
+
+
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/reviewPics")
     public List<UploadPhoto> reviewPics(
@@ -95,15 +103,15 @@ public class GalleryController  {
     @PostMapping("/viewPicsdata")
     public List<PicdataFindUsers> viewPicsdata(
             @RequestPart(value = "url") String url){
-
         return photoDataFindRepository.findByphotourl(url);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/editMyPic/{id}")
     public Optional<UploadPhoto> editMyPic(
-            @PathVariable String id){
-        return photoDataFindRepository.findById(id);
+            @PathVariable String id,
+            @RequestParam(defaultValue = "") String email){
+        return photoDataFindRepository.findByUploadPhotoIdAndOwnerEmail(id,email);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
@@ -132,6 +140,14 @@ public class GalleryController  {
             @RequestParam(defaultValue = "5") Integer pageSize,
             @RequestParam(defaultValue = "uploadPhotoId") String sortBy) {
         return (galleryService.adminViewGallery(pageNo,pageSize,sortBy));
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @DeleteMapping("/deletepic/{id}")
+    public String deletePic(@PathVariable String id) throws ResourceNotFoundException {
+        UploadPhoto uploadPhoto = uploadPhotoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Can't Find image"));
+        amazonImageService.imageDelete(uploadPhoto);
+        return "Done";
     }
 
 }
