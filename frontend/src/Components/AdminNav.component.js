@@ -83,7 +83,7 @@ class AdminNav extends Component {
                 <NavLink href="/">IOAS Astrophilia</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/admin/notifications">Notifications</NavLink>
+                <NavLink href="/admin/notifications">Report Generator</NavLink>
               </NavItem>
               </React.Fragment>
                 :
@@ -114,7 +114,7 @@ class AdminNav extends Component {
                   <NavLink href="/">IOAS Astrophilia</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="/crew/notifications">Notifications</NavLink>
+                  <NavLink href="/crew/notifications">Report Generator</NavLink>
                 </NavItem>
               </React.Fragment>
             }

@@ -151,9 +151,7 @@ class Notification extends Component {
                                                                 notification.nameType +
                                                                 " '" +
                                                                 notification.name +
-                                                                "' (event date : " +
-                                                                notification.eventDate +
-                                                                ") from " +
+                                                                "' from " +
                                                                 notification.authorMail +
                                                                 " on " +
                                                                 notification.date.substring(0, 10) +
@@ -237,9 +235,7 @@ class Notification extends Component {
                                                                     notification.nameType +
                                                                     " '" +
                                                                     notification.name +
-                                                                    "' (event date : " +
-                                                                    notification.eventDate +
-                                                                    ") from " +
+                                                                    "' from " +
                                                                     notification.authorMail +
                                                                     " on " +
                                                                     notification.date.substring(0, 10) +
