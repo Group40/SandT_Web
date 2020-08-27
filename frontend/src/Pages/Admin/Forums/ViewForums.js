@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import AdminNav from "../../../Components/AdminNav.component";
 import { Table } from 'reactstrap';
 import axios from 'axios';
-import firebase from "../../../Firebase";
 var forums;
 
 export default class ViewForums extends Component {
@@ -14,7 +13,7 @@ export default class ViewForums extends Component {
             title: "",
             date: "",
             startDate: "",
-            startTime: "",  
+            startTime: "", 
         }
     }
     
@@ -47,19 +46,31 @@ export default class ViewForums extends Component {
     //     console.log("Added event " + id + " and user " + localStorage.getItem('erole') + " to firebase");
     // }
 
-    //send event id to bakend
-    postEventID(id, e) {
+    //send start forum id to bakend
+    startForum(id, e) {
+    
         e.preventDefault();
-        this.setState({
-            loading: true
-        });
-        axios.post("http://localhost:8080/sendForumID", {
-            id: id
-        }).then((response) => {
+        
+        axios.post("http://localhost:8080/sendForumID/" +id)
+        .then((response) => {
             console.log(response);
         }).catch((error) => {
             console.log(error);
         });
+        this.btn.setAttribute("disabled", "disabled");
+    }
+
+    //send end forum id to backend
+    endForums(id, e) {
+        e.preventDefault();
+        
+        axios.post("http://localhost:8080/endForumID/" +id)
+        .then((response) => {
+            console.log(response);
+        }).catch((error) => {
+            console.log(error);
+        });
+        this.btn.setAttribute("disabled", "disabled");
     }
 
     //delete button
@@ -85,8 +96,8 @@ export default class ViewForums extends Component {
                     <td>{date}</td>
                     <td>{startDate}</td>
                     <td>{startTime}</td>
-                    <td><button onClick={(e) => this.postEventID(id, e)}>Start</button></td>
-                    <td><button onClick={null}>End</button></td>
+                    <td><button onClick={(e) => this.startForum(id, e)} ref={btn => { this.btn = btn; }}>Start</button></td>
+                    <td><button onClick={(e) => this.endForums(id, e)} ref={btn => { this.btn = btn; }}>End</button></td>
                     <td><button onClick={(e) => this.deleteForum(id, e)}>Delete</button></td>
                 </tr>
             )

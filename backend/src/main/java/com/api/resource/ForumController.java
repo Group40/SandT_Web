@@ -1,12 +1,13 @@
 package com.api.resource;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.validation.Valid;
 
+import com.amazonaws.services.glacier.model.ResourceNotFoundException;
 import com.api.model.Forum;
 import com.api.repository.ForumRepository;
-import com.api.security.jwt.JwtUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,44 +19,70 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import lombok.var;
+import com.api.service.ForumService;
 
 @CrossOrigin(origins = "http://localhost:3000")
 
 @RestController
 public class ForumController {
 
-    private static Log logger = LogFactory.getLog(ForumController.class);
-    
-    @Autowired
-    private ForumRepository repository;
+   private static Log logger = LogFactory.getLog(ForumController.class);
 
-     @CrossOrigin(origins = "http://localhost:3000")
-     @PostMapping("/addForum")
-     public String addForum(@Valid @RequestBody Forum forum) {
-        logger.debug(forum);
-        repository.save(forum);
-        return "added a forum";
+   @Autowired
+   private ForumRepository repository;
+
+   @Autowired
+   private ForumService forumService;
+
+   @CrossOrigin(origins = "http://localhost:3000")
+   @PostMapping("/addForum")
+   public String addForum(@Valid @RequestBody Forum forum) {
+      logger.debug(forum);
+      repository.save(forum);
+      return "added a forum";
+   }
+
+   @CrossOrigin(origins = "http://localhost:3000")
+   @GetMapping("/getForums")
+   public List<Forum> getAllForums() {
+      return repository.findAll();
+   }
+
+   @CrossOrigin(origins = "http://localhost:3000")
+   @DeleteMapping("/deleteForum/{id}")
+   public String deleteForum(@PathVariable String id) {
+      repository.deleteById(id);
+      return "Deleted forum: " + id;
+   }
+
+   @GetMapping("/findByStartDate")
+   public String findByStartDate() {
+      repository.findByStartDate();
+      return "Today\' forums";
+   }
+
+   @CrossOrigin(origins = "http://localhost:3000")
+   @PostMapping("/sendForumID/{id}")
+   public String sendID(@PathVariable String id) throws InterruptedException, ExecutionException {
+
+      Forum forum = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Forum not found for this id: " + id));
+      forum.setStatus("1");
+      repository.save(forum);
+
+      forumService.sendForumID(id);
+      return "Added forum: " + id;
      }
 
-     @CrossOrigin(origins = "http://localhost:3000")
-     @GetMapping("/getForums")
-     public List<Forum> getAllForums() {
-        return repository.findAll();
-     }
+   @CrossOrigin(origins = "http://localhost/3000")
+   @PostMapping("endForumID/{id}")
+   public String endID(@PathVariable String id) throws InterruptedException, ExecutionException {
 
-     @CrossOrigin(origins = "http://localhost:3000")
-     @DeleteMapping("/deleteForum/{id}")
-     public String deleteForum(@PathVariable String id) {
-        repository.deleteById(id);
-        return "Deleted forum: " + id;
-     }
+      Forum forum = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Forum not found for this id: " + id));
+      forum.setStatus("2");
+      repository.save(forum);
 
-     @GetMapping("/findByStartDate")
-     public String findByStartDate() {
-        repository.findByStartDate();
-        return "Today\' forums";
-     }
+      forumService.endForumID(id);
+      return "Ended forum: " + id;
+   }
 
 }

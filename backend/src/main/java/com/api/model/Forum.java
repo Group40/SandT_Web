@@ -1,7 +1,9 @@
 package com.api.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.stereotype.Component;
 
+@Component
 @Document(collection = "Forum")
 public class Forum {
 
@@ -11,9 +13,18 @@ public class Forum {
     private String date;
     private String startDate;
     private String startTime;
+    private String status = "0";
 
     public String getId() {
         return id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getStartTime() {
@@ -59,5 +70,6 @@ public class Forum {
     public void setTitle(String title) {
         this.title = title;
     }
+
 
 }
