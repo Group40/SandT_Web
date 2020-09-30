@@ -6,17 +6,21 @@ public class PicdataFindUsers {
     private String ownername;
     private String picTitle;
     private String picDetails;
+    private String uploadPhotoId;
 
-    public PicdataFindUsers(String ownername, String picTitle, String picDetails) {
+
+    public PicdataFindUsers(String ownername, String picTitle, String picDetails,String uploadPhotoId) {
         this.ownername = ownername;
         this.picTitle = picTitle;
         this.picDetails = picDetails;
+        this.uploadPhotoId =uploadPhotoId;
     }
 
     public static PicdataFindUsers build(UploadPhoto uploadPhoto) {
         return new PicdataFindUsers(uploadPhoto.getOwnername(),
                 uploadPhoto.getPicTitle(),
-                uploadPhoto.getPicDetails()
+                uploadPhoto.getPicDetails(),
+                uploadPhoto.getUploadPhotoId()
         );
     }
 
@@ -42,5 +46,13 @@ public class PicdataFindUsers {
 
     public void setPicDetails(String picDetails) {
         this.picDetails = picDetails;
+    }
+
+    public String getUploadPhotoId() {
+        return uploadPhotoId;
+    }
+
+    public void setUploadPhotoId(String uploadPhotoId) {
+        this.uploadPhotoId = uploadPhotoId;
     }
 }

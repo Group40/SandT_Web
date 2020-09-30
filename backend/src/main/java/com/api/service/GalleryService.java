@@ -65,6 +65,12 @@ public class GalleryService  {
         return list;
     }
 
+    public List<PicDetailsImpl> reviewPicsMobile(Integer pageno, Integer pagesize, String sortBy){
+
+        var list = photoAlbumRepository.findByreview(0,(PageRequest.of(pageno,pagesize, Sort.by(sortBy).descending())));
+        return list;
+    }
+
     public List<UploadPhoto> adminViewGallery(Integer pageno, Integer pagesize, String sortBy){
 
         var list = photoReviewRepository.findByreview(1,(PageRequest.of(pageno,pagesize, Sort.by(sortBy).descending())));

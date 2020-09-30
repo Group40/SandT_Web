@@ -7,10 +7,8 @@ import com.api.repository.PhotoDataFindRepository;
 import com.api.repository.PhotoReviewRepository;
 import com.api.repository.UploadPhotoRepository;
 import com.api.security.service.PicDetailsImpl;
-import com.api.security.service.PicdataFindUsers;
 import com.api.service.AmazonImageService;
 import com.api.service.GalleryService;
-import com.api.service.ReportCreate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +31,6 @@ public class GalleryController  {
 
     @Autowired private AmazonImageService amazonImageService;
 
-    @Autowired private ReportCreate reportCreate;
 
 
 /*
@@ -81,6 +78,15 @@ public class GalleryController  {
         return (galleryService.reviewPics(pageNo,pageSize,sortBy));
     }
 
+    @GetMapping("/review/picmobile")
+    public List<PicDetailsImpl> reviewPicsMobile(
+            // @PathVariable String search,
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "5") Integer pageSize,
+            @RequestParam(defaultValue = "uploadPhotoId") String sortBy) {
+        return (galleryService.reviewPicsMobile(pageNo,pageSize,sortBy));
+    }
+
     @GetMapping("/serchPic/{search}")
     public List<PicDetailsImpl> serchPic(
             @PathVariable String search,
@@ -99,11 +105,23 @@ public class GalleryController  {
             @RequestParam(defaultValue = "uploadPhotoId") String sortBy) {
         return galleryService.adminSearchPicslistpage(search,pageNo,pageSize,sortBy);
     }
-
+/*
     @PostMapping("/viewPicsdata")
     public List<PicdataFindUsers> viewPicsdata(
             @RequestPart(value = "url") String url){
         return photoDataFindRepository.findByphotourl(url);
+    }*/
+
+    @PostMapping("/viewPicsdata")
+    public List<UploadPhoto> viewPicsdata(
+            @RequestPart(value = "url") String url){
+        return photoAlbumRepository.findByphotourl(url);
+    }
+
+    @PostMapping("/admin/viewPicsdata")
+    public List<UploadPhoto> adminViewPicsdata(
+            @RequestPart(value = "url") String url){
+        return photoAlbumRepository.findByphotourl(url);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
@@ -146,6 +164,18 @@ public class GalleryController  {
     @DeleteMapping("/deletepic/{id}")
     public String deletePic(@PathVariable String id) throws ResourceNotFoundException {
         UploadPhoto uploadPhoto = uploadPhotoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Can't Find image"));
+        amazonImageService.imageDelete(uploadPhoto);
+        return "Done";
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @DeleteMapping("/deletepicuser/{id}")
+    public String deletePicbyUploader(
+            @PathVariable String id,
+            @RequestParam (defaultValue = "") String email
+           // @RequestParam String email
+    ) throws ResourceNotFoundException {
+        UploadPhoto uploadPhoto = photoDataFindRepository.findByUploadPhotoIdAndOwnerEmail(id,email).orElseThrow(() -> new ResourceNotFoundException("Can't Find image"));
         amazonImageService.imageDelete(uploadPhoto);
         return "Done";
     }
