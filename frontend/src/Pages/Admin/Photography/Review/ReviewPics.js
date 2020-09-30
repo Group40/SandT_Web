@@ -6,6 +6,7 @@ import {Container, Button, Divider, Message, Pagination, Item, Label, Segment, H
 import {Col, Modal, ModalBody, ModalFooter, ModalHeader, Row, Table} from "reactstrap";
 import ZoomPic from "../GlobalGallery/ZoomPic";
 import {connect} from "react-redux";
+import Buttontest from "./Button"
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
@@ -38,7 +39,7 @@ class ReviewPics extends Component {
     }
 
     componentDidMount = async () => {
-        //this.state.pageno = this.state.activePage-1
+        // this.state.pageno = this.state.activePage-1
         await axios.get("http://localhost:8080/reviewPics?pageSize=5&pageNo="+this.state.pageno)
         .then(res => {
             this.setState({ 
@@ -94,12 +95,12 @@ class ReviewPics extends Component {
             authorType: this.props.erole,
             authorMail: this.props.email,
             name: this.state.pictitle,
-            nameType: "confirm a photo",
+            nameType: "confirmed the photo",
             date: localISOTime,
         };
 
         await axios.put("http://localhost:8080/picreviewed/"+e)
-        .then(res => {
+        .then((res) => {
             axios.post("http://localhost:8080/addNotification", obj3)
                 .then(res =>{
                     this.setState({
@@ -122,7 +123,7 @@ class ReviewPics extends Component {
             authorType: this.props.erole,
             authorMail: this.props.email,
             name: this.state.pictitle,
-            nameType: "deleted a photo",
+            nameType: "deleted the photo",
             date: localISOTime,
         };
 
@@ -305,6 +306,14 @@ class ReviewPics extends Component {
                                         >
                                         {this.state.isConfirming ?   "Confirm" : "Confirm"}
                                     </Button>
+
+                                    <Buttontest
+                                        color={"red"}
+                                        color2={"blue"}
+                                        name={"Start"}
+                                        name2={"End"}
+                                        id={"sadsad"}
+                                        />
 
                                     <Divider hidden />
                                     <Divider hidden />
