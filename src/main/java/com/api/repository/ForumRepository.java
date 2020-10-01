@@ -7,6 +7,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 public interface ForumRepository extends MongoRepository<Forum, String> {
-    @Query("{ 'startDateTime': '$timestamp'}")
-	List<Forum> findByStartDate();
+    @Query(value = "{'id': '$0', 'status': '0'}")
+    void deleteById(String id);
+
+    @Query(value = "{ 'status': '1'}", fields = "{'id': 1, 'title': 1, 'status': 1}")
+	List<Forum> findByStatus();
 }
