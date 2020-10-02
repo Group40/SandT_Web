@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.repository.Query;
 
 public interface ForumRepository extends MongoRepository<Forum, String> {
     @Query(value = "{'id': '$0', 'status': '0'}")
-    void deleteById(String id);
+    void deleteById(String id);//i7u7
 
     @Query(value = "{ 'status': '1'}", fields = "{'id': 1, 'title': 1, 'status': 1}")
 	List<Forum> findByStatus();
