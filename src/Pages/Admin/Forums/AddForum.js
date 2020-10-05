@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Form, Label, Col, Row, FormGroup, Input, Button } from 'reactstrap';
+import moment from 'moment'
 import AdminNav from "../../../Components/AdminNav.component";
 import axios from 'axios';
 
@@ -11,12 +12,12 @@ export default class AddForum extends Component {
         this.state = {
             title: "",
             date: "",
-            startDate: "",
-            startTime: "",
+            // startDate: "",
+            // startTime: "",
             titleError: "",
             dateError: "",
-            startDateError: "",
-            startTimeError: ""
+            // startDateError: "",
+            // startTimeError: ""
         }
     }
 
@@ -30,12 +31,12 @@ export default class AddForum extends Component {
         this.setState ({
             title: "",
             date: "",
-            startDate: "",
-            startTime: "",
+            // startDate: "",
+            // startTime: "",
             titleError: "",
             dateError: "",
-            startDateError: "",
-            startTimeError: "",
+            // startDateError: "",
+            // startTimeError: "",
         });
     }
 
@@ -43,8 +44,8 @@ export default class AddForum extends Component {
         let isError = false;
         let titleError = "";
         let dateError = "";
-        let startDateError = "";
-        let startTimeError = ""
+        // let startDateError = "";
+        // let startTimeError = ""
 
         if(!this.state.title) {
             isError = true;
@@ -54,19 +55,19 @@ export default class AddForum extends Component {
             isError = true;
             dateError = "Date cannot be empty";
         }
-        if(!this.state.startDate) {
-            isError = true;
-            startDateError = "Start date cannot be empty";
-        }
-        if(!this.state.startTime) {
-            isError = true;
-            startTimeError = "Start time cannot be empty";
-        }
+        // if(!this.state.startDate) {
+        //     isError = true;
+        //     startDateError = "Start date cannot be empty";
+        // }
+        // if(!this.state.startTime) {
+        //     isError = true;
+        //     startTimeError = "Start time cannot be empty";
+        // }
         this.setState({ 
             titleError: titleError,
             dateError: dateError,
-            startDateError: startDateError,
-            startTimeError: startTimeError,
+            // startDateError: startDateError,
+            // startTimeError: startTimeError,
         });
         return isError;
     }
@@ -74,7 +75,9 @@ export default class AddForum extends Component {
     onSubmit = e => {
         e.preventDefault();
         this.setState({
-            loading: true
+            loading: true,
+            title: '',
+            date: ''
         });
         const isValid = this.validate();
 
@@ -83,8 +86,8 @@ export default class AddForum extends Component {
             axios.post("http://localhost:8080/addForum", {
                 title: this.state.title,
                 date: this.state.date,
-                startDate: this.state.startDate,
-                startTime: this.state.startTime,
+                // startDate: this.state.startDate,
+                // startTime: this.state.startTime,
 
             }).then ((response) => {
                 console.log(response);
@@ -99,6 +102,7 @@ export default class AddForum extends Component {
     }
 
     render() {
+        const startDate = new Date();
         return (
             <React.Fragment>
                 <AdminNav/>
@@ -119,12 +123,12 @@ export default class AddForum extends Component {
                                     <Col xs="12" sm="4">
                                         <FormGroup>
                                             <Label for="date">Date</Label>
-                                            <Input type="date" id="datepicker" name="date" value={this.state.date} onChange={e => this.change(e)} />
+                                            <Input type="date" id="datepicker" name="date" value={this.state.date} onChange={e => this.change(e)} mindate={moment().toDate()} />
                                             <div style={{fontSize: 12, color: "red"}}>{this.state.dateError}</div>
                                         </FormGroup>
                                     </Col>
                                 </Row>
-                                <Row>
+                                {/* <Row>
 
                                 <Col xs="12" sm="6">
                                         <FormGroup>
@@ -141,10 +145,10 @@ export default class AddForum extends Component {
                                             <div style={{fontSize: 12, color: "red"}}>{this.state.startTimeError}</div>
                                         </FormGroup>
                                     </Col>
-                                </Row>
+                                </Row> */}
                                 <Row>
                                     <Col xs="6" sm="6">
-                                        <Button outline color="info" onClick={this.reset} block>Reset</Button>
+                                        <Button outline color="info" onClick={this.reset} block>Cancel</Button>
                                     </Col>
                                     <Col xs="6" sm="6">
                                         <Button outline color="info" type="submit" block>Add</Button>

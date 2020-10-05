@@ -16,6 +16,7 @@ import CourseList from "./Courses/CourseList";
 import EditCourse from "./Courses/EditCourse";
 import AddForum from "./Forums/AddForum";
 import ViewForums from "./Forums/ViewForums";
+import ForumsMenu from "./Forums/ForumsMenu";
 
 export default class AdminRoutes extends Component {
 
@@ -38,6 +39,7 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/editcourse/:id" component={EditCourse}/>
                 <Route path="/admin/addforum" component={AddForum}/>
                 <Route path="/admin/viewforums" component={ViewForums}/>
+                <Route path="/admin/forumsmenu" component={ForumsMenu}/>
             </Router>
             
         );
