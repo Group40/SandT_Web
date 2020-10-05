@@ -1,6 +1,7 @@
 package com.api.resource;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 import javax.validation.Valid;
@@ -49,6 +50,12 @@ public class ForumController {
    }
 
    @CrossOrigin(origins = "http://localhost:3000")
+   @GetMapping("/getById/{id}")
+   public Optional<Forum> getForums(@PathVariable String id) {
+      return repository.findById(id);
+   }
+
+   @CrossOrigin(origins = "http://localhost:3000")
    @DeleteMapping("/deleteForum/{id}")
    public String deleteForum(@PathVariable String id) {
       repository.deleteById(id);
@@ -56,9 +63,9 @@ public class ForumController {
    }
 
    @CrossOrigin(origins = "http://localhost:3000")
-   @GetMapping("/findByStatus")
-   public List<Forum> findByStatus() {
-      return repository.findByStatus();
+   @GetMapping("/findByStatus/{status}")
+   public List<Forum> findByStatus(@PathVariable String status) {
+      return repository.findByStatus(status);
    }
 
    @CrossOrigin(origins = "http://localhost:3000")

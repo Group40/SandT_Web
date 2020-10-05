@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import com.api.repository.ForumRepository;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
@@ -17,6 +18,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @Service
 public class ForumService {
+
 
     private String ID = "id";
     private String Status = "status";
@@ -50,4 +52,5 @@ public class ForumService {
             return "Document does not exixt";
         } 
     }
+
 }
