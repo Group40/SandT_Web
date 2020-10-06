@@ -3,11 +3,8 @@ import axios from 'axios';
 import { Container, Spinner, Row, Col, Alert, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import AdminNav from "../../../Components/AdminNav.component";
 import Logo from "../../../Images/logo.jpg";
-import { connect } from 'react-redux';
 
-const backendURI = require("../../../BackEndURI");
-
-class addCourse extends Component {
+export default class addCourse extends Component {
       
     constructor(props) {
         super(props);
@@ -107,8 +104,6 @@ class addCourse extends Component {
             alert: 0
         });
         if(!error){
-            var tzoffset = (new Date()).getTimezoneOffset() * 60000; 
-            var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
             const obj = {
                 name: this.state.name,
                 ageGroupMin: this.state.ageGroupMin,
@@ -120,18 +115,8 @@ class addCourse extends Component {
                 likedUsers: [],
                 commentedUsers: []   
             };
-            const obj2 = {
-                authorName: this.props.username+" "+this.props.lname,
-                authorType: this.props.erole,
-                authorMail: this.props.email,
-                name: this.state.name,
-                nameType: "added a new course",
-                date: localISOTime
-            };
             console.log(obj);
-            axios.post(backendURI.url+"/addCourse", obj)
-            .then((res) => {
-                axios.post(backendURI.url+"/addNotification", obj2)
+            axios.post("http://localhost:8080/addCourse", obj)
                 .then((res) => {
                     console.log("done");
                     this.setState({ alert: 0 });
@@ -145,16 +130,7 @@ class addCourse extends Component {
                         alert: 1,
                         loading: false
                     });
-                }); 
-            })
-            .catch((error) => {
-                console.log(error);
-                this.setState({
-                    alertMsg: "Server is under maintanace, please try again later!",
-                    alert: 1,
-                    loading: false
-                });
-            });        
+                });        
         }
         else{
             this.setState({ 
@@ -173,11 +149,11 @@ class addCourse extends Component {
                         <Col xs="12" sm="5">
                             <div>
                                 <div className="center">
-                                    <center>
-                                        <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
-                                        <h2 style={{color: "#39a7d2"}}>S & T Group</h2>
-                                        Add a new Course
-                                    </center>
+                                    <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
+                                    
+                                        <h4>S & T Group</h4>
+                                        Add a new course
+                                
                                 </div>
                             </div>
                         </Col>
@@ -268,13 +244,4 @@ class addCourse extends Component {
         );
     }  
 }
-
-const mapStateToProps = state => ({
-    erole: state.auth.erole,
-    username: state.auth.username,
-    lname : state.auth.lname,
-    email : state.auth.email,
-});
-  
-export default connect(mapStateToProps,null)(addCourse);
 
