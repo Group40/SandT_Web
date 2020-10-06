@@ -1,6 +1,7 @@
 package com.api.resource;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 import javax.validation.Valid;
@@ -49,16 +50,22 @@ public class ForumController {
    }
 
    @CrossOrigin(origins = "http://localhost:3000")
+   @GetMapping("/getById/{id}")
+   public Optional<Forum> getForums(@PathVariable String id) {
+      return repository.findById(id);
+   }
+
+   @CrossOrigin(origins = "http://localhost:3000")
    @DeleteMapping("/deleteForum/{id}")
    public String deleteForum(@PathVariable String id) {
       repository.deleteById(id);
       return "Deleted forum: " + id;
    }
 
-   @GetMapping("/findByStartDate")
-   public String findByStartDate() {
-      repository.findByStartDate();
-      return "Today\' forums";
+   @CrossOrigin(origins = "http://localhost:3000")
+   @GetMapping("/findByStatus/{status}")
+   public List<Forum> findByStatus(@PathVariable String status) {
+      return repository.findByStatus(status);
    }
 
    @CrossOrigin(origins = "http://localhost:3000")
@@ -69,8 +76,8 @@ public class ForumController {
       forum.setStatus("1");
       repository.save(forum);
 
-      forumService.sendForumID(id);
-      return "Added forum: " + id;
+      return forumService.sendForumID(id);
+      // return "Added forum: " + id;
      }
 
    @CrossOrigin(origins = "http://localhost/3000")
@@ -81,8 +88,8 @@ public class ForumController {
       forum.setStatus("2");
       repository.save(forum);
 
-      forumService.endForumID(id);
-      return "Ended forum: " + id;
+      return forumService.endForumID(id);
+      // return "Ended forum: " + id;
    }
 
 }

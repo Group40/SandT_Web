@@ -1,12 +1,16 @@
 package com.api.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.api.model.Forum;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 
 public interface ForumRepository extends MongoRepository<Forum, String> {
-    @Query("{ 'startDateTime': '$timestamp'}")
-	List<Forum> findByStartDate();
+    void deleteById(String id);
+
+    List<Forum> findByStatus(String status);
+
+    Optional<Forum> findById(String id);
+   
 }

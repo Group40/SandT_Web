@@ -17,6 +17,7 @@ import EditCourse from "./Courses/EditCourse";
 import AddForum from "./Forums/AddForum";
 import ViewForums from "./Forums/ViewForums";
 
+
 export default class AdminRoutes extends Component {
 
     render() {
@@ -38,6 +39,7 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/editcourse/:id" component={EditCourse}/>
                 <Route path="/admin/addforum" component={AddForum}/>
                 <Route path="/admin/viewforums" component={ViewForums}/>
+               
             </Router>
             
         );

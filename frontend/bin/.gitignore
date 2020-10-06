@@ -4,9 +4,6 @@ target/
 !**/src/main/**
 !**/src/test/**
 
-### Meta Data ###
-/.metadata
-
 ### STS ###
 .apt_generated
 .classpath
@@ -32,4 +29,3 @@ build/
 
 ### VS Code ###
 .vscode/
-node_modules
