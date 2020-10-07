@@ -58,10 +58,10 @@ class AdminMember extends Component {
                                 <React.Fragment key={index}>
                                     <tr>
                                         
-                                        <td><FontAwesomeIcon icon={faUserCircle}/> {AdminMember.username}</td>
-                                        <td> {AdminMember.lname}</td>
+                                        <td><FontAwesomeIcon icon={faUserCircle}/> {AdminMember.username}  {AdminMember.lname}</td>
+                                        <td></td>
                                         <td><FontAwesomeIcon icon={faEnvelope}/> {AdminMember.email}</td>
-                                        <td><FontAwesomeIcon icon={faIdCard}/> {AdminMember.urole}</td>
+                                        {/*<td><FontAwesomeIcon icon={faIdCard}/> {AdminMember.urole}</td>*/}
                                         {(this.props.erole === '3')?
                                         <td><FontAwesomeIcon icon={faEdit}/> <Link to={"/admin/#"+AdminMember.id}>Make Crew</Link></td>
                                         :
