@@ -22,7 +22,7 @@ class Dashboard extends Component {
                                 <div>
                                     <div className="center">
                                         <center>
-                                        <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
+                                        <img src={Logo} alt="S & T Group Admin Dashboard" style={{justifyContent: 'center',alignItems: 'center',}}/>
                                         <h1>S & T Group</h1>
                                         <h2  style={{color: "#39a7d2"}}>Mobile app control panel | Web dashboard</h2>
                                         <h4 style={{color: "grey"}}>Mission: Create highly knowledgeable astronomy population in Sri Lanka.</h4> 
