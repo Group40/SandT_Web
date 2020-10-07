@@ -35,12 +35,13 @@ class AdminNav extends Component {
                 <NavLink href="/admin/eventmanagement">Event Management</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/">User Management</NavLink>
+                <NavLink href="/admin/usermanagement">User Management</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/">Astrography Management</NavLink>
+                <NavLink href="/admin/photomanagement">Astrography Management</NavLink>
               </NavItem>
               <NavItem>
+                {/*<NavLink href="/admin/uploadpic">Institute of Astronomy(Upload pic)</NavLink>*/}
                 <NavLink href="/admin/coursemanagement">Institute of Astronomy</NavLink>
               </NavItem>
               <NavItem>

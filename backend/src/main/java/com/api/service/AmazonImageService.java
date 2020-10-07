@@ -32,7 +32,8 @@ public class AmazonImageService extends AmazonClientService{
         return uploadPhotos;
     }*/
 
-    public MessageResponse UploadPhotoToAmazon(MultipartFile multipartFile, String email, String name, String title, String details) {
+    public MessageResponse UploadPhotoToAmazon(MultipartFile multipartFile, String email, String name, String title, String details,int review,
+                                               String date,String town,String distric) {
 
         List<String> validExtensions = Arrays.asList("jpeg", "jpg", "png");
 
@@ -52,7 +53,10 @@ public class AmazonImageService extends AmazonClientService{
             uploadPhoto.setOwnername(name);
             uploadPhoto.setPicTitle(title);
             uploadPhoto.setPicDetails(details);
-            uploadPhoto.setReview(0);
+            uploadPhoto.setTown(town);
+            uploadPhoto.setDistric(distric);
+            uploadPhoto.setDate(date);
+            uploadPhoto.setReview(review);
             uploadPhotoRepository.insert(uploadPhoto);
 
             return new MessageResponse("Your image has been successfully uploaded");

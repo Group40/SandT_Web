@@ -17,6 +17,14 @@ import EditCourse from "./Courses/EditCourse";
 import AddForum from "./Forums/AddForum";
 import ViewForums from "./Forums/ViewForums";
 
+import Notification from "./Notification";
+import Photography from "./Photography/PhotoManagement";
+import UserMember from "./UserManagement/UserMember";
+import CrewMember from "./UserManagement/CrewMember";
+import AdminMember from "./UserManagement/AdminMember";
+import AllMember from "./UserManagement/AllMember";
+import BlockMember from "./UserManagement/BlockMember";
+import UserButtons from "./UserManagement/UserButtons";
 
 export default class AdminRoutes extends Component {
 
@@ -40,6 +48,14 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/addforum" component={AddForum}/>
                 <Route path="/admin/viewforums" component={ViewForums}/>
                
+                <Route path="/admin/notifications" component={Notification}/>
+                <Route path="/admin/photomanagement" component={Photography}/>
+                <Route path="/admin/usermanagement" component={UserButtons}/>
+                <Route path="/admin/viewadminmember" component={AdminMember}/>
+                <Route path="/admin/viewcrewmember" component={CrewMember}/>
+                <Route path="/admin/viewusermember" component={UserMember}/>
+                <Route path="/admin/viewallmember" component={AllMember}/>
+                <Route path="/admin/viewblockmember" component={BlockMember}/>
             </Router>
             
         );
