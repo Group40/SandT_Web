@@ -20,6 +20,13 @@ import AddCourses from "./Courses/AddCourses";
 import CourseList from "./Courses/CourseList";
 import EditCourse from "./Courses/EditCourse";
 import Notification from "./Notification";
+import Photography from "./Photography/PhotoManagement";
+import UserMember from "./UserManagement/UserMember";
+import CrewMember from "./UserManagement/CrewMember";
+import AdminMember from "./UserManagement/AdminMember";
+import AllMember from "./UserManagement/AllMember";
+import BlockMember from "./UserManagement/BlockMember";
+import UserButtons from "./UserManagement/UserButtons";
 
 export default class AdminRoutes extends Component {
 
@@ -46,6 +53,13 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/courselist" component={CourseList}/>
                 <Route path="/admin/editcourse/:id" component={EditCourse}/>
                 <Route path="/admin/notifications" component={Notification}/>
+                <Route path="/admin/photomanagement" component={Photography}/>
+                <Route path="/admin/usermanagement" component={UserButtons}/>
+                <Route path="/admin/viewadminmember" component={AdminMember}/>
+                <Route path="/admin/viewcrewmember" component={CrewMember}/>
+                <Route path="/admin/viewusermember" component={UserMember}/>
+                <Route path="/admin/viewallmember" component={AllMember}/>
+                <Route path="/admin/viewblockmember" component={BlockMember}/>
             </Router>
             
         );

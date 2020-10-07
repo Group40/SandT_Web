@@ -17,7 +17,6 @@ public class User {
     @Size(min=3,max = 20)
     private String username;
 
-
     @Size(max = 20)
     private String lname;
 
@@ -30,10 +29,7 @@ public class User {
     @Size(min=8,max = 120)
     private String password;
 
-    private String role;
-
     private int urole;;
-
 
     public User() {
     }
@@ -43,7 +39,6 @@ public class User {
         this.lname = lname;
         this.email = email;
         this.password = password;
-        this.role="ROLE_USER";
         this.urole = 1;//"ROLE_USER";
     }
 

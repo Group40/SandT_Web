@@ -24,6 +24,10 @@ public class UploadPhoto {
 
     private String picDetails;
 
+    private String town;
+    private String distric;
+    private String date;
+
     @NotNull
     @Email
     private String ownerEmail;
@@ -96,5 +100,29 @@ public class UploadPhoto {
 
     public void setOwnername(String ownername) {
         this.ownername = ownername;
+    }
+
+    public String getTown() {
+        return town;
+    }
+
+    public void setTown(String town) {
+        this.town = town;
+    }
+
+    public String getDistric() {
+        return distric;
+    }
+
+    public void setDistric(String distric) {
+        this.distric = distric;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

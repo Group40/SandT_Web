@@ -46,11 +46,14 @@ public class PhotoUploadingController {
     @PostMapping("/uploadpic")
     public MessageResponse photoUpload(@RequestPart(value = "image") MultipartFile file,
                                       @RequestPart(value = "email") String email,
+                                       @RequestPart(value = "date") String date,
+                                       @RequestPart(value = "town") String town,
+                                       @RequestPart(value = "distric") String distric,
                                       @RequestPart(value = "name") String name,
                                       @RequestPart(value = "title") String title,
                                       @RequestPart(value = "detail") String detail) {
 
-        return this.amazonImageService.UploadPhotoToAmazon(file,email,name,title,detail,0);
+        return this.amazonImageService.UploadPhotoToAmazon(file,email,name,title,detail,0,date,town,distric);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
@@ -59,6 +62,9 @@ public class PhotoUploadingController {
                                               @RequestPart(value = "email") String email,
                                               @RequestPart(value = "name") String name,
                                               @RequestPart(value = "title") String title,
+                                              @RequestPart(value = "date") String date,
+                                              @RequestPart(value = "town") String town,
+                                              @RequestPart(value = "distric") String distric,
                                               @RequestPart(value = "detail") String detail) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + email));
@@ -66,7 +72,7 @@ public class PhotoUploadingController {
         {
             return ResponseEntity.ok(
                     this.amazonImageService
-                            .UploadPhotoToAmazon(file,email,name,title,detail,1));
+                            .UploadPhotoToAmazon(file,email,name,title,detail,1,date,town,distric));
         }
         else
         {
