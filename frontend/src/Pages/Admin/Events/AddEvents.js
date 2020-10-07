@@ -4,14 +4,8 @@ import { Container, Spinner, Row, Col, Alert, Button, Form, FormGroup, Label, In
 import DatePicker from 'reactstrap-date-picker';
 import AdminNav from "../../../Components/AdminNav.component";
 import Logo from "../../../Images/logo.jpg";
-import { connect } from 'react-redux';
 
-var tzoffset = (new Date()).getTimezoneOffset() * 60000; 
-var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
-
-const backendURI = require("../../../BackEndURI");
-
-class addEvent extends Component {  
+export default class addEvent extends Component {
     
     constructor(props) {
         super(props);
@@ -26,7 +20,7 @@ class addEvent extends Component {
             venue: "",
             description: "",
             headCount: "",
-            dateValue: localISOTime
+            dateValue: new Date().toISOString()
         };
     }
 
@@ -54,7 +48,7 @@ class addEvent extends Component {
             venue: "",
             description: "",
             headCount: "",
-            dateValue: localISOTime
+            dateValue: new Date().toISOString()
 
         });
         document.getElementById("form").reset();
@@ -105,8 +99,6 @@ class addEvent extends Component {
             alert: 0
         });
         if(!error){
-            tzoffset = (new Date()).getTimezoneOffset() * 60000; 
-            localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
             const obj = {
                 name: this.state.name,
                 date: document.getElementById("datepicker").value.substring(0, 10),
@@ -115,33 +107,13 @@ class addEvent extends Component {
                 headCount: this.state.headCount,
                 available: this.state.headCount
             };
-            const obj2 = {
-                authorName: this.props.username+" "+this.props.lname,
-                authorType: this.props.erole,
-                authorMail: this.props.email,
-                name: this.state.name,
-                nameType: "added a new event",
-                date: localISOTime,
-                eventDate: document.getElementById("datepicker").value.substring(0, 10)
-            };
             console.log(obj);
-            axios.post(backendURI.url+"/addEvent", obj)
+            axios.post("http://localhost:8080/addEvent", obj)
                 .then((res) => {
-                    axios.post(backendURI.url+"/addNotification", obj2)
-                    .then((res) => {
-                        console.log("done");
-                        this.setState({ alert: 0 });
-                        this.reset();
-                        window.location.reload(false);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        this.setState({
-                            alertMsg: "Server is under maintanace, please try again later!",
-                            alert: 1,
-                            loading: false
-                        });
-                    }); 
+                    console.log("done");
+                    this.setState({ alert: 0 });
+                    this.reset();
+                    window.location.reload(false);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -169,11 +141,11 @@ class addEvent extends Component {
                         <Col xs="12" sm="5">
                             <div>
                                 <div className="center">
-                                    <center>
-                                        <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
-                                        <h2 style={{color: "#39a7d2"}}>S & T Group</h2>
-                                        Add a new Event
-                                    </center>
+                                    <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
+                                    
+                                        <h4>S & T Group</h4>
+                                        Add a new event
+                                
                                 </div>
                             </div>
                         </Col>
@@ -210,12 +182,12 @@ class addEvent extends Component {
                                             </FormGroup>
                                         </Col>
                                     </Row>
-           
+
                                     <FormGroup>
                                         <Label for="description">Description</Label>
                                         <Input type="textarea" name="description" id="description" onChange={this.onChange}/>
                                     </FormGroup>
-                                    
+
                                     <Row xs="12" sm="12">
                                         <center>
                                             { this.state.loading ?
@@ -246,14 +218,4 @@ class addEvent extends Component {
         );
     }  
 }
-
-const mapStateToProps = state => ({
-    erole: state.auth.erole,
-    username: state.auth.username,
-    lname : state.auth.lname,
-    email : state.auth.email,
-  });
-  
-  export default connect(mapStateToProps,null)(addEvent);
-  
 

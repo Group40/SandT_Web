@@ -47,16 +47,3 @@
   width: 300px;
   padding: 10px;
 }
-
-.leftbtn {
-  position: absolute;
-  left: 100px;
-}
-
-.setmiddle{
-   text-align: center;
-  }
-.piccenter{
-  Display: flex;
-  Align-Items: center;
-}

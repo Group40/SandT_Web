@@ -10,16 +10,13 @@ import ConfirmedList from "./Events/ConfirmedList";
 import RejectRequest from "./Events/RejectRequest";
 import ConfirmRequest from "./Events/ConfirmRequest";
 import EventManagement from "./Events/EventManagement";
-import ReviewPics from "./Photography/Review/ReviewPics"
-import MyPics from "./Photography/MyGallery/MyPics";
-import EditMyPic from "./Photography/MyGallery/EditMyPic";
-import UploadPics from "./Photography/Upload/UploadPic"
-import ViewGallery from "./Photography/GlobalGallery/ViewGallery"
 import CourseManagement from "./Courses/CourseManagement";
 import AddCourses from "./Courses/AddCourses";
 import CourseList from "./Courses/CourseList";
 import EditCourse from "./Courses/EditCourse";
-import Notification from "./Notification";
+import AddForum from "./Forums/AddForum";
+import ViewForums from "./Forums/ViewForums";
+
 
 export default class AdminRoutes extends Component {
 
@@ -36,16 +33,13 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/confirmrequest/:id" component={ConfirmRequest}/>
                 <Route path="/admin/eventcalendar" component={Calendar}/>
                 <Route path="/admin/eventmanagement" component={EventManagement}/>
-                <Route path="/admin/reviewpics" component={ReviewPics}/>
-                <Route path="/admin/uploadpic" component={ViewGallery}/>
-                <Route path="/admin/adminpics" component={MyPics}/>
-                <Route path="/admin/uploadnewpic" component={UploadPics}/>
-                <Route path="/admin/editmypic/:id" component={EditMyPic}/>
                 <Route path="/admin/coursemanagement" component={CourseManagement}/>
                 <Route path="/admin/addcourses" component={AddCourses}/>
                 <Route path="/admin/courselist" component={CourseList}/>
                 <Route path="/admin/editcourse/:id" component={EditCourse}/>
-                <Route path="/admin/notifications" component={Notification}/>
+                <Route path="/admin/addforum" component={AddForum}/>
+                <Route path="/admin/viewforums" component={ViewForums}/>
+               
             </Router>
             
         );

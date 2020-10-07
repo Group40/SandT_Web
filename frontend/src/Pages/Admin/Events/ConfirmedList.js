@@ -5,8 +5,6 @@ import AdminNav from "../../../Components/AdminNav.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faUsers, faAddressBook, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
-const backendURI = require("../../../BackEndURI");
-
 export default class ConfirmedList extends Component {
    
     
@@ -20,7 +18,7 @@ export default class ConfirmedList extends Component {
     }
 
     componentDidMount = async () => {
-        await axios.get(backendURI.url+"/getConfirmedEventRequestsByEventId/"+this.props.match.params.id)
+        await axios.get("http://localhost:8080/getConfirmedEventRequestsByEventId/"+this.props.match.params.id)
         .then(res => {
             this.setState({ 
                 RequestList: res.data,

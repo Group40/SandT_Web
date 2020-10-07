@@ -33,10 +33,7 @@ class AdminLogin extends Component {
         if(error !== prevProps.error) {
           //Check login errors
           if(error.id === 'LOGIN_FAIL') {
-            this.setState({ 
-                alertMsg: error.msg.message,
-                alert: 1 
-            });
+            this.setState({ alertMsg: error.msg.msg });
           } 
           else {
             this.setState({ alertMsg: null });
@@ -90,17 +87,18 @@ class AdminLogin extends Component {
             this.setState({ 
                 loading: false 
             });
+            console.log("login : Success");
             const { email, password } = this.state;
             const user = {
                 email,
                 password
             };
             this.props.login(user);
+            setTimeout(() => {  
+                window.location.reload(false);
+            }, 2000);
             
-                setTimeout(() => {  
-                    window.location.reload(false);
-                    }, 2000);   
-                          
+            
         }
         else{
             this.setState({ 

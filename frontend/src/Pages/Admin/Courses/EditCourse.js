@@ -3,14 +3,8 @@ import axios from 'axios';
 import { Modal, ModalBody, ModalHeader, Container, Spinner, Row, Col, Alert, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import AdminNav from "../../../Components/AdminNav.component";
 import Logo from "../../../Images/logo.jpg";
-import { connect } from 'react-redux';
 
-var tzoffset = (new Date()).getTimezoneOffset() * 60000; 
-var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
-
-const backendURI = require("../../../BackEndURI");
-
-class EditCourse extends Component {
+export default class EditCourse extends Component {
    
     constructor(props) {
         super(props);
@@ -33,7 +27,7 @@ class EditCourse extends Component {
     }
 
     componentDidMount = async () => {
-        await axios.get(backendURI.url+"/findAllCourses/"+this.props.match.params.id)
+        await axios.get("http://localhost:8080/findAllCourses/"+this.props.match.params.id)
         .then(res => {
             this.setState({ 
                 name: res.data.name,
@@ -64,22 +58,9 @@ class EditCourse extends Component {
     };
     
     delete = async () => {
-        tzoffset = (new Date()).getTimezoneOffset() * 60000; 
-        localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
-        const obj3 = {
-            authorName: this.props.username+" "+this.props.lname,
-            authorType: this.props.erole,
-            authorMail: this.props.email,
-            name: this.state.name,
-            nameType: "deleted the course",
-            date: localISOTime
-        };
-        await axios.delete(backendURI.url+"/deleteCourse/"+this.props.match.params.id)
+        await axios.delete("http://localhost:8080/deleteCourse/"+this.props.match.params.id)
         .then(res => {
-            axios.post(backendURI.url+"/addNotification", obj3)
-            .then(res => {
-                this.props.history.goBack();
-            })
+            this.props.history.goBack();
         })       
     };
 
@@ -139,8 +120,6 @@ class EditCourse extends Component {
             alert: 0
         });
         if(!error){
-            tzoffset = (new Date()).getTimezoneOffset() * 60000; 
-            localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
             const obj = {
                 id: this.props.match.params.id,
                 name: this.state.name,
@@ -153,18 +132,9 @@ class EditCourse extends Component {
                 likedUsers: [],
                 commentedUsers: []
             };
-            const obj2 = {
-                authorName: this.props.username+" "+this.props.lname,
-                authorType: this.props.erole,
-                authorMail: this.props.email,
-                name: this.state.name,
-                nameType: "edited the course",
-                date: localISOTime
-            };
             console.log(obj);
-            axios.post(backendURI.url+"/updateCourse", obj)
+            axios.post("http://localhost:8080/updateCourse", obj)
                 .then((res) => {
-                    axios.post(backendURI.url+"/addNotification", obj2)
                     console.log("done");
                     this.setState({ alert: 0 });
                     window.location.reload(false);
@@ -215,11 +185,11 @@ class EditCourse extends Component {
                         <Col xs="12" sm="5">
                             <div>
                                 <div className="center">
-                                    <center>
-                                        <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
-                                        <h2 style={{color: "#39a7d2"}}>S & T Group</h2>
-                                        Edit Course
-                                    </center>
+                                    <img src={Logo} alt="S & T Group" style={{justifyContent: 'center',alignItems: 'center',}}/>
+                                    
+                                        <h4>S & T Group</h4>
+                                        Add a new event
+                                
                                 </div>
                             </div>
                         </Col>
@@ -310,12 +280,3 @@ class EditCourse extends Component {
         );
     }  
 }
-
-const mapStateToProps = state => ({
-    erole: state.auth.erole,
-    username: state.auth.username,
-    lname : state.auth.lname,
-    email : state.auth.email,
-  });
-  
-  export default connect(mapStateToProps,null)(EditCourse);
