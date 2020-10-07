@@ -35,11 +35,14 @@ class UploadPic extends Component {
             alert: 0,
             alertMsg: "",
             description: "",
+            town:"",
+            distric:"",
             pictitle:"",
             uploadpic:false,
             picid:"",
             file:null,
             imgSrc:"",
+            date:"",
             dateValue: localISOTime,
         }
         //this.onChange = this.onChange.bind(this)
@@ -92,6 +95,18 @@ class UploadPic extends Component {
             error = true;
             alertMsg = "description can't be empty";
         }
+        else if (this.state.town.length < 1) {
+            error = true;
+            alertMsg = "town can't be empty";
+        }
+        else if (this.state.distric.length < 1) {
+            error = true;
+            alertMsg = "distric can't be empty";
+        }
+        else if (document.getElementById("datepicker").value.substring(0, 10).length < 1) {
+            error = true;
+            alertMsg = "You have to pick a real date";
+        }
         else if (this.state.file===null) {
             error = true;
             alertMsg = "Please upload a image";
@@ -101,6 +116,7 @@ class UploadPic extends Component {
     }
 
     onSubmit() {
+        this.state.data=document.getElementById("datepicker").value.substring(0, 10);
         //e.preventDefault();
         const error = this.validate();
         this.setState({
@@ -114,6 +130,9 @@ class UploadPic extends Component {
             data.append('detail',this.state.description);
             data.append('name',this.props.username+" "+this.props.lname,);
             data.append('email',this.props.email);
+            data.append('date',this.props.date);
+            data.append('town',this.props.town);
+            data.append('distric',this.props.distric);
             //data.append('role',this.props.erole);
             fetch('http://localhost:8080/photouploading/adminuploadpic',{
                 method: 'post',
@@ -137,7 +156,7 @@ class UploadPic extends Component {
                     else{
                         console.log(error);
                         this.setState({
-                            alertMsg: "Your Not an admin member",
+                            alertMsg: "Something went wrong",
                             alert: 1,
                             loading: false
                         });
@@ -209,7 +228,7 @@ class UploadPic extends Component {
                                 <Header as='h2'>
                                     <Icon name='file image outline' />
                                     <Header.Content>
-                                        Uplload New Image
+                                        Upload New Image
                                         <Header.Subheader>S & T Group</Header.Subheader>
                                     </Header.Content>
                                 </Header>
@@ -240,13 +259,13 @@ class UploadPic extends Component {
                                         <Col xs="12" sm="5">
                                             <FormGroup>
                                                 <Label for="distric">Captured Distric</Label>
-                                                <Input type="text" name="distric" id="distric"  onChange={this.onChange}/>
+                                                <Input type="text" name="distric" id="distric" value={this.state.distric} onChange={this.onChange}/>
                                             </FormGroup>
                                         </Col>
                                         <Col xs="12" sm="5">
                                             <FormGroup>
                                                 <Label for="town">Town</Label>
-                                                <Input type="text" name="town" id="town"  onChange={this.onChange}/>
+                                                <Input type="text" name="town" id="town" value={this.state.town} onChange={this.onChange}/>
                                             </FormGroup>
                                         </Col>
                                     </Row>
@@ -255,7 +274,7 @@ class UploadPic extends Component {
                                         <Col xs="12" sm="4">
                                             <FormGroup>
                                                 <Label for="date">Capture Date</Label>
-                                                <DatePicker id="datepicker"   onChange={(v) => this.onChangeDate(v)}/>
+                                                <DatePicker id="datepicker" value={this.state.dateValue}  onChange={(v) => this.onChangeDate(v)}/>
                                             </FormGroup>
                                         </Col>
 

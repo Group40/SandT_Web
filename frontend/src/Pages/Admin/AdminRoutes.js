@@ -20,6 +20,7 @@ import AddCourses from "./Courses/AddCourses";
 import CourseList from "./Courses/CourseList";
 import EditCourse from "./Courses/EditCourse";
 import Notification from "./Notification";
+import PhotoManagement from "./Photography/PhotoManagement";
 
 export default class AdminRoutes extends Component {
 
@@ -46,6 +47,7 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/courselist" component={CourseList}/>
                 <Route path="/admin/editcourse/:id" component={EditCourse}/>
                 <Route path="/admin/notifications" component={Notification}/>
+                <Route path="/admin/photomanagement" component={PhotoManagement}/>
             </Router>
             
         );
