@@ -3,8 +3,10 @@ package com.api.service;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.api.model.Optics;
 import com.api.model.UploadPhoto;
 import com.api.payload.response.MessageResponse;
+import com.api.repository.OpticsRepository;
 import com.api.repository.PhotoAlbumRepository;
 import com.api.repository.UploadPhotoRepository;
 import com.api.service.exception.FileConversionException;
@@ -27,6 +29,9 @@ import java.util.List;
 public class AmazonImageService extends AmazonClientService{
     @Autowired
     private UploadPhotoRepository uploadPhotoRepository;
+
+    @Autowired
+    private OpticsRepository opticsRepository;
 /*
     public MessageResponse insertphoto(List<MultipartFile> photos,String email,String name,String title,String details){
         List<UploadPhoto> uploadPhotos = new ArrayList<UploadPhoto>();
@@ -62,6 +67,37 @@ public class AmazonImageService extends AmazonClientService{
 
             return new MessageResponse("Your image has been successfully uploaded");
 
+        }
+    }
+
+    public MessageResponse UploadItem(MultipartFile multipartFile, String title, String brand, String model, String opticaldesign,
+                                               String aperture,String magnification,String focal,String viewfinder,String price,String distric,String detail) {
+
+        List<String> validExtensions = Arrays.asList("jpeg","JPEG", "jpg","JPG", "png","PNG");
+
+        String extensions = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
+        if(!validExtensions.contains(extensions)){
+            //add warning msg
+            //throw new InvalidPhotoExtensionException(validExtensions);
+            return  new MessageResponse("Error");
+        }
+        else{
+            String url =uploadMultipartFile(multipartFile);
+
+            Optics optics = new Optics();
+            optics.setUrl(url);
+            optics.setAperture(aperture);
+            optics.setBrand(brand);
+            optics.setDetail(detail);
+            optics.setFocal(focal);
+            optics.setMagnification(magnification);
+            optics.setModel(model);
+            optics.setOpticaldesign(opticaldesign);
+            optics.setPrice(price);
+            optics.setTitle(title);
+            opticsRepository.insert(optics);
+
+            return new MessageResponse("Your iteam has been successfully uploaded");
         }
     }
 
