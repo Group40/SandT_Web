@@ -4,14 +4,14 @@ import {Table, Spinner, Container, Button, Modal, ModalHeader, ModalBody, ModalF
 import AdminNav from "../../../Components/AdminNav.component";
 // import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {   faUserCircle, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import {   faUserCircle, faEnvelope, faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { connect } from 'react-redux';
 import {Divider, Grid, Search} from "semantic-ui-react";
 import _ from "lodash";
 
 const backendURI = require("../../../BackEndURI");
 
-class AdminMember extends Component {
+class CrewMember extends Component {
 
     constructor(props) {
         super(props)
@@ -154,9 +154,9 @@ class AdminMember extends Component {
             <React.Fragment>
                 { this.state.modal ?
                     <Modal isOpen={this.state.modal} toggle={this.toggle}>
-                        <ModalHeader toggle={this.toggle}>Are you sure?</ModalHeader>
+                        <ModalHeader toggle={this.toggle}>Confirm</ModalHeader>
                         <ModalBody>
-                            Do you really want to add Admin Member permission to  {this.state.fname} {this.state.lname} ?
+                            Are you sure you want to make {this.state.fname} {this.state.lname} an Admin?
                         </ModalBody>
                         <div >
                             <ModalFooter>
@@ -169,9 +169,9 @@ class AdminMember extends Component {
 
                 { this.state.modalblk ?
                     <Modal isOpen={this.state.modalblk} toggle={this.usertoggle}>
-                        <ModalHeader toggle={this.usertoggle}>Are you sure?</ModalHeader>
+                        <ModalHeader toggle={this.usertoggle}>Confirm</ModalHeader>
                         <ModalBody>
-                            Do you really want to Remove Crew permission from  {this.state.fname} {this.state.lname} ?
+                            Are you sure you want to remove Crew Member permission from {this.state.fname} {this.state.lname} ?
                         </ModalBody>
                         <div >
                             <ModalFooter>
@@ -209,7 +209,7 @@ class AdminMember extends Component {
                 <Container>
                     <div className="setmiddle">
                         <h1>
-                            <center>All Users</center>
+                            <center>All Crew Members</center>
                         </h1>
                     </div>
                     <div style={{ marginTop: "20px" }}>
@@ -218,20 +218,20 @@ class AdminMember extends Component {
                             <tr>
                                 <td> User Name</td>
                                 <td> Email</td>
-                                <td> Join Date</td>
+                                <td> Registered Date</td>
                                 <td></td>
                                 <td></td>
                             </tr>
-                            {this.state.UserList.map((AdminMember, index) => {
+                            {this.state.UserList.map((CrewMember, index) => {
                                 return (
                                     <React.Fragment key={index}>
                                         <tr>
-                                            <td><FontAwesomeIcon icon={faUserCircle}/> {AdminMember.username}  {AdminMember.lname}</td>
+                                            <td><FontAwesomeIcon icon={faUserCircle}/> {CrewMember.username}  {CrewMember.lname}</td>
 
-                                            <td><FontAwesomeIcon icon={faEnvelope}/> {AdminMember.email}</td>
-                                            <td><FontAwesomeIcon icon={faEnvelope}/> {AdminMember.signupdate}</td>
-                                            <td> <Button color="primary" onClick={()=>this.toggle(AdminMember.id,AdminMember.username,AdminMember.lname)}>Make As Admin</Button>{' '}</td>
-                                            <td> <Button color="danger" onClick={()=>this.usertoggle(AdminMember.id,AdminMember.username,AdminMember.lname)}>Make As User</Button>{' '}</td>
+                                            <td><FontAwesomeIcon icon={faEnvelope}/> {CrewMember.email}</td>
+                                            <td><FontAwesomeIcon icon={faCalendar}/> {CrewMember.signupdate}</td>
+                                            <td> <Button color="primary" onClick={()=>this.toggle(CrewMember.id,CrewMember.username,CrewMember.lname)}>Make Admin</Button>{' '}</td>
+                                            <td> <Button color="danger" onClick={()=>this.usertoggle(CrewMember.id,CrewMember.username,CrewMember.lname)}>Make User</Button>{' '}</td>
 
 
                                         </tr>
@@ -255,4 +255,4 @@ const mapStateToProps = state => ({
     email: state.auth.email
 });
 
-export default connect(mapStateToProps,null)(AdminMember);
+export default connect(mapStateToProps,null)(CrewMember);

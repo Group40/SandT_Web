@@ -3,14 +3,14 @@ import axios from "axios";
 import {Table, Spinner, Container, Button, Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import AdminNav from "../../../Components/AdminNav.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {   faUserCircle, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import {   faUserCircle, faEnvelope, faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { connect } from 'react-redux';
 import {Divider, Grid, Search} from "semantic-ui-react";
 import _ from "lodash";
 
 const backendURI = require("../../../BackEndURI");
 
-class AdminMember extends Component {
+class BlockMember extends Component {
 
     constructor(props) {
         super(props)
@@ -130,9 +130,9 @@ class AdminMember extends Component {
             <React.Fragment>
                 { this.state.modal ?
                     <Modal isOpen={this.state.modal} toggle={this.toggle}>
-                        <ModalHeader toggle={this.toggle}>Are you sure?</ModalHeader>
+                        <ModalHeader toggle={this.toggle}>Confirm</ModalHeader>
                         <ModalBody>
-                            Do you really want to unblock {this.state.fname} {this.state.lname} ?
+                            Are you sure you want to unblock {this.state.fname} {this.state.lname} ?
                         </ModalBody>
                         <div >
                             <ModalFooter>
@@ -168,7 +168,7 @@ class AdminMember extends Component {
                 <Container>
                     <div className="setmiddle">
                         <h1>
-                            <center>All Admins</center>
+                            <center>Block List</center>
                         </h1>
                     </div>
                     <div style={{ marginTop: "20px" }}>
@@ -177,19 +177,19 @@ class AdminMember extends Component {
                             <tr>
                                 <td> User Name</td>
                                 <td> Email</td>
-                                <td> Join Date</td>
+                                <td> Registered Date</td>
                                 <td></td>
                             </tr>
-                            {this.state.UserList.map((AdminMember, index) => {
+                            {this.state.UserList.map((BlockMember, index) => {
                                 return (
                                     <React.Fragment key={index}>
                                         <tr>
 
-                                            <td><FontAwesomeIcon icon={faUserCircle}/> {AdminMember.username}  {AdminMember.lname}</td>
+                                            <td><FontAwesomeIcon icon={faUserCircle}/> {BlockMember.username}  {BlockMember.lname}</td>
 
-                                            <td><FontAwesomeIcon icon={faEnvelope}/> {AdminMember.email}</td>
-                                            <td><FontAwesomeIcon icon={faEnvelope}/> {AdminMember.signupdate}</td>
-                                            <td> <Button color="danger" onClick={()=>this.toggle(AdminMember.id,AdminMember.username,AdminMember.lname)}>Un block</Button>{' '}</td>
+                                            <td><FontAwesomeIcon icon={faEnvelope}/> {BlockMember.email}</td>
+                                            <td><FontAwesomeIcon icon={faCalendar}/> {BlockMember.signupdate}</td>
+                                            <td> <Button color="danger" onClick={()=>this.toggle(BlockMember.id,BlockMember.username,BlockMember.lname)}>Unblock</Button>{' '}</td>
 
                                         </tr>
                                     </React.Fragment>
@@ -212,4 +212,4 @@ const mapStateToProps = state => ({
     email: state.auth.email
 });
 
-export default connect(mapStateToProps,null)(AdminMember);
+export default connect(mapStateToProps,null)(BlockMember);

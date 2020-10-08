@@ -4,14 +4,14 @@ import {Table, Spinner, Container, Button, Modal, ModalHeader, ModalBody, ModalF
 import AdminNav from "../../../Components/AdminNav.component";
 // import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {   faUserCircle, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import {   faUserCircle, faEnvelope, faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { connect } from 'react-redux';
 import {Divider, Grid, Search} from "semantic-ui-react";
 import _ from "lodash";
 
 const backendURI = require("../../../BackEndURI");
 
-class AdminMember extends Component {
+class UserMember extends Component {
 
     constructor(props) {
         super(props)
@@ -152,9 +152,9 @@ class AdminMember extends Component {
             <React.Fragment>
                 { this.state.modal ?
                     <Modal isOpen={this.state.modal} toggle={this.toggle}>
-                        <ModalHeader toggle={this.toggle}>Are you sure?</ModalHeader>
+                        <ModalHeader toggle={this.toggle}>Confirm</ModalHeader>
                         <ModalBody>
-                            Do you really want to add Crew Member permission to  {this.state.fname} {this.state.lname} ?
+                            Are you sure you want to make {this.state.fname} {this.state.lname} a Crew Member ?
                         </ModalBody>
                         <div >
                             <ModalFooter>
@@ -167,9 +167,9 @@ class AdminMember extends Component {
 
                 { this.state.modalblk ?
                     <Modal isOpen={this.state.modalblk} toggle={this.blocktoggle}>
-                        <ModalHeader toggle={this.blocktoggle}>Are you sure?</ModalHeader>
+                        <ModalHeader toggle={this.blocktoggle}>Confirm</ModalHeader>
                         <ModalBody>
-                            Do you really want to block  {this.state.fname} {this.state.lname} ?
+                            Are you sure you want to block {this.state.fname} {this.state.lname} ?
                         </ModalBody>
                         <div >
                             <ModalFooter>
@@ -215,22 +215,22 @@ class AdminMember extends Component {
                             <tr>
                                 <td> User Name</td>
                                 <td> Email</td>
-                                <td> Join Date</td>
+                                <td> Registered Date</td>
                                 <td></td>
                                 <td></td>
                             </tr>
-                            {this.state.UserList.map((AdminMember, index) => {
+                            {this.state.UserList.map((UserMember, index) => {
                                 return (
                                     <React.Fragment key={index}>
                                         <tr>
-                                            <td><FontAwesomeIcon icon={faUserCircle}/> {AdminMember.username}  {AdminMember.lname}</td>
+                                            <td><FontAwesomeIcon icon={faUserCircle}/> {UserMember.username}  {UserMember.lname}</td>
 
-                                            <td><FontAwesomeIcon icon={faEnvelope}/> {AdminMember.email}</td>
-                                            <td><FontAwesomeIcon icon={faEnvelope}/> {AdminMember.signupdate}</td>
+                                            <td><FontAwesomeIcon icon={faEnvelope}/> {UserMember.email}</td>
+                                            <td><FontAwesomeIcon icon={faCalendar}/> {UserMember.signupdate}</td>
                                             {/*<td><FontAwesomeIcon icon={faIdCard}/> {AdminMember.urole}</td>*/}
 
-                                            <td> <Button color="primary" onClick={()=>this.toggle(AdminMember.id,AdminMember.username,AdminMember.lname)}>Make As Crew</Button>{' '}</td>
-                                            <td> <Button color="danger" onClick={()=>this.blocktoggle(AdminMember.id,AdminMember.username,AdminMember.lname)}>Block User</Button>{' '}</td>
+                                            <td> <Button color="primary" onClick={()=>this.toggle(UserMember.id,UserMember.username,UserMember.lname)}>Make Crew</Button>{' '}</td>
+                                            <td> <Button color="danger" onClick={()=>this.blocktoggle(UserMember.id,UserMember.username,UserMember.lname)}>Block User</Button>{' '}</td>
 
 
                                         </tr>
@@ -254,4 +254,4 @@ const mapStateToProps = state => ({
     email: state.auth.email
 });
 
-export default connect(mapStateToProps,null)(AdminMember);
+export default connect(mapStateToProps,null)(UserMember);

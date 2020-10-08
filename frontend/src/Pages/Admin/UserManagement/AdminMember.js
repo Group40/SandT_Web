@@ -4,7 +4,7 @@ import {Table, Spinner, Container, Button, Modal, ModalHeader, ModalBody, ModalF
 import AdminNav from "../../../Components/AdminNav.component";
 // import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {   faUserCircle, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import {   faUserCircle, faEnvelope, faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { connect } from 'react-redux';
 import {Divider, Grid, Search} from "semantic-ui-react";
 import _ from "lodash";
@@ -128,9 +128,9 @@ class AdminMember extends Component {
             <React.Fragment>
                 { this.state.modal ?
                     <Modal isOpen={this.state.modal} toggle={this.toggle}>
-                        <ModalHeader toggle={this.toggle}>Are you sure?</ModalHeader>
+                        <ModalHeader toggle={this.toggle}>Confirm</ModalHeader>
                         <ModalBody>
-                            Do you really want to remove Admin permission from  {this.state.fname} {this.state.lname} ?
+                            Are you sure you want to remove Admin permission from {this.state.fname} {this.state.lname} ?
                         </ModalBody>
                         <div >
                             <ModalFooter>
@@ -175,7 +175,7 @@ class AdminMember extends Component {
                             <tr>
                                 <td> User Name</td>
                                 <td> Email</td>
-                                <td> Join Date</td>
+                                <td> Registered Date</td>
                                 <td></td>
                             </tr>
                             {this.state.UserList.map((AdminMember, index) => {
@@ -186,7 +186,7 @@ class AdminMember extends Component {
                                             <td><FontAwesomeIcon icon={faUserCircle}/> {AdminMember.username}  {AdminMember.lname}</td>
 
                                             <td><FontAwesomeIcon icon={faEnvelope}/> {AdminMember.email}</td>
-                                            <td><FontAwesomeIcon icon={faEnvelope}/> {AdminMember.signupdate}</td>
+                                            <td><FontAwesomeIcon icon={faCalendar}/> {AdminMember.signupdate}</td>
                                             {/*<td><FontAwesomeIcon icon={faIdCard}/> {AdminMember.urole}</td>*/}
                                             {(this.props.erole === '3') && !(this.props.email === AdminMember.email)
                                                 ?
