@@ -4,8 +4,11 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
 
 
 @Document(collection = "Users")
@@ -16,7 +19,6 @@ public class User {
     @NotBlank
     @Size(min=3,max = 20)
     private String username;
-
 
     @Size(max = 20)
     private String lname;
@@ -30,10 +32,10 @@ public class User {
     @Size(min=8,max = 120)
     private String password;
 
-    private String role;
+    @CreatedDate
+    private Date signupdate = new Date();
 
     private int urole;;
-
 
     public User() {
     }
@@ -43,7 +45,6 @@ public class User {
         this.lname = lname;
         this.email = email;
         this.password = password;
-        this.role="ROLE_USER";
         this.urole = 1;//"ROLE_USER";
     }
 
@@ -93,5 +94,9 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Date getSignupdate() {
+        return signupdate;
     }
 }

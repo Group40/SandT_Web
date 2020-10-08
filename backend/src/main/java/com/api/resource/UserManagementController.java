@@ -52,4 +52,15 @@ public class UserManagementController {
         userManagementRepository.save(user);
         return ResponseEntity.ok("Done");
     }
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PutMapping("/touser")
+    public ResponseEntity<?> unBlock(@Valid @RequestBody UserRoleUpdate userRoleUpdate)
+            throws ResourceNotFoundException {
+        User user = userManagementRepository.findById(userRoleUpdate
+                .getId())
+                .orElseThrow(()-> new ResourceNotFoundException("Can't Find User"));
+        user.setUrole(1);
+        userManagementRepository.save(user);
+        return ResponseEntity.ok("Done");
+    }
 }
