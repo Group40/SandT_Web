@@ -61,23 +61,16 @@ class AdminNav extends Component {
                 <NavLink href="/admin/usermanagement">User Management</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/admin/reviewpics">Astrography Management</NavLink>
+                <NavLink href="/admin/photomanagement">Astrography Management</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/admin/adminpics">My Gallery</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="/admin/uploadnewpic">Uplload Pic</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="/admin/uploadpic">Institute of Astronomy(Upload pic)</NavLink>
                 <NavLink href="/admin/coursemanagement">Institute of Astronomy</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="/">S & T Publications</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/">S & T Optics</NavLink>
+                <NavLink href="/admin/optics">S & T Optics</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="/">IOAS Astrophilia</NavLink>
@@ -95,13 +88,9 @@ class AdminNav extends Component {
                   <NavLink href="/">User Management</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="/crew/reviewpics">Astrography Management</NavLink>
+                  <NavLink href="/crew/photomanagement">Astrography Management</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="/crew/adminpics">My Gallery</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink href="/crew/uploadpic">Institute of Astronomy(Upload pic)</NavLink>
                   <NavLink href="/crew/coursemanagement">Institute of Astronomy</NavLink>
                 </NavItem>
                 <NavItem>

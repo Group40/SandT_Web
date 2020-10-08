@@ -8,6 +8,8 @@ import ZoomPic from "../GlobalGallery/ZoomPic";
 import {connect} from "react-redux";
 import Buttontest from "./Button"
 
+const backendURI = require("../../../../BackEndURI");
+
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
@@ -40,7 +42,7 @@ class ReviewPics extends Component {
 
     componentDidMount = async () => {
         // this.state.pageno = this.state.activePage-1
-        await axios.get("http://localhost:8080/reviewPics?pageSize=5&pageNo="+this.state.pageno)
+        await axios.get(backendURI.url+"/reviewPics?pageSize=5&pageNo="+this.state.pageno)
         .then(res => {
             this.setState({ 
                 Picurls: res.data,
@@ -99,9 +101,9 @@ class ReviewPics extends Component {
             date: localISOTime,
         };
 
-        await axios.put("http://localhost:8080/picreviewed/"+e)
+        await axios.put(backendURI.url+"/picreviewed/"+e)
         .then((res) => {
-            axios.post("http://localhost:8080/addNotification", obj3)
+            axios.post(backendURI.url+"/addNotification", obj3)
                 .then(res =>{
                     this.setState({
                         isConfirming: false,
@@ -127,9 +129,9 @@ class ReviewPics extends Component {
             date: localISOTime,
         };
 
-        await axios.delete("http://localhost:8080/deletepic/"+this.state.deletepicid)
+        await axios.delete(backendURI.url+"/deletepic/"+this.state.deletepicid)
             .then(res => {
-                axios.post("http://localhost:8080/addNotification", obj3)
+                axios.post(backendURI.url+"/addNotification", obj3)
                     .then(res =>{
                         this.setState({
                             isdeletinging: false,

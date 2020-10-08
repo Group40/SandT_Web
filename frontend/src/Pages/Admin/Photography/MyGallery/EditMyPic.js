@@ -19,6 +19,8 @@ import AdminNav from "../../../../Components/AdminNav.component";
 import {Image,Header, Icon,Divider,Button} from 'semantic-ui-react'
 import {connect} from "react-redux";
 
+const backendURI = require("../../../../BackEndURI");
+
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
@@ -47,7 +49,7 @@ class EditMyPic extends Component {
     }
 
     componentDidMount = async () => {
-        await axios.get("http://localhost:8080/editMyPic/"+this.props.match.params.id+"?email="+this.props.email)
+        await axios.get(backendURI.url+"/editMyPic/"+this.props.match.params.id+"?email="+this.props.email)
             .then(res => {
                 this.setState({
                     picurl: res.data.photourl,
@@ -114,7 +116,7 @@ class EditMyPic extends Component {
             data.append('title',this.state.pictitle);
             data.append('detail',this.state.description);
             data.append('picid',this.state.picid);
-            fetch('http://localhost:8080/photouploading/updatedata',{
+            fetch(backendURI.url+'/photouploading/updatedata',{
                 method: 'post',
                 body: data
             }).catch((error) => {
@@ -155,9 +157,9 @@ class EditMyPic extends Component {
         this.setState({
             isdeletinging: true,
             deletepic:!this.state.deletepic,});
-        await axios.delete("http://localhost:8080/deletepic/"+this.state.picid)
+        await axios.delete(backendURI.url+"/deletepic/"+this.state.picid)
             .then(res => {
-                axios.post("http://localhost:8080/addNotification", obj3)
+                axios.post(backendURI.url+"/addNotification", obj3)
                     .then(
                         res => {
                             this.setState({

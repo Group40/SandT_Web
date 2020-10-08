@@ -7,6 +7,8 @@ import {Col, Modal, ModalBody, ModalFooter, ModalHeader, Table} from "reactstrap
 import ZoomPic from "./ViewPic";
 import { connect } from 'react-redux';
 
+const backendURI = require("../../../../BackEndURI");
+
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
@@ -35,7 +37,7 @@ class MyPics extends Component {
     }
 
     componentDidMount = async () => {
-        await axios.get("http://localhost:8080/getMypicslist/"+this.props.email+"?pageSize=21&pageNo="+this.state.pageno)
+        await axios.get(backendURI.url+"/getMypicslist/"+this.props.email+"?pageSize=21&pageNo="+this.state.pageno)
             .then(res => {
                 this.setState({
                     Picurls: res.data,

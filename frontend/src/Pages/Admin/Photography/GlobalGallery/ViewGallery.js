@@ -8,6 +8,8 @@ import { Table,Row,Col, ModalFooter,Modal, ModalHeader, ModalBody } from 'reacts
 import ZoomPic from "./ZoomPic";
 import {connect} from "react-redux";
 
+const backendURI = require("../../../../BackEndURI");
+
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
@@ -43,7 +45,7 @@ class ViewGallery extends Component {
     componentDidMount = async () => {
         if(this.state.value==="")
         {
-            await axios.get("http://localhost:8080/adminview?pageSize=5&pageNo="+this.state.pageno)
+            await axios.get(backendURI.url+"/adminview?pageSize=5&pageNo="+this.state.pageno)
             .then(res => {
             this.setState({ 
                 Picurls: res.data,
@@ -53,7 +55,7 @@ class ViewGallery extends Component {
         }
         else
         {
-            await axios.get("http://localhost:8080/adminSerchPic/"+this.state.value+"?pageSize=5&pageNo="+this.state.pageno)
+            await axios.get(backendURI.url+"/adminSerchPic/"+this.state.value+"?pageSize=5&pageNo="+this.state.pageno)
             .then(res => {
             this.setState({ 
                 Picurls: res.data,
@@ -95,9 +97,9 @@ class ViewGallery extends Component {
         };
         this.setState({ isUnreviewing: true });
         this.toggle()
-        await axios.put("http://localhost:8080/picunreviewed/"+this.state.picid)
+        await axios.put(backendURI.url+"/picunreviewed/"+this.state.picid)
         .then(res => {
-            axios.post("http://localhost:8080/addNotification", obj3)
+            axios.post(backendURI.url+"/addNotification", obj3)
                 .then(res => {
                     this.setState({
                         isUnreviewing: false,

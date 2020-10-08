@@ -26,6 +26,10 @@ import AdminMember from "./UserManagement/AdminMember";
 import AllMember from "./UserManagement/AllMember";
 import BlockMember from "./UserManagement/BlockMember";
 import UserButtons from "./UserManagement/UserButtons";
+import OpticsManagement from "./Optics/OpticsManagement";
+import AddOptics from "./Optics/AddNew/AddOptics";
+import ViewOptics from "./Optics/AddNew/ViewOptics";
+import Photography from "./Photography/PhotoManagement";
 
 export default class AdminRoutes extends Component {
 
@@ -58,6 +62,10 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/viewusermember" component={UserMember}/>
                 <Route path="/admin/viewallmember" component={AllMember}/>
                 <Route path="/admin/viewblockmember" component={BlockMember}/>
+                <Route path="/admin/optics" component={OpticsManagement}/>
+                <Route path="/admin/addoptics" component={AddOptics}/>
+                <Route path="/admin/viewoptics" component={ViewOptics}/>
+                <Route path="/admin/photomanagement" component={Photography}/>
             </Router>
             
         );

@@ -18,6 +18,8 @@ import {Image, Header, Icon, Divider, Button, Segment} from 'semantic-ui-react'
 import {connect} from "react-redux";
 import Logo from "../../../../Images/logo.jpg";
 
+const backendURI = require("../../../../BackEndURI");
+
 var tzoffset = (new Date()).getTimezoneOffset() * 60000;
 var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
 
@@ -115,7 +117,7 @@ class UploadPic extends Component {
             data.append('name',this.props.username+" "+this.props.lname,);
             data.append('email',this.props.email);
             //data.append('role',this.props.erole);
-            fetch('http://localhost:8080/photouploading/adminuploadpic',{
+            fetch(backendURI.url+'/photouploading/adminuploadpic',{
                 method: 'post',
                 body: data
             }).catch((error) => {
