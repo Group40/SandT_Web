@@ -105,6 +105,12 @@ class AdminNav extends Component {
                 <NavItem>
                   <NavLink href="/crew/notifications">Report Generator</NavLink>
                 </NavItem>
+                <NavItem>
+                <NavLink href="/admin/addforum">Add Forum</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/admin/viewforums">View Forums</NavLink>
+              </NavItem>
               </React.Fragment>
             }
           </Nav>
