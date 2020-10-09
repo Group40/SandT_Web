@@ -21,6 +21,7 @@ import CourseList from "./Courses/CourseList";
 import EditCourse from "./Courses/EditCourse";
 import Notification from "./Notification";
 import Photography from "./Photography/PhotoManagement";
+import EditHomeScreenScroll from "./AppHomeScreen/EditHomeScreenScroll";
 
 export default class CrewRoutes extends Component {
 
@@ -47,6 +48,7 @@ export default class CrewRoutes extends Component {
                 <Route path="/crew/editcourse/:id" component={EditCourse}/>
                 <Route path="/crew/notifications" component={Notification}/>
                 <Route path="/crew/photomanagement" component={Photography}/>
+                <Route path="/crew/appscroll" component={EditHomeScreenScroll}/>
             </Router>
             
         );

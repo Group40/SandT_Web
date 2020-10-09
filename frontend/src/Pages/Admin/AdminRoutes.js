@@ -30,6 +30,7 @@ import OpticsManagement from "./Optics/OpticsManagement";
 import AddOptics from "./Optics/AddNew/AddOptics";
 import ViewOptics from "./Optics/AddNew/ViewOptics";
 import Photography from "./Photography/PhotoManagement";
+import EditHomeScreenScroll from "./AppHomeScreen/EditHomeScreenScroll";
 
 export default class AdminRoutes extends Component {
 
@@ -66,6 +67,7 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/addoptics" component={AddOptics}/>
                 <Route path="/admin/viewoptics" component={ViewOptics}/>
                 <Route path="/admin/photomanagement" component={Photography}/>
+                <Route path="/admin/appscroll" component={EditHomeScreenScroll}/>
             </Router>
             
         );
