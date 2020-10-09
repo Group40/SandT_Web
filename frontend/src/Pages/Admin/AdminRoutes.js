@@ -67,7 +67,6 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/addoptics" component={AddOptics}/>
                 <Route path="/admin/viewoptics" component={ViewOptics}/>
                 <Route path="/admin/photomanagement" component={Photography}/>
-                <Route path="/admin/appscroll" component={EditHomeScreenScroll}/>
             </Router>
             
         );
