@@ -79,7 +79,13 @@ class AdminNav extends Component {
                 <NavLink href="/admin/notifications">Report Generator</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/admin/appscroll">App HomeScreen Scroll</NavLink>
+                <NavLink href="/admin/scroll">App Image Scroll</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/admin/addform">Add Form</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/admin/viewforms">View Form</NavLink>
               </NavItem>
               </React.Fragment>
                 :

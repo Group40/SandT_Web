@@ -89,7 +89,7 @@ class EditHomeScreenScroll extends Component {
             }).then(res => {
                 this.setState({
                     btnloading:false,
-                    });
+                });
                 if(res.status===200){
                     this.componentDidMount();
                     //window.open(`/admin/adminpics`);
@@ -113,11 +113,11 @@ class EditHomeScreenScroll extends Component {
 
         await axios.delete(backendURI.url+"/appimage/delete/"+this.state.deletepicid)
             .then(res => {
-                        this.setState({
-                            isdeletinging: false,
-                            deletetoggl:!this.state.deletetoggl,
-                        });
-                        this.pagingfun()
+                this.setState({
+                    isdeletinging: false,
+                    deletetoggl:!this.state.deletetoggl,
+                });
+                this.pagingfun()
             })
     }
 
@@ -173,40 +173,40 @@ class EditHomeScreenScroll extends Component {
 
                 <Container style={{ margin: 20 }}>
                     {this.state.Picurls.map((pic, index) => {
-                        return (
-                            <React.Fragment key={index}>
-                                
-                                <Item.Group divided>
-                                    <Item>
-                                        <Item.Content>
-                                            <Image className={"leftimg"}
-                                                fluid
-                                                src={pic.imageurl}
-                                                size='medium'
-                                            />
-                                        </Item.Content>
-                                    </Item>
-                                </Item.Group>
-                                <Divider hidden />
-                                <Button
-                                    color="red"
-                                    style={{float: 'right'}}
-                                    onClick={() => this.deletepicdata(pic.imageurl, pic.id)}
+                            return (
+                                <React.Fragment key={index}>
 
-                                >
-                                    {this.state.isdeletinging ?   "Delete" : "Delete"}
-                                </Button>
+                                    <Item.Group divided>
+                                        <Item>
+                                            <Item.Content>
+                                                <Image className={"leftimg"}
+                                                       fluid
+                                                       src={pic.imageurl}
+                                                       size='medium'
+                                                />
+                                            </Item.Content>
+                                        </Item>
+                                    </Item.Group>
+                                    <Divider hidden />
+                                    <Button
+                                        color="red"
+                                        style={{float: 'right'}}
+                                        onClick={() => this.deletepicdata(pic.imageurl, pic.id)}
 
-                                <Divider hidden />
-                                <Divider hidden />
-                                <Divider hidden />
-                                <Divider />
+                                    >
+                                        {this.state.isdeletinging ?   "Delete" : "Delete"}
+                                    </Button>
+
+                                    <Divider hidden />
+                                    <Divider hidden />
+                                    <Divider hidden />
+                                    <Divider />
 
 
 
-                            </React.Fragment>
-                        );
-                    }
+                                </React.Fragment>
+                            );
+                        }
                     )}
                     {
                         this.state.Picurls.length<=4
