@@ -2,7 +2,7 @@ import React, { Component  } from 'react'
 import axios from "axios";
 import AdminNav from "../../../../Components/AdminNav.component";
 import LoadingScreen from "../../Photography/Review/LoadingPic"
-import {Container, Button, Divider, Message, Pagination, Item, Label, Segment, Header, Image} from 'semantic-ui-react'
+import {Container, Button, Divider, Message, Item, Label, Segment, Header, Image} from 'semantic-ui-react'
 import {Col, Modal, ModalBody, ModalFooter, ModalHeader, Row, Table} from "reactstrap";
 import {connect} from "react-redux";
 
@@ -11,25 +11,19 @@ styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
 document.head.appendChild(styleLink);
 
-var tzoffset = (new Date()).getTimezoneOffset() * 60000;
-var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+const backendURI = require("../../../../BackEndURI");
 
 class ViewOptics extends Component {
     constructor(props) {
         super(props)
         this.state = {
             Picurls: [],
-            activePage: 1,
-            totalPage:1,
-            pageno:0,
             loading: true,
             isConfirming: false,
             isdeletinging: false,
             deletetoggl:false,
             issubmitting:false,
-            reachMaxPage:false,
             picurl:"",
-            zoompic:false,
             deletepicid:"",
             pictitle:"",
         }
@@ -38,35 +32,13 @@ class ViewOptics extends Component {
 
     componentDidMount = async () => {
         // this.state.pageno = this.state.activePage-1
-        await axios.get("http://localhost:8080/reviewPics?pageSize=5&pageNo="+this.state.pageno)
+        await axios.get(backendURI.url+"/addoptics/show")
             .then(res => {
                 this.setState({
                     Picurls: res.data,
                     loading: false,
                 })
             })
-        if((this.state.activePage===this.state.totalPage)&&(this.state.Picurls.length===5)&&(!this.state.reachMaxPage)){
-            this.setState({
-                totalPage:this.state.totalPage+1
-            })
-        }
-        this.checkPageCount()
-
-    }
-
-    checkPageCount(){
-        if((this.state.activePage!==1)&&(this.state.Picurls.length===0)){
-            this.setState({
-                    totalPage:this.state.totalPage-1,
-                    activePage:this.state.activePage-1,
-                    pageno: this.state.pageno-1,
-                    reachMaxPage:true
-                },
-                () =>{
-                    this.pagingfun()
-                }
-            )
-        }
     }
 
     deletepicdata(url,id,title){
@@ -83,91 +55,53 @@ class ViewOptics extends Component {
         });
     };
 
-    Submit = async(param, e,title) => {
-        this.setState({
-            isConfirming: true,
-            pictitle:title,
-        });
-        const obj3 = {
-            authorName: this.props.username+" "+this.props.lname,
-            authorType: this.props.erole,
-            authorMail: this.props.email,
-            name: this.state.pictitle,
-            nameType: "confirmed the photo",
-            date: localISOTime,
-        };
-
-        await axios.put("http://localhost:8080/picreviewed/"+e)
-            .then((res) => {
-                axios.post("http://localhost:8080/addNotification", obj3)
-                    .then(res =>{
-                        this.setState({
-                            isConfirming: false,
-                        });
-                        this.pagingfun()
-                    })
-
-            })
-    }
+    // Submit = async(param, e,title) => {
+    //     this.setState({
+    //         isConfirming: true,
+    //         pictitle:title,
+    //     });
+    //     const obj3 = {
+    //         authorName: this.props.username+" "+this.props.lname,
+    //         authorType: this.props.erole,
+    //         authorMail: this.props.email,
+    //         name: this.state.pictitle,
+    //         nameType: "confirmed the photo",
+    //         date: localISOTime,
+    //     };
+    //
+    //     await axios.put("http://localhost:8080/picreviewed/"+e)
+    //         .then((res) => {
+    //             axios.post("http://localhost:8080/addNotification", obj3)
+    //                 .then(res =>{
+    //                     this.setState({
+    //                         isConfirming: false,
+    //                     });
+    //                     this.pagingfun()
+    //                 })
+    //
+    //         })
+    // }
 
     delete = async() => {
         this.setState({
             isdeletinging: true,
-            deletetoggl:!this.state.deletetoggl,
-
         });
-        const obj3 = {
-            authorName: this.props.username+" "+this.props.lname,
-            authorType: this.props.erole,
-            authorMail: this.props.email,
-            name: this.state.pictitle,
-            nameType: "deleted the photo",
-            date: localISOTime,
-        };
 
-        await axios.delete("http://localhost:8080/deletepic/"+this.state.deletepicid)
+        await axios.delete(backendURI.url+"/addoptics/delete/"+this.state.deletepicid)
             .then(res => {
-                axios.post("http://localhost:8080/addNotification", obj3)
-                    .then(res =>{
                         this.setState({
                             isdeletinging: false,
+                            deletetoggl:!this.state.deletetoggl,
                         });
                         this.pagingfun()
                     })
-
-            })
     }
 
     pagingfun(){
         this.componentDidMount()
     }
 
-    handlePaginationChange = (e, { activePage }) => {
-        this.setState({ activePage },
-        )
-        this.setState({
-                pageno: activePage-1,
-                loading: true
-            }, () =>{
-                this.pagingfun()
-            }
-        )
-    }
-
-    zoomtoggle = (parm,e) => {
-        this.setState({
-            zoompic: !this.state.zoompic,
-            picurl: e,
-        });
-    };
-
     render(){
-        const {
-            activePage,
-            totalPage,
-
-        } = this.state
-
         if (this.state.loading){
             return(
                 <React.Fragment>
@@ -204,7 +138,7 @@ class ViewOptics extends Component {
                 { this.state.deletetoggl ?
                     <Modal isOpen={this.state.deletetoggl} toggle={this.deletetoggle}>
                         <ModalHeader>
-                            <Header>Are you really want delete this image</Header>
+                            <Header>Are you really want delete this item ?</Header>
                         </ModalHeader>
                         <ModalBody>
                             <div className="center2">
@@ -216,7 +150,13 @@ class ViewOptics extends Component {
                         <div >
                             <ModalFooter>
                                 <Button color="blue" onClick={this.deletetoggle} >No</Button>
-                                <Button color="red" onClick={this.delete} >Yes</Button>
+                                <Button
+                                    color="red"
+                                    onClick={this.delete}
+                                    disabled={this.state.isdeletinging}
+                                    loading={this.state.isdeletinging}
+                                >Yes</Button>
+
                             </ModalFooter>
                         </div>
                     </Modal>
@@ -231,13 +171,12 @@ class ViewOptics extends Component {
                                 <Item.Group divided>
 
                                     <Item>
-                                        <Item.Image src={pic.photourl}  onClick={() => {this.zoomtoggle(pic.photoid, pic.photourl)}}/>
+                                        <Item.Image src={pic.url}/>
 
                                         <Item.Content>
-                                            <Item.Header as='a'><Header as='h2'>{pic.picTitle}</Header></Item.Header>
+                                            <Item.Header as='a'><Header as='h2'> {pic.title}</Header></Item.Header>
                                             <Item.Meta>
-                                                <span className='cinema'>{pic.ownername}</span>
-                                                <Label>{pic.ownerEmail}</Label>
+                                                <Label>{pic.brand}</Label>
                                             </Item.Meta>
                                             <Item.Description>
                                                 <Row>
@@ -245,16 +184,29 @@ class ViewOptics extends Component {
                                                         <Table borderless >
                                                             <tbody>
                                                             <tr>
-                                                                <td ><Header as='h5'>Date :</Header></td>
-                                                                <td>2015-03-11</td>
+                                                                <td ><Header as='h5'>Model :</Header></td>
+                                                                <td>{pic.model}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td><Header as='h5'>Time :</Header></td>
-                                                                <td>22:22</td>
+                                                                <td><Header as='h5'>Optical Design :</Header></td>
+                                                                <td>{pic.opticaldesign}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td><Header as='h5'>Location :</Header></td>
-                                                                <td>{pic.ownerEmail}</td>
+                                                                <td><Header as='h5'>Aperture :</Header></td>
+                                                                <td>{pic.aperture}</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td ><Header as='h5'>Magnification :</Header></td>
+                                                                <td>{pic.magnification}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><Header as='h5'>Focal :</Header></td>
+                                                                <td>{pic.focal}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><Header as='h5'>Price :</Header></td>
+                                                                <td>{pic.price}</td>
                                                             </tr>
                                                             </tbody>
                                                         </Table>
@@ -266,7 +218,7 @@ class ViewOptics extends Component {
                                             <Item.Description>
                                                 <Header as='h5' attached='top'>Description</Header>
                                                 <Segment attached>
-                                                    {pic.picDetails}
+                                                    {pic.detail}
                                                 </Segment></Item.Description>
                                         </Item.Content>
                                     </Item>
@@ -275,23 +227,21 @@ class ViewOptics extends Component {
                                 <Button
                                     color="red"
                                     style={{float: 'right'}}
-                                    onClick={() => this.deletepicdata(pic.photourl, pic.uploadPhotoId,pic.picTitle)}
-                                    disabled={this.state.isdeletinging}
-                                    loading={this.state.isdeletinging}
+                                    onClick={() => this.deletepicdata(pic.url, pic.id,pic.title)}
                                 >
-                                    {this.state.isdeletinging ?   "Deleting" : "Delete"}
+                                    {this.state.isdeletinging ?   "Delete" : "Delete"}
                                 </Button>
 
 
-                                <Button
-                                    color="blue"
-                                    style={{float: 'right'}}
-                                    onClick={() => this.Submit(index, pic.uploadPhotoId,pic.picTitle)}
-                                    disabled={this.state.isConfirming}
-                                    loading={this.state.isConfirming}
-                                >
-                                    {this.state.isConfirming ?   "Confirm" : "Confirm"}
-                                </Button>
+                                {/*<Button*/}
+                                {/*    color="blue"*/}
+                                {/*    style={{float: 'right'}}*/}
+                                {/*    onClick={() => this.Submit(index, pic.uploadPhotoId,pic.picTitle)}*/}
+                                {/*    disabled={this.state.isConfirming}*/}
+                                {/*    loading={this.state.isConfirming}*/}
+                                {/*>*/}
+                                {/*    {this.state.isConfirming ?   "Confirm" : "Confirm"}*/}
+                                {/*</Button>*/}
 
 
                                 <Divider hidden />
@@ -302,17 +252,7 @@ class ViewOptics extends Component {
                             </React.Fragment>
                         );
                     })}
-                    <div className="setmiddle">
-                        <Pagination
-                            defaultActivePage={activePage}
-                            onPageChange={this.handlePaginationChange}
-                            firstItem={null}
-                            lastItem={null}
-                            pointing
-                            secondary
-                            totalPages={totalPage}
-                        />
-                    </div>
+
                 </Container>
             </React.Fragment>
         )
