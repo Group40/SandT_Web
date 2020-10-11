@@ -19,9 +19,16 @@ public class ArticleSubmitController {
         repository.save(article);
         return "Added a new article";
     }
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/getAllarticle")
     public List<Article> all(){
         return repository.findAll();
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @DeleteMapping("/deletearticle/{id}")
+    public String deleteArticle(@PathVariable String id) {
+        repository.deleteById(id);
+        return "article deleted with id : "+id;
     }
 }
