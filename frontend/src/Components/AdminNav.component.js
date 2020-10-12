@@ -90,12 +90,7 @@ class AdminNav extends Component {
               <NavItem>
                 <NavLink href="/admin/forums">Forum Management</NavLink>
               </NavItem>
-              {/* <NavItem>
-                <NavLink href="/admin/addform">Add Form</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="/admin/viewforms">View Form</NavLink>
-              </NavItem> */}
+            
               </React.Fragment>
                 :
               <React.Fragment>
