@@ -84,6 +84,13 @@ class AdminNav extends Component {
               <NavItem>
                 <NavLink href="/admin/viewforms">View Forum</NavLink>
               </NavItem>
+              <NavItem>
+                <NavLink href="/admin/scroll">App Image Scroll</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/admin/forums">Forum Management</NavLink>
+              </NavItem>
+            
               </React.Fragment>
                 :
               <React.Fragment>
