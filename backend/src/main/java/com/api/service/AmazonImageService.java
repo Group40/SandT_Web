@@ -159,5 +159,11 @@ public class AmazonImageService extends AmazonClientService{
         uploadPhotoRepository.delete(uploadPhoto);
     }
 
+    public void opticDelete(Optics optics){
+        String picname =optics.getUrl().substring(optics.getUrl().lastIndexOf("/")+1);
+        getClient().deleteObject(new DeleteObjectRequest(getBucketname(),picname));
+        opticsRepository.delete(optics);
+    }
+
 
 }

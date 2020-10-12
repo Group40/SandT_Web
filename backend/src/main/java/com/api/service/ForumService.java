@@ -12,7 +12,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Service;
 
-import lombok.var;
+//import lombok.var;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2

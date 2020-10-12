@@ -3,7 +3,9 @@ package com.api.resource;
 import com.amazonaws.services.applicationdiscovery.model.ResourceNotFoundException;
 import com.api.model.AppHomeScreen;
 import com.api.repository.AppHomeScreenImageRepository;
+import com.api.repository.AppHomeScreenMobRepository;
 import com.api.security.service.HomeScreenImageFind;
+import com.api.security.service.ScrollImageFind;
 import com.api.service.AppHomeScreenImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,9 @@ import java.util.Optional;
 public class AppHomeScreenImageController {
     @Autowired
     private AppHomeScreenImageService homeScreenImageService;
+
+    @Autowired
+    private AppHomeScreenMobRepository appHomeScreenMobRepository;
 
     @Autowired
     private AppHomeScreenImageRepository imageRepository;
@@ -47,10 +52,10 @@ public class AppHomeScreenImageController {
         return imageRepository.findAll();
     }
 
-//    @CrossOrigin(origins = "http://localhost:3000")
-//    @GetMapping("/view")
-//    public List<HomeScreenImageFind> appView(){
-//        return imageRepository.findAll();
-//    }
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/mobview")
+    public List<ScrollImageFind> mobView(){
+        return appHomeScreenMobRepository.findAllBy();
+    }
 
 }

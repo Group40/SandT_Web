@@ -30,10 +30,9 @@ import OpticsManagement from "./Optics/OpticsManagement";
 import AddOptics from "./Optics/AddNew/AddOptics";
 import ViewOptics from "./Optics/AddNew/ViewOptics";
 import Photography from "./Photography/PhotoManagement";
-// import EditHomeScreenScroll from "./AppHomeScreen/EditHomeScreenScroll";
+import EditHomeScreenScroll from "./AppHomeScreen/EditHomeScreenScroll";
 import AddForum from "./Forums/AddForum";
 import ViewForums from "./Forums/ViewForums";
-import Forums from "./Forums/Forums";
 
 export default class AdminRoutes extends Component {
 
@@ -70,10 +69,9 @@ export default class AdminRoutes extends Component {
                 <Route path="/admin/addoptics" component={AddOptics}/>
                 <Route path="/admin/viewoptics" component={ViewOptics}/>
                 <Route path="/admin/photomanagement" component={Photography}/>
-                {/* <Route path="/admin/scroll" component={EditHomeScreenScroll}/> */}
-                <Route path="/admin/addforum" component={AddForum}/>
-                <Route path="/admin/viewforums" component={ViewForums}/>
-                <Route path="/admin/forums" component={Forums}/>
+                <Route path="/admin/scroll" component={EditHomeScreenScroll}/>
+                    <Route path="/admin/addform" component={AddForum}/>
+                    <Route path="/admin/viewforms" component={ViewForums}/>
             </Router>
             
         );

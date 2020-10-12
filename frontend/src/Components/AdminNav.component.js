@@ -61,7 +61,7 @@ class AdminNav extends Component {
                 <NavLink href="/admin/usermanagement">User Management</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/admin/photomanagement">Astrography Management</NavLink>
+                <NavLink href="/admin/photomanagement">Astrophotography Management</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="/admin/coursemanagement">Institute of Astronomy</NavLink>
@@ -73,10 +73,16 @@ class AdminNav extends Component {
                 <NavLink href="/admin/optics">S & T Optics</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/">IOAS Astrophilia</NavLink>
+                <NavLink href="/admin/notifications">Report Generator</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/admin/notifications">Report Generator</NavLink>
+                <NavLink href="/admin/scroll">App Image Scroll</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/admin/addform">Add Forum</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/admin/viewforms">View Forum</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="/admin/scroll">App Image Scroll</NavLink>
@@ -100,7 +106,7 @@ class AdminNav extends Component {
                   <NavLink href="/">User Management</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="/crew/photomanagement">Astrography Management</NavLink>
+                  <NavLink href="/crew/photomanagement">Astrophotography Management</NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink href="/crew/coursemanagement">Institute of Astronomy</NavLink>
@@ -110,9 +116,6 @@ class AdminNav extends Component {
                 </NavItem>
                 <NavItem>
                   <NavLink href="/">S & T Optics</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink href="/">IOAS Astrophilia</NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink href="/crew/notifications">Report Generator</NavLink>
