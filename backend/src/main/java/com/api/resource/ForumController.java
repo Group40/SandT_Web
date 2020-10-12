@@ -32,6 +32,7 @@ public class ForumController {
    @Autowired
    private ForumRepository repository;
 
+
    @Autowired
    private ForumService forumService;
 

@@ -1,7 +1,10 @@
 import React, { Component, useState } from 'react';
 import AdminNav from "../../../Components/AdminNav.component";
-import { Table, Button, TableHeader, TableBody, TableRow, TableCell } from 'semantic-ui-react';
+import { Table, Button, Container, Label, } from 'semantic-ui-react';
 import axios from 'axios';
+import { Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
+import { actions } from 'react-redux-form';
+// import { result } from 'lodash';
 var forums;
 
 export default class ViewForums extends Component {
@@ -12,13 +15,14 @@ export default class ViewForums extends Component {
             id: "",
             title: "",
             date: "",
-            startDate: "",
-            startTime: "",
-            status: ""
+            status: "",
+            startmodal: false,
+            stopmodal: false,
+            deletemodal: false,
         }
-        // this.startForum = this.startForum.bind(this);
+
     }
-    
+
     //get data
     componentDidMount = async() => {
        await axios.get("http://localhost:8080/getForums") 
@@ -27,8 +31,6 @@ export default class ViewForums extends Component {
                 id: forum.id,
                 title: forum.title,
                 date: forum.date,
-                startDate: forum.startDate,
-                startTime: forum.startTime,
                 status: forum.status
             }));
             this.setState({
@@ -47,12 +49,10 @@ export default class ViewForums extends Component {
                             id: forum.id,
                             title: forum.title,
                             date: forum.date,
-                            startDate: forum.startDate,
-                            startTime: forum.startTime,
                             status: forum.status
                         }));
                         this.setState({
-                            forums: res.data
+                            forums: res.data,
                         });
                     })
                     console.log(response);
@@ -72,8 +72,6 @@ export default class ViewForums extends Component {
                         id: forum.id,
                         title: forum.title,
                         date: forum.date,
-                        startDate: forum.startDate,
-                        startTime: forum.startTime,
                         status: forum.status
                     }));
                     this.setState({
@@ -87,39 +85,56 @@ export default class ViewForums extends Component {
         )
     };
 
+    starttoggle = (id) => {
+        this.setState({
+            startmodal: !this.state.startmodal,
+            id: id,  
+        });
+    };
+
+    stoptoggle = (id) => {
+        this.setState({
+            stopmodal: !this.state.stopmodal,
+            id: id,  
+        });
+    };
+
+    deletetoggle = (id, status) => {
+        this.setState({
+            deletemodal: !this.state.deletemodal,
+            id: id, 
+            status: status, 
+        });
+    };
+
     // first render
     renderForums() {
         return this.state.forums.map((forum, index) => {
-            const {id, title, date, startDate, startTime, status} = forum
+            const {id, title, date, status} = forum
             return (
-                <tr key={id}>
-                    {/* <td>{id}</td> */}
-                    <td>{title}</td>
-                    <td>{date}</td>
-                    {/* <td>{status}</td> */}
-                    <td>
-                    
-                        {(status=="0")?
-                            <button onClick={() => this.start(id)}>start</button>
-                        :
-                        (status=="1")?<button onClick={() => this.stop(id)}>end</button>:<p>over</p>
+                // <Table.Body>
+                    <Table.Row key={id}>
+                        <Table.Cell>{title}</Table.Cell>
+                        <Table.Cell>{date}</Table.Cell>
+                        <Table.Cell>
+                            {(status==="0")?
+                                <Button color="green" onClick={() => this.starttoggle(id)}>Start</Button>
+                            :
+                                (status==="1")?<Button color="blue" onClick={() => this.stoptoggle(id)}>End</Button>:<Label>Over</Label>
                             
-                        }
-                    </td>
+                            }
+                        </Table.Cell>
+                        <Table.Cell>
+                            {(status==="0")?
 
-                    <td>
+                                <Button color="red" onClick={() => this.deletetoggle(id, status)}>Delete</Button>
+                            :
                     
-                    {(status=="0")?
-                        <Button onClick={(e) => this.deleteForum(id, status, e)}>Delete</Button>
-                    :
-                    
-                        <Button disabled>Delete</Button>
-                    }
-                    </td>
-                    {/* <td><Button onClick={(e) => this.deleteForum(id, status, e)}>Delete</Button></td> */}
-                </tr>
-            )
-        })
+                            <Button disabled>Delete</Button>
+                            }
+                        </Table.Cell>
+                    </Table.Row>
+        )})
     }
 
     //delete button
@@ -143,22 +158,66 @@ export default class ViewForums extends Component {
         return (
             <React.Fragment>
                 <AdminNav/>
-                <Table >
-                    <thead>
-                        <tr>
-                            {/* <th>ID</th> */}
-                            <th>Title</th>
-                            <th>Date</th>
-                            {/* <th>Status</th>  */}
-                            <th>Start/End</th>
-                            <th>Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.renderForums()}
+                { this.state.startmodal ?
+                    <Modal isOpen={this.state.startmodal} toggle={this.starttoggle}>
+                        <ModalHeader toggle={this.starttoggle}>Confirm</ModalHeader>
+                        <ModalBody>
+                            Are you sure you want to start this forum?
+                        </ModalBody>
+                        <div >
+                            <ModalFooter>
+                                <Button color="red" onClick={() => this.start(this.state.id)} >Yes</Button>
+                                <Button color="blue" onClick={this.starttoggle} >No</Button>
+                            </ModalFooter>
+                        </div>
+                    </Modal>
+                    : null }
 
-                    </tbody>
+                    { this.state.stopmodal ?
+                    <Modal isOpen={this.state.stopmodal} toggle={this.stoptoggle}>
+                        <ModalHeader toggle={this.stoptoggle}>Confirm</ModalHeader>
+                        <ModalBody>
+                            Are you sure you want to end this forum?
+                        </ModalBody>
+                        <div >
+                            <ModalFooter>
+                                <Button color="red" onClick={() => this.stop(this.state.id)} >Yes</Button>
+                                <Button color="blue" onClick={this.stoptoggle} >No</Button>
+                            </ModalFooter>
+                        </div>
+                    </Modal>
+                    : null } 
+
+                    { this.state.deletemodal ?
+                    <Modal isOpen={this.state.deletemodal} toggle={this.deletetoggle}>
+                        <ModalHeader toggle={this.deletetoggle}>Confirm</ModalHeader>
+                        <ModalBody>
+                            Are you sure you want to delete this forum?
+                        </ModalBody>
+                        <div >
+                            <ModalFooter>
+                                <Button color="red" onClick={(e) => this.deleteForum(this.state.id, this.state.status, e)} >Yes</Button>
+                                <Button color="blue" onClick={this.deletetoggle} >No</Button>
+                            </ModalFooter>
+                        </div>
+                    </Modal>
+                    : null } 
+
+                <Container className='center'>
+                <Table celled>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell>Title</Table.HeaderCell>
+                            <Table.HeaderCell>Date</Table.HeaderCell>
+                            <Table.HeaderCell>Start/End</Table.HeaderCell>
+                            <Table.HeaderCell>Delete</Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                        {this.renderForums()}
+                    </Table.Body>
                 </Table>
+                </Container>
             </React.Fragment>
         );
     }

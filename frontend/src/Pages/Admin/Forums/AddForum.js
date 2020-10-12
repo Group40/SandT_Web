@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Form, Label, Col, Row, FormGroup, Input, Button } from 'reactstrap';
+// import { Container, Form, Label, Col, Row, FormGroup, Input, Button } from 'reactstrap';
+import { Button, Container, Form, Label, Input } from 'semantic-ui-react'
 import moment from 'moment'
 import AdminNav from "../../../Components/AdminNav.component";
 import axios from 'axios';
@@ -12,12 +13,8 @@ export default class AddForum extends Component {
         this.state = {
             title: "",
             date: "",
-            // startDate: "",
-            // startTime: "",
             titleError: "",
             dateError: "",
-            // startDateError: "",
-            // startTimeError: ""
         }
     }
 
@@ -31,12 +28,8 @@ export default class AddForum extends Component {
         this.setState ({
             title: "",
             date: "",
-            // startDate: "",
-            // startTime: "",
             titleError: "",
             dateError: "",
-            // startDateError: "",
-            // startTimeError: "",
         });
     }
 
@@ -44,8 +37,6 @@ export default class AddForum extends Component {
         let isError = false;
         let titleError = "";
         let dateError = "";
-        // let startDateError = "";
-        // let startTimeError = ""
 
         if(!this.state.title) {
             isError = true;
@@ -55,19 +46,9 @@ export default class AddForum extends Component {
             isError = true;
             dateError = "Date cannot be empty";
         }
-        // if(!this.state.startDate) {
-        //     isError = true;
-        //     startDateError = "Start date cannot be empty";
-        // }
-        // if(!this.state.startTime) {
-        //     isError = true;
-        //     startTimeError = "Start time cannot be empty";
-        // }
         this.setState({ 
             titleError: titleError,
             dateError: dateError,
-            // startDateError: startDateError,
-            // startTimeError: startTimeError,
         });
         return isError;
     }
@@ -76,8 +57,7 @@ export default class AddForum extends Component {
         e.preventDefault();
         this.setState({
             loading: true,
-            title: '',
-            date: ''
+            
         });
         const isValid = this.validate();
 
@@ -86,11 +66,14 @@ export default class AddForum extends Component {
             axios.post("http://localhost:8080/addForum", {
                 title: this.state.title,
                 date: this.state.date,
-                // startDate: this.state.startDate,
-                // startTime: this.state.startTime,
 
             }).then ((response) => {
                 console.log(response);
+                this.setState({
+                    title: '',
+                    date: ''
+                });
+                window.location='/admin/viewforums';
             }).catch ((error) => {
                 console.log(error);
             })
@@ -102,61 +85,32 @@ export default class AddForum extends Component {
     }
 
     render() {
-        const startDate = new Date();
+        // const startDate = new Date();
         return (
             <React.Fragment>
                 <AdminNav/>
-                <Container>
+                <Container className='center'>
 
-                    <Col xs="12" sm="8">
                         <div className="add.forum">
                             <Form id="form" onSubmit={this.onSubmit}>
-                                <Row>
-                                    <Col xs="12" sm="8">
-                                        <FormGroup>
-                                            <Label for="title">Event Title</Label>
+                                <Form.Field>
+                                        <Form.Field>
+                                            <label for="title">Event Title</label>
                                             <Input placeholder="Enter title" name="title" value={this.state.title} onChange={e => this.change(e)} />
                                             <div style={{fontSize: 12, color: "red"}}>{this.state.titleError}</div>
-                                        </FormGroup>
-                                    </Col>
-                                
-                                    <Col xs="12" sm="4">
-                                        <FormGroup>
-                                            <Label for="date">Date</Label>
+                                        </Form.Field>
+                                        <Form.Field>
+                                            <label for="date">Date</label>
                                             <Input type="date" id="datepicker" name="date" value={this.state.date} onChange={e => this.change(e)} mindate={moment().toDate()} />
                                             <div style={{fontSize: 12, color: "red"}}>{this.state.dateError}</div>
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-                                {/* <Row>
-
-                                <Col xs="12" sm="6">
-                                        <FormGroup>
-                                            <Label for="startDate">Start date</Label>
-                                            <Input type="date" id="startdatepicker" name="startDate" value={this.state.startDate} onChange={e => this.change(e)} />
-                                            <div style={{fontSize: 12, color: "red"}}>{this.state.startDateError}</div>
-                                        </FormGroup>
-                                    </Col>
-
-                                    <Col xs="12" sm="6">
-                                        <FormGroup>
-                                            <Label for="startTime">Start time</Label>
-                                            <Input type="time" id="starttime" name="startTime" value={this.state.startTime} onChange={e => this.change(e)} />
-                                            <div style={{fontSize: 12, color: "red"}}>{this.state.startTimeError}</div>
-                                        </FormGroup>
-                                    </Col>
-                                </Row> */}
-                                <Row>
-                                    <Col xs="6" sm="6">
+                                        </Form.Field>
+                                </Form.Field>
+                                <Form.Field>
                                         <Button outline color="info" onClick={this.reset} block>Cancel</Button>
-                                    </Col>
-                                    <Col xs="6" sm="6">
                                         <Button outline color="info" type="submit" block>Add</Button>
-                                    </Col>
-                                </Row>        
+                                </Form.Field>        
                             </Form>
                         </div>
-                    </Col>
                 </Container>
             </React.Fragment>
         );
