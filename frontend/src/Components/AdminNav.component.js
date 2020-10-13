@@ -66,24 +66,24 @@ class AdminNav extends Component {
               <NavItem>
                 <NavLink href="/admin/coursemanagement">Institute of Astronomy</NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink href="/">S & T Publications</NavLink>
-              </NavItem>
+              {/*<NavItem>*/}
+              {/*  <NavLink href="/">S & T Publications</NavLink>*/}
+              {/*</NavItem>*/}
               <NavItem>
                 <NavLink href="/admin/optics">S & T Optics</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="/admin/notifications">Report Generator</NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink href="/admin/scroll">App Image Scroll</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="/admin/addform">Add Forum</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="/admin/viewforms">View Forum</NavLink>
-              </NavItem>
+              {/*<NavItem>*/}
+              {/*  <NavLink href="/admin/scroll">App Image Scroll</NavLink>*/}
+              {/*</NavItem>*/}
+              {/*<NavItem>*/}
+              {/*  <NavLink href="/admin/addform">Add Forum</NavLink>*/}
+              {/*</NavItem>*/}
+              {/*<NavItem>*/}
+              {/*  <NavLink href="/admin/viewforms">View Forum</NavLink>*/}
+              {/*</NavItem>*/}
               <NavItem>
                 <NavLink href="/admin/scroll">App Image Scroll</NavLink>
               </NavItem>

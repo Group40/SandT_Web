@@ -261,16 +261,16 @@ class ReviewPics extends Component {
                                                         <Table borderless >
                                                             <tbody>
                                                             <tr>
-                                                                <td ><Header as='h5'>Date :</Header></td>
-                                                                <td>2015-03-11</td>
+                                                                <td ><Header as='h5'>Capture Date :</Header></td>
+                                                                <td>{pic.date}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td><Header as='h5'>Time :</Header></td>
-                                                                <td>22:22</td>
+                                                                <td><Header as='h5'>Town :</Header></td>
+                                                                <td>{pic.town}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td><Header as='h5'>Location :</Header></td>
-                                                                <td>{pic.ownerEmail}</td>
+                                                                <td><Header as='h5'>District :</Header></td>
+                                                                <td>{pic.distric}</td>
                                                             </tr>
                                                             </tbody>
                                                         </Table>
@@ -309,13 +309,13 @@ class ReviewPics extends Component {
                                         {this.state.isConfirming ?   "Confirm" : "Confirm"}
                                     </Button>
 
-                                    <Buttontest
-                                        color={"red"}
-                                        color2={"blue"}
-                                        name={"Start"}
-                                        name2={"End"}
-                                        id={"sadsad"}
-                                        />
+                                    {/*<Buttontest*/}
+                                    {/*    color={"red"}*/}
+                                    {/*    color2={"blue"}*/}
+                                    {/*    name={"Start"}*/}
+                                    {/*    name2={"End"}*/}
+                                    {/*    id={"sadsad"}*/}
+                                    {/*    />*/}
 
                                     <Divider hidden />
                                     <Divider hidden />

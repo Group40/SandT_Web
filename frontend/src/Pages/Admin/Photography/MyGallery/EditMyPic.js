@@ -18,6 +18,7 @@ import DatePicker from 'reactstrap-date-picker';
 import AdminNav from "../../../../Components/AdminNav.component";
 import {Image,Header, Icon,Divider,Button} from 'semantic-ui-react'
 import {connect} from "react-redux";
+import moment from "moment";
 
 const backendURI = require("../../../../BackEndURI");
 
@@ -45,6 +46,9 @@ class EditMyPic extends Component {
             updatepic:false,
             picid:"",
             isdeletinging:false,
+            date:"",
+            town:"",
+            distric:""
         };
     }
 
@@ -58,6 +62,9 @@ class EditMyPic extends Component {
                     loading: false,
                     fieldLoading: false,
                     picid:res.data.uploadPhotoId,
+                    date:res.data.date,
+                    town:res.data.town,
+                    distric:res.data.distric,
                 })
             })
     }
@@ -116,6 +123,9 @@ class EditMyPic extends Component {
             data.append('title',this.state.pictitle);
             data.append('detail',this.state.description);
             data.append('picid',this.state.picid);
+            data.append('date',this.state.date);
+            data.append('town',this.state.town);
+            data.append('distric',this.state.distric);
             fetch(backendURI.url+'/photouploading/updatedata',{
                 method: 'post',
                 body: data
@@ -242,13 +252,13 @@ class EditMyPic extends Component {
                                         <Col xs="12" sm="5">
                                             <FormGroup>
                                                 <Label for="distric">Captured Distric</Label>
-                                                <Input type="text" name="distric" id="distric"  onChange={this.onChange}/>
+                                                <Input type="text" name="distric" id="distric" value={this.state.distric} onChange={this.onChange}/>
                                             </FormGroup>
                                         </Col>
                                         <Col xs="12" sm="5">
                                             <FormGroup>
                                                 <Label for="town">Town</Label>
-                                                <Input type="text" name="town" id="town"  onChange={this.onChange}/>
+                                                <Input type="text" name="town" id="town" value={this.state.town} onChange={this.onChange}/>
                                             </FormGroup>
                                         </Col>
                                     </Row>
@@ -256,8 +266,10 @@ class EditMyPic extends Component {
                                     <Row>
                                         <Col xs="12" sm="4">
                                             <FormGroup>
-                                                <Label for="date">Capture Date</Label>
-                                                <DatePicker id="datepicker"   onChange={(v) => this.onChangeDate(v)}/>
+                                                <label htmlFor="date">Date</label>
+                                                <Input type="date" id="datepicker" name="date" value={this.state.date}
+                                                       onChange={e => this.change(e)} mindate={moment().toDate()}/>
+                                                <div style={{fontSize: 12, color: "red"}}>{this.state.dateError}</div>
                                             </FormGroup>
                                         </Col>
 

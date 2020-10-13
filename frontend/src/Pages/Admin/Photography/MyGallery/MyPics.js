@@ -32,6 +32,9 @@ class MyPics extends Component {
             picdetails:"",
             picid:"",
             redirecturl:"",
+            date:"",
+            town:"",
+            distric:"",
         }
 
     }
@@ -88,13 +91,17 @@ class MyPics extends Component {
         )
     }
 
-    zoomtoggle = (id,url,title,data) => {
+    zoomtoggle = (id,url,title,data,date,town,distric) => {
         this.setState({
             zoompic: !this.state.zoompic,
             picid:id,
             picurl: url,
             pictitle:title,
             picdetails:data,
+            date:date,
+            town:town,
+            distric:distric,
+
 
         });
     };
@@ -155,13 +162,13 @@ class MyPics extends Component {
                                     <Table  >
                                         <tbody>
                                         <tr>
-                                            <td ><Header as='h5'>Date : 2012.30.3</Header></td>
+                                            <td ><Header as='h5'>Capture Date : {this.state.date}</Header></td>
                                         </tr>
                                         <tr>
-                                            <td><Header as='h5'>Time : 12:10</Header></td>
+                                            <td><Header as='h5'>Town : {this.state.town}</Header></td>
                                         </tr>
                                         <tr>
-                                            <td><Header as='h5'>Location : Kandy,Sri Lanka</Header></td>
+                                            <td><Header as='h5'>District : {this.state.distric}</Header></td>
                                         </tr>
                                         </tbody>
                                     </Table>
@@ -191,7 +198,8 @@ class MyPics extends Component {
                                 return (
                                     <React.Fragment key={index}>
                                         <Image src={pic.photourl} onClick={() => {
-                                            this.zoomtoggle(pic.uploadPhotoId, pic.photourl,pic.picTitle,pic.picDetails)}}/>
+                                            this.zoomtoggle(pic.uploadPhotoId, pic.photourl,pic.picTitle,pic.picDetails,pic.date,
+                                            pic.town,pic.distric)}}/>
                                     </React.Fragment>
                                 );
                             })}
