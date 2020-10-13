@@ -93,7 +93,7 @@ class EditHomeScreenScroll extends Component {
                 if(res.status===200){
                     this.componentDidMount();
                     //window.open(`/admin/adminpics`);
-                    window.location=`/admin/appscroll`;
+                    window.location=`/admin/scroll`;
                 }
             });
         }
