@@ -87,11 +87,17 @@ public class PhotoUploadingController {
     public String updateMyPic(//@PathVariable String id,
                               @RequestPart(value = "title") String title,
                               @RequestPart(value = "picid") String picid,
-                              @RequestPart(value = "detail") String detail)
+                              @RequestPart(value = "detail") String detail,
+                              @RequestPart(value = "town") String town,
+                              @RequestPart(value = "distric") String distric,
+                              @RequestPart(value = "detail") String date)
             throws ResourceNotFoundException {
         UploadPhoto uploadPhoto = uploadPhotoRepository.findById(picid).orElseThrow(() -> new ResourceNotFoundException("Can't Find image"));
         uploadPhoto.setPicTitle(title);
         uploadPhoto.setPicDetails(detail);
+        uploadPhoto.setDate(date);
+        uploadPhoto.setDistric(distric);
+        uploadPhoto.setTown(town);
         uploadPhotoRepository.save(uploadPhoto);
         return "Done";
     }
